@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import './scss/style.scss';
 import {BrowserRouter} from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 // Containers
 import TheLayout from './containers/TheLayout';
@@ -22,6 +23,18 @@ import Page500 from './views/pages/page500/Page500';
 
 class App extends Component {
 
+  checkRole=()=>{
+    const Authentication = "Admin"
+    if(Cookies.get('Role') === null)
+    return false;
+    const Role = Cookies.get('Role'); 
+    console.log(Authentication)  ; 
+    console.log(Role);
+    return Authentication === Role;
+
+
+}
+
   render() {
     return (
       // <HashRouter>
@@ -37,11 +50,13 @@ class App extends Component {
       // </HashRouter>
       <BrowserRouter>
         <Switch>
-          <Route path="/login" name="Login Page" exact component={Login} />
+        <Route path="/login" name="Login Page" exact component={Login} />
           <Route path="/register" name="Register Page" exact component={Register}/>
           <Route path="/404" name="Page 404" exact component={Page404} />
           <Route path="/500" name="Page 500" exact component={Page500} />
-          <Route path="/" name="Home" component={TheLayout} />
+          {this.checkRole()===true ?<Route path="/" name="Home" component={TheLayout}/>
+          :  <Route path="/login" name="Login Page" exact component={Login} />   
+          }
           <Redirect exact to="/404"/>
         </Switch>
       </BrowserRouter>

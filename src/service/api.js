@@ -1,11 +1,14 @@
 import axios from 'axios';
-import cookieUlti from './cookieUlti';
+import Cookies from 'js-cookie';
+
 const url ={    /// tat ca cac duong dan thi nam o day
     baseURL: "https://localhost:5001/api",
     authLink: "/Auth",
     userlink: "/Users",
 };
 
+const Token =  Cookies.get('Token')
+console.log(Token)
 
 const instance = axios.create({
     withCredentials: true,
@@ -15,7 +18,9 @@ const instance = axios.create({
     "Content-Type": "application/json",
     "Accept": "application/json",
     // "Access-Control-Allow-Credentials": true
-    "Authorization": `Bearer ${cookieUlti.getCookie("Token")}`,
+    //"Authorization": `Bearer ${cookieUlti.getCookie("Token")}`,
+    "Authorization": `Bearer ${Token}`,
+    
     // 'Cookie': `.AspNetCore.Identity.Application=${cookieUlti.getCookie(".AspNetCore.Identity.Application")}`
   },
 }

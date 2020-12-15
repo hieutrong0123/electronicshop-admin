@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 import {
   CButton,
   CCard,
@@ -26,18 +26,38 @@ class Login extends Component {
     this.state = {
       email: "",
       password: "",
-      rememberme: true
+      rememberme: true,
+      history:""
     };
   }
+
+  redirect = e =>{
+    this.props.history.push("/")
+  }
+
 
   changeHandler = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
   
   submitHandler() {
-    console.log(this.state);
+    const data ={
+      email: this.state.email,
+      password: this.state.password,
+      rememberme: this.state.rememberme
+    }
+    console.log(data);
     // loginservice.login(this.state).then(res=>{Cookies.set('auth',res.data.resultObj); console.log(res)}).catch(err => console.log(err))
-    loginservice.login(this.state).then(res=>{ Cookies.set('Token',res.data.resultObj); console.log(res)}).catch(err => console.log(err))    
+    //loginservice.login(this.state).then(res=>{ Cookies.set('Token',res.data.resultObj); console.log(res)}).catch(err => console.log(err))
+    loginservice.login(data).then(res=>{ Cookies.set('Token',res.data.resultObj);
+    Cookies.set('Role',res.data.message)
+    //const decoded = jwt(res.data.resultObj);    
+    //console.log(decoded.Role);
+    this.redirect()
+
+    console.log(res)
+  })
+  .catch(err => console.log(err))
   };
 
   render() {
