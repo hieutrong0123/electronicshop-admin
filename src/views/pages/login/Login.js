@@ -31,11 +31,6 @@ class Login extends Component {
     };
   }
 
-  redirect = e =>{
-    this.props.history.push("/")
-  }
-
-
   changeHandler = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
@@ -49,13 +44,25 @@ class Login extends Component {
     console.log(data);
     // loginservice.login(this.state).then(res=>{Cookies.set('auth',res.data.resultObj); console.log(res)}).catch(err => console.log(err))
     //loginservice.login(this.state).then(res=>{ Cookies.set('Token',res.data.resultObj); console.log(res)}).catch(err => console.log(err))
-    loginservice.login(data).then(res=>{ Cookies.set('Token',res.data.resultObj);
+    loginservice.login(data)
+    .then(res=>{ 
+      if(res.data.isSuccessed)
+      {
+      Cookies.set('Token',res.data.resultObj);
     Cookies.set('Role',res.data.message)
     //const decoded = jwt(res.data.resultObj);    
     //console.log(decoded.Role);
-    this.redirect()
+    //this.redirect()
+    //this.props.history.push("/")
+    window.location.href="/";
 
     console.log(res)
+    console.log(res.status)
+      }
+      else
+      {
+        alert(res.data.message)
+      }
   })
   .catch(err => console.log(err))
   };

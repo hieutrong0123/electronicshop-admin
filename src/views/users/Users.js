@@ -136,13 +136,13 @@ const [details, setDetails] = useState([])
   const fields = [
     { key: 'id' , _classes: 'font-weight-bold'},
     'userName', 'firstMiddleName', 'lastName', 'email', 'phoneNumber',
-    {
-      key: 'show_details',
-      label: '',
-      _style: { width: '1%' },
-      sorter: false,
-      filter: false
-    }
+    // {
+    //   key: 'show_details',
+    //   label: '',
+    //   _style: { width: '1%' },
+    //   sorter: false,
+    //   filter: false
+    // }
   ]
 
   const getBadge = (status)=>{
@@ -157,28 +157,24 @@ const [details, setDetails] = useState([])
 
   return (
     <CCard>
-    <CDataTable
-      items={list}
-      fields={fields}
-      // columnFilter
-      tableFilter
-      //footer
-      itemsPerPageSelect
-      itemsPerPage={5}
-      hover
-      sorter
-      pagination
-      scopedSlots = {{
-        'status':
-          (item)=>(
+      <CDataTable
+        items={list}
+        fields={fields}
+        // columnFilter
+        tableFilter
+        //footer
+        itemsPerPageSelect
+        itemsPerPage={5}
+        hover
+        sorter
+        pagination
+        scopedSlots={{
+          status: item => (
             <td>
-              <CBadge color={getBadge(item.status)}>
-                {item.status}
-              </CBadge>
+              <CBadge color={getBadge(item.status)}>{item.status}</CBadge>
             </td>
           ),
-        'show_details':
-          (item, index)=>{
+          show_details: (item, index) => {
             return (
               <td className="py-2">
                 <CButton
@@ -186,21 +182,20 @@ const [details, setDetails] = useState([])
                   variant="outline"
                   shape="square"
                   size="sm"
-                  onClick={()=>{toggleDetails(index)}}
+                  onClick={() => {
+                    toggleDetails(index);
+                  }}
                 >
-                  {details.includes(index) ? 'Hide' : 'Show'}
+                  {details.includes(index) ? "Hide" : "Show"}
                 </CButton>
               </td>
-              )
+            );
           },
-        'details':
-            (item, index)=>{
-              return (
+          details: (item, index) => {
+            return (
               <CCollapse show={details.includes(index)}>
                 <CCardBody>
-                  <h4>
-                    {item.username}
-                  </h4>
+                  <h4>{item.username}</h4>
                   <p className="text-muted">User since: {item.registered}</p>
                   <CButton size="sm" color="info">
                     User Settings
@@ -210,10 +205,10 @@ const [details, setDetails] = useState([])
                   </CButton>
                 </CCardBody>
               </CCollapse>
-            )
+            );
           }
-      }}
-    />
+        }}
+      />
     </CCard>
-  )
+  );
 }

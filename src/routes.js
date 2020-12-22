@@ -37,6 +37,8 @@ import Typography from './views/theme/typography/Typography';
 import Widgets from './views/widgets/Widgets';
 import Users from './views/users/Users';
 import User from './views/users/User';
+import UserForms from './views/users/UserForm';
+import UserDetails from './views/users/UserDeatils'
 
 const routes = [
   // { path: '/', exact: true, name: 'Home' },
@@ -79,7 +81,9 @@ const routes = [
   { path: '/notifications/toaster', exact : true, name: 'Toaster', component: Toaster },
   { path: '/widgets', exact : true, name: 'Widgets', component: Widgets },
   { path: '/users', exact: true,  name: 'Users', component: Users },
-  { path: '/users/:id', exact: true, name: 'User Details', component: User },
+  { path: '/users/create', exact: true, name: 'Create', component: UserForms },
+  //{ path: '/users/:id', exact: true, name: 'User Details', component: User },
+  { path: '/users/:id', exact: true, name: 'User Details', component: UserDetails },
 ];
 
 export default routes;

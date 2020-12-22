@@ -31,8 +31,6 @@ class App extends Component {
     console.log(Authentication)  ; 
     console.log(Role);
     return Authentication === Role;
-
-
 }
 
   render() {
@@ -55,7 +53,7 @@ class App extends Component {
           <Route path="/404" name="Page 404" exact component={Page404} />
           <Route path="/500" name="Page 500" exact component={Page500} />
           {this.checkRole()===true ?<Route path="/" name="Home" component={TheLayout}/>
-          :  <Route path="/login" name="Login Page" exact component={Login} />   
+          :  <Redirect exact to="/login"/> 
           }
           <Redirect exact to="/404"/>
         </Switch>
