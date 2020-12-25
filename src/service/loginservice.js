@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "./api_json";
 
 const login = data => api.post(`${api.url.authLink}`,data);
 

@@ -38,7 +38,10 @@ import Widgets from './views/widgets/Widgets';
 import Users from './views/users/Users';
 import User from './views/users/User';
 import UserForms from './views/users/UserForm';
-import UserDetails from './views/users/UserDeatils'
+import UserDetails from './views/users/UserDeatils';
+import UserEdit from './views/users/UserEdit';
+import ProductForm from './views/products/ProductForm';
+
 
 const routes = [
   // { path: '/', exact: true, name: 'Home' },
@@ -81,9 +84,11 @@ const routes = [
   { path: '/notifications/toaster', exact : true, name: 'Toaster', component: Toaster },
   { path: '/widgets', exact : true, name: 'Widgets', component: Widgets },
   { path: '/users', exact: true,  name: 'Users', component: Users },
-  { path: '/users/create', exact: true, name: 'Create', component: UserForms },
+  { path: '/users/create', exact: true, name: 'User Create', component: UserForms },
   //{ path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/users/:id', exact: true, name: 'User Details', component: UserDetails },
+  { path: '/users/edit/:id', exact: true, name: 'User Edit', component: UserEdit },
+  { path: '/products/create', exact: true, name: 'Product Create', component: ProductForm },
 ];
 
 export default routes;

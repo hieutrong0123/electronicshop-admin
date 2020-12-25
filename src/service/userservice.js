@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "./api_json";
 
 const getAll = () => api.get(`${api.url.userlink}`);
 const getbyId = id =>api.get(`${api.url.userlink}/${id}`);
