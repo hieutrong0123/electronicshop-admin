@@ -6,7 +6,8 @@ const url = {
   baseURL: "https://localhost:5001/api",
   authLink: "/Auth",
   userlink: "/Users",
-  productlink: "/Products"
+  productlink: "/Products",
+  categorylink: "/Categories"
 };
 
 const Token = Cookies.get("Token");
@@ -39,6 +40,6 @@ export default {
   axios: instance,
   get: instance.get,
   post: instance.post,
-  put: instance.post,
+  put: instance.put,
   delete: instance.delete
 };

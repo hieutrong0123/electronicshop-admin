@@ -54,6 +54,7 @@ class Login extends Component {
     //console.log(decoded.Role);
     //this.redirect()
     //this.props.history.push("/")
+    alert('Successed');
     window.location.href="/";
 
     console.log(res)
@@ -67,7 +68,21 @@ class Login extends Component {
   .catch(err => console.log(err))
   };
 
-  render() {
+  componentDidMount() {
+    if(this.checkRole())
+    this.props.history.push("/");
+  }
+
+  checkRole = () => {
+    const Authentication = "Admin";
+    if (Cookies.get("Role") === null) return false;
+    const Role = Cookies.get("Role");
+    console.log(Authentication);
+    console.log(Role);
+    return Authentication === Role;
+  };
+
+  render() {    
     const { email, password } = this.state;
     return (
       <div className="c-app c-default-layout flex-row align-items-center">

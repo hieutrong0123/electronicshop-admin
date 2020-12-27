@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import userservice from 'src/service/userservice';
+import React, { Component } from "react";
+import userservice from "src/service/userservice";
 import {
   CButton,
   CCard,
@@ -31,25 +31,36 @@ import {
   CSelect,
   CRow,
   CSwitch
-}from '@coreui/react'
-import CIcon from '@coreui/icons-react'
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
 
 class UserEdit extends Component {
   state = {
     id: "",
     userName: "",
     email: "",
+    birthday: "",
     firstMiddleName: "",
     lastName: "",
-    birthday: "",
-    gender: "",
     phoneNumber: "",
+    gender: "",
+    address: "",
+    status: "",
+    userInRole: "",
     loading: true
   };
 
   componentDidMount() {
     this.loadData();
   }
+  formatDate(date) {
+    var b = date.split(/\D/);
+    return b
+      .reverse()
+      .join("-")
+      .split("00-00-00-")[1];
+  }
+
   loadData() {
     userservice
       .getbyId(this.props.match.params.id)
@@ -59,10 +70,17 @@ class UserEdit extends Component {
             this.setState({
               id: res.data.resultObj.id,
               userName: res.data.resultObj.userName,
+              email: res.data.resultObj.email,
+              birthday: this.formatDate(res.data.resultObj.birthday),
+              firstMiddleName: res.data.resultObj.firstMiddleName,
+              lastName: res.data.resultObj.lastName,
+              phoneNumber: res.data.resultObj.phoneNumber,
+              gender: String(res.data.resultObj.gender),
+              address: res.data.resultObj.address,
+              status: res.data.resultObj.status,
+              userInRole: res.data.resultObj.userInRole,
               loading: false
-            }, ()=> {    const data = this.state;
-
-    console.log(data);});
+            });
           }
           console.log(res);
         } else {
@@ -74,28 +92,29 @@ class UserEdit extends Component {
 
   changeHandler = e => {
     this.setState({ [e.target.name]: e.target.value });
+    console.log(this.state.gender);
   };
   cancel() {
     this.props.history.push(`/users/${this.state.id}`);
   }
 
   submitHandler() {
-    // const data ={
-    //   userName: this.state.email,
-    //   firstMiddleName: this.state.firstMiddleName,
-    //   email: this.state.email,
-    //   lastName: this.state.lastName,
-    //   birthday: this.state.birthday,
-    //   gender: parseInt(this.state.gender),
-    //   phoneNumber: this.state.phoneNumber
-    // }
     const data = this.state;
+    // data.gender = Number(data.gender)
 
     console.log(data);
-    // userservice.create(data)
-    // .then(res=>{alert('Thanh cong')})
-    // .catch(err => console.log(err))
+    userservice
+      .updatebyId(data)
+      .then(res => {
+        if (res.data.isSuccessed) {
+          alert("Successed");
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch(err => console.log(err));
   }
+
   render() {
     return this.state.loading === true ? (
       <h1>Loading</h1>
@@ -104,11 +123,40 @@ class UserEdit extends Component {
         <CCol xs="12" md="10">
           <CCard>
             <CCardHeader>
-              Users Form
+              User Details
               <small></small>
             </CCardHeader>
             <CCardBody>
               <CForm encType="multipart/form-data" className="form-horizontal">
+                <CFormGroup row>
+                  <CCol md="3">
+                    <CLabel htmlFor="text-input">Id</CLabel>
+                  </CCol>
+                  <CCol xs="12" md="9">
+                    <CInput
+                      name="id"
+                      placeholder="Id"
+                      value={this.state.id}
+                      onChange={this.changeHandler}
+                      disabled
+                    />
+                  </CCol>
+                </CFormGroup>
+
+                <CFormGroup row>
+                  <CCol md="3">
+                    <CLabel htmlFor="text-input">UserName</CLabel>
+                  </CCol>
+                  <CCol xs="12" md="9">
+                    <CInput
+                      name="userName"
+                      placeholder="UserName"
+                      value={this.state.userName}
+                      onChange={this.changeHandler}
+                    />
+                  </CCol>
+                </CFormGroup>
+
                 <CFormGroup row>
                   <CCol md="3">
                     <CLabel htmlFor="email-input">Email</CLabel>
@@ -119,12 +167,27 @@ class UserEdit extends Component {
                       name="email"
                       placeholder="Enter Email"
                       autoComplete="email"
-                      value={this.state.userName}
+                      value={this.state.email}
                       onChange={this.changeHandler}
                     />
                     <CFormText className="help-block">
                       Please enter your email
                     </CFormText>
+                  </CCol>
+                </CFormGroup>
+
+                <CFormGroup row>
+                  <CCol md="3">
+                    <CLabel htmlFor="date-input">Birthday</CLabel>
+                  </CCol>
+                  <CCol xs="12" md="9">
+                    <CInput
+                      type="date"
+                      name="birthday"
+                      placeholder="Birthday"
+                      value={this.state.birthday}
+                      onChange={this.changeHandler}
+                    />
                   </CCol>
                 </CFormGroup>
 
@@ -158,14 +221,13 @@ class UserEdit extends Component {
 
                 <CFormGroup row>
                   <CCol md="3">
-                    <CLabel htmlFor="date-input">Birthday</CLabel>
+                    <CLabel htmlFor="text-input">Phone Number</CLabel>
                   </CCol>
                   <CCol xs="12" md="9">
                     <CInput
-                      type="date"
-                      name="birthday"
-                      placeholder="Birthday"
-                      value={this.state.birthday}
+                      name="phoneNumber"
+                      placeholder="Phone Number"
+                      value={this.state.phoneNumber}
                       onChange={this.changeHandler}
                     />
                   </CCol>
@@ -182,7 +244,8 @@ class UserEdit extends Component {
                         id="Male"
                         name="gender"
                         onChange={this.changeHandler}
-                        value={0}
+                        value = "0"
+                        checked={this.state.gender === "0"}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Male">
                         Male
@@ -194,7 +257,8 @@ class UserEdit extends Component {
                         id="Female"
                         name="gender"
                         onChange={this.changeHandler}
-                        value={1}
+                        value="1"
+                        checked={this.state.gender === "1"}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Female">
                         Female
@@ -219,15 +283,48 @@ class UserEdit extends Component {
 
                 <CFormGroup row>
                   <CCol md="3">
-                    <CLabel htmlFor="text-input">Phone Number</CLabel>
+                    <CLabel>Status</CLabel>
                   </CCol>
-                  <CCol xs="12" md="9">
-                    <CInput
-                      name="phoneNumber"
-                      placeholder="Phone Number"
-                      value={this.state.phoneNumber}
-                      onChange={this.changeHandler}
-                    />
+                  <CCol md="9">
+                    <CFormGroup variant="custom-radio" inline>
+                      <CInputRadio
+                        custom
+                        id="Active"
+                        name="status"
+                        onChange={this.changeHandler}
+                        value="0"
+                        checked={this.state.status === "0"}
+                      />
+                      <CLabel variant="custom-checkbox" htmlFor="Active">
+                        Active
+                      </CLabel>
+                    </CFormGroup>
+                    <CFormGroup variant="custom-radio" inline>
+                      <CInputRadio
+                        custom
+                        id="Disable"
+                        name="status"
+                        onChange={this.changeHandler}
+                        value="1"
+                        checked={this.state.status === "1"}
+                      />
+                      <CLabel variant="custom-checkbox" htmlFor="Disable">
+                        Disable
+                      </CLabel>
+                    </CFormGroup>
+                    <CFormGroup variant="custom-radio" inline>
+                      <CInputRadio
+                        custom
+                        id="Delete"
+                        name="status"
+                        onChange={this.changeHandler}
+                        value="2"
+                        checked={this.state.status === "2"}
+                      />
+                      <CLabel variant="custom-checkbox" htmlFor="Delete">
+                        Delete
+                      </CLabel>
+                    </CFormGroup>
                   </CCol>
                 </CFormGroup>
 
@@ -242,7 +339,8 @@ class UserEdit extends Component {
                         id="Admin"
                         name="userInRole"
                         onChange={this.changeHandler}
-                        value="Admin Employee"
+                        value="Admin"
+                        checked={this.state.userInRole === "Admin"}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Admin">
                         Admin
@@ -255,6 +353,7 @@ class UserEdit extends Component {
                         name="userInRole"
                         onChange={this.changeHandler}
                         value="Employee"
+                        checked={this.state.userInRole === "Employee"}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Employee">
                         Employee
@@ -267,6 +366,7 @@ class UserEdit extends Component {
                         name="userInRole"
                         onChange={this.changeHandler}
                         value="User"
+                        checked={this.state.userInRole === "User"}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="User">
                         User
@@ -297,12 +397,3 @@ class UserEdit extends Component {
 }
 
 export default UserEdit;
-
-// const UserForms = () => {
-//   const [collapsed, setCollapsed] = React.useState(true)
-//   const [showElements, setShowElements] = React.useState(true)
-
-//   return 
-// }
-
-// export default UserForms

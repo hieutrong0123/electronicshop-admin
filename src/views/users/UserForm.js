@@ -257,27 +257,7 @@ class UserForm extends Component {
                       />
                     </CCol>
                   </CFormGroup>
-
-                  {/* <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel>User Role</CLabel>
-                    </CCol>
-                    <CCol md="9">
-                      <CFormGroup variant="checkbox">
-                        <CInputRadio className="form-check-input" name="userInRole" onChange={this.changeHandler} value="Admin" />
-                        <CLabel variant="checkbox" htmlFor="radio1">Admin</CLabel>
-                      </CFormGroup>
-                      <CFormGroup variant="checkbox">
-                        <CInputRadio className="form-check-input" name="userInRole" onChange={this.changeHandler} value="Employee" />
-                        <CLabel variant="checkbox" htmlFor="radio2">Employee</CLabel>
-                      </CFormGroup>
-                      <CFormGroup variant="checkbox">
-                        <CInputRadio className="form-check-input" name="userInRole" onChange={this.changeHandler} value="User" />
-                        <CLabel variant="checkbox" htmlFor="radio2">User</CLabel>
-                      </CFormGroup>
-                    </CCol>
-                  </CFormGroup> */}
-
+                  
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel>User Role</CLabel>
@@ -352,12 +332,3 @@ class UserForm extends Component {
 }
 
 export default UserForm;
-
-// const UserForms = () => {
-//   const [collapsed, setCollapsed] = React.useState(true)
-//   const [showElements, setShowElements] = React.useState(true)
-
-//   return 
-// }
-
-// export default UserForms

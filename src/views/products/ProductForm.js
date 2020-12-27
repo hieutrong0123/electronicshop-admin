@@ -37,6 +37,7 @@ import {
 import CIcon from "@coreui/icons-react";
 import userservice from "src/service/userservice";
 import productservice from "src/service/productservice";
+import categoryservice from "src/service/categoryservice";
 
 var fs = require("fs");
 
@@ -54,7 +55,8 @@ class ProductForm extends Component {
       Status: "",
       CategoryId: "",
       Alias: "",
-      ThumbnailImages: []
+      ThumbnailImages: [],
+      CategoryList: null
     };
     this.submitHandler = this.submitHandler.bind(this);
     this.cancel = this.cancel.bind(this);
@@ -64,6 +66,14 @@ class ProductForm extends Component {
     $(".custom-file-input").change(function() {
       console.log(this.files[0]);
     });
+    this.loadData()
+  }
+
+  loadData() {
+    categoryservice
+      .getAll()
+      .then(res => { this.setState({CategoryList: res.data.resultObj}, ()=>console.log(this.state.CategoryList) )})
+      .catch(err => console.log(err));
   }
 
   changeHandler = e => {
@@ -83,16 +93,7 @@ class ProductForm extends Component {
   }
 
   async submitHandler() {
-  //   const url = `http://localhost:5001/api/Products/create`;
-  //   const formData = new FormData();
-  //   formData.append("body", this.state);
-  //   const config = {
-  //     headers: {
-  //       "content-type": "multipart/form-data"
-  //     }
-  //   };
-  //   return post(url, formData, config);
-  // }
+    
 var FormData = require('form-data');
 var data = new FormData();
 data.append('Name', this.state.Name);
@@ -106,11 +107,7 @@ data.append('CategoryId', this.state.CategoryId);
 data.append('Alias', this.state.Alias);
 data.append('ThumbnailImages', this.state.ThumbnailImages);
   console.log(data);
-  // const config = {
-  //       headers: {
-  //         "content-type": "multipart/form-data"
-  //       }
-  //     };
+  
   productservice.create(data)
   .then(res=>{alert('Success')})
   .catch(err => console.log(err))
@@ -249,18 +246,23 @@ data.append('ThumbnailImages', this.state.ThumbnailImages);
                   </CFormGroup>
 
                   <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="text-input">CategoryId</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInput
-                        name="CategoryId"
-                        placeholder="CategoryId"
-                        value={this.state.CategoryId}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
+                  <CCol md="3">
+                    <CLabel htmlFor="select">CategoryId</CLabel>
+                  </CCol>
+                  <CCol xs="12" md="9">
+                    {this.state.CategoryList === null ? <h3>Waiting...</h3> : 
+                    <CSelect  name="CategoryId"  onChange={this.changeHandler}>
+                      <option value="" selected={this.state.CategoryId===""}>Choose</option>
+                      {this.state.CategoryList.map((item)=>{
+                        return (
+                          <option value={item.id} selected={this.state.CategoryId===item.id} >{item.name}</option>
+                        )
+                      })}
+
+                    </CSelect>
+                  }
+                  </CCol>
+                </CFormGroup>
 
                   <CFormGroup row>
                     <CCol md="3">

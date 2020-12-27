@@ -57,6 +57,7 @@ class UserDetails extends Component {
 
   changeHandler = e => {
     this.setState({ [e.target.name]: e.target.value });
+    console.log(e.target.value);
   };
 
   cancel() {
@@ -67,6 +68,38 @@ class UserDetails extends Component {
     this.props.history.push(`/users/edit/${this.state.id}`);
   }
 
+  delete() {
+    userservice
+      .deletebyId(this.state.id)
+      .then(res => {
+        if (res.data.isSuccessed) {
+          alert('Successed');
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  disable() {
+    userservice
+      .disablebyId(this.state.id)
+      .then(res => {
+        if (res.data.isSuccessed) {
+          alert('Successed');
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch(err => console.log(err));
+  }
+  formatDate(date) {
+    var b = date.split(/\D/);
+    return b
+      .reverse()
+      .join("-")
+      .split("00-00-00-")[1];
+  }
 
   loadData() {
     userservice
@@ -78,7 +111,7 @@ class UserDetails extends Component {
               id: res.data.resultObj.id,
               userName: res.data.resultObj.userName,
               email: res.data.resultObj.email,
-              birthday: res.data.resultObj.birthday,
+              birthday: this.formatDate(res.data.resultObj.birthday),
               firstMiddleName: res.data.resultObj.firstMiddleName,
               lastName: res.data.resultObj.lastName,
               phoneNumber: res.data.resultObj.phoneNumber,
@@ -89,7 +122,7 @@ class UserDetails extends Component {
               loading: false
             });
           }
-          console.log(res);
+          console.log(this.state);
         } else {
           alert(res.data.message);
         }
@@ -120,6 +153,7 @@ class UserDetails extends Component {
                       placeholder="Id"
                       value={this.state.id}
                       onChange={this.changeHandler}
+                      disabled
                     />
                   </CCol>
                 </CFormGroup>
@@ -225,8 +259,8 @@ class UserDetails extends Component {
                         id="Male"
                         name="gender"
                         onChange={this.changeHandler}
-                        value={0}
-                        checked={this.state.gender === 0}
+                        value="0"                      
+                        checked={this.state.gender === "0"}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Male">
                         Male
@@ -238,8 +272,8 @@ class UserDetails extends Component {
                         id="Female"
                         name="gender"
                         onChange={this.changeHandler}
-                        value={1}
-                        checked={this.state.gender === 1}
+                        value="1"
+                        checked={this.state.gender === "1"}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Female">
                         Female
@@ -273,8 +307,8 @@ class UserDetails extends Component {
                         id="Active"
                         name="status"
                         onChange={this.changeHandler}
-                        value={0}
-                        checked={this.state.status === 0}
+                        value="0"
+                        checked={this.state.status === "0"}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Active">
                         Active
@@ -286,8 +320,8 @@ class UserDetails extends Component {
                         id="Disable"
                         name="status"
                         onChange={this.changeHandler}
-                        value={1}
-                        checked={this.state.status === 1}
+                        value="1"
+                        checked={this.state.status === "1"}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Disable">
                         Disable
@@ -299,8 +333,8 @@ class UserDetails extends Component {
                         id="Delete"
                         name="status"
                         onChange={this.changeHandler}
-                        value={2}
-                        checked={this.state.status === 2}
+                        value="2"
+                        checked={this.state.status === "2"}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Delete">
                         Delete
@@ -358,12 +392,26 @@ class UserDetails extends Component {
               </CForm>
             </CCardBody>
             <CCardFooter>
-              <CButton
-                size="sm"
-                color="primary"
-                onClick={() => this.edit()}
-              >
+              <CButton size="sm" color="primary" onClick={() => this.edit()}>
                 <CIcon name="cil-scrubber" /> Edit
+              </CButton>
+              <CButton></CButton>
+              <CButton
+                type="reset"
+                size="sm"
+                color="danger"
+                onClick={() => this.delete()}
+              >
+                <CIcon name="cil-ban" /> Delete
+              </CButton>
+              <CButton></CButton>
+              <CButton
+                type="reset"
+                size="sm"
+                color="danger"
+                onClick={() => this.disable()}
+              >
+                <CIcon name="cil-ban" /> Disable
               </CButton>
               <CButton></CButton>
               <CButton color="secondary" onClick={() => this.cancel()}>

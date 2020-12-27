@@ -33,6 +33,6 @@ export default {
   axios: instance,
   get: instance.get,
   post: instance.post,
-  put: instance.post,
+  put: instance.put,
   delete: instance.delete
 };
