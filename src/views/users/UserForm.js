@@ -81,7 +81,13 @@ class UserForm extends Component {
     }
     console.log(data);
     userservice.create(data)
-    .then(res=>{alert('Thanh cong')})
+    .then(res => {
+      if (res.data.isSuccessed) {
+        alert('Successed');
+      } else {
+        alert(res.data.message);
+      }
+    })
     .catch(err => console.log(err))
     };
   render() {
