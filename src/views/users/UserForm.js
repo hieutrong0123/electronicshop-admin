@@ -275,7 +275,7 @@ class UserForm extends Component {
                           id="Admin"
                           name="userInRole"
                           onChange={this.changeHandler}
-                          value="Admin Employee"
+                          value="Admin"
                         />
                         <CLabel
                           variant="custom-checkbox"
