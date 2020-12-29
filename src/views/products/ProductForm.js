@@ -46,17 +46,17 @@ class ProductForm extends Component {
     super(props);
 
     this.state = {
-      Name: "",
-      Price: "",
-      Specifications: "",
-      Description: "",
-      GoodsReceipt: "",
-      Inventory: "",
-      Status: "",
-      CategoryId: "",
-      Alias: "",
-      ThumbnailImages: [],
-      CategoryList: null
+      name: "",
+      price: "",
+      specifications: "",
+      description: "",
+      goodsReceipt: "",
+      inventory: "",
+      status: 0,
+      categoryId: "",
+      alias: "",
+      thumbnailImages: [],
+      categoryList: null
     };
     this.submitHandler = this.submitHandler.bind(this);
     this.cancel = this.cancel.bind(this);
@@ -66,24 +66,35 @@ class ProductForm extends Component {
     $(".custom-file-input").change(function() {
       console.log(this.files[0]);
     });
-    this.loadData()
+    this.loadData();
   }
 
   loadData() {
     categoryservice
       .getAll()
-      .then(res => { this.setState({CategoryList: res.data.resultObj}, ()=>console.log(this.state.CategoryList) )})
+      .then(res => {
+        this.setState({ categoryList: res.data.resultObj }, () =>
+          console.log(this.state.categoryList)
+        );
+      })
       .catch(err => console.log(err));
   }
 
   changeHandler = e => {
-    if (e.target.name === "ThumbnailImages") {
+    if (e.target.name === "thumbnailImages") {
       let arr = e.target.files;
       console.log(arr);
-      this.setState({ ThumbnailImages: e.target.files[0] }, () =>
-        console.log(this.state.ThumbnailImages)
+      this.setState({ thumbnailImages: e.target.files[0] }, () =>
+        console.log(this.state.thumbnailImages)
       );
-    } else {
+    }
+    if (e.target.name === 'status')
+    {
+      this.setState({ status: Number(e.target.value) });
+      console.log(this.state.status);
+      console.log(typeof this.state.status);
+    }
+     else {
       this.setState({ [e.target.name]: e.target.value });
       console.log(e.target.value);
     }
@@ -93,25 +104,61 @@ class ProductForm extends Component {
   }
 
   async submitHandler() {
-    
-var FormData = require('form-data');
-var data = new FormData();
-data.append('Name', this.state.Name);
-data.append('Price', this.state.Price);
-data.append('Specifications', this.state.Specifications);
-data.append('Description', this.state.Description);
-data.append('GoodsReceipt', this.state.GoodsReceipt);
-data.append('Inventory', this.state.Inventory);
-data.append('Status', this.state.Status);
-data.append('CategoryId', this.state.CategoryId);
-data.append('Alias', this.state.Alias);
-data.append('ThumbnailImages', this.state.ThumbnailImages);
-  console.log(data);
-  
-  productservice.create(data)
-  .then(res=>{alert('Success')})
-  .catch(err => console.log(err))
-  };
+    if (!this.state.name) {
+      alert("Name error");
+    }
+    else if(!this.state.price){
+      alert("Price error");
+    }
+    else if(!this.state.specifications){
+      alert("Specifications error");
+    }
+    else if(!this.state.goodsReceipt){
+      alert("GoodsReceipt error");
+    }
+    else if(!this.state.inventory){
+      alert("Inventory error");
+    }
+    else if(!this.state.description){
+      alert("Description error");
+    }
+    else if(!this.state.categoryId){
+      alert("CategoryId error");
+    }
+    else if(!this.state.alias){
+      alert("Alias error");
+    }
+    else if(!this.state.thumbnailImages){
+      alert("ThumbnailImages error");
+    }
+    else{
+
+      var FormData = require("form-data");
+      var data = new FormData();
+      data.append("Name", this.state.name);
+      data.append("Price", this.state.price);
+      data.append("Specifications", this.state.specifications);
+      data.append("Description", this.state.description);
+      data.append("GoodsReceipt", this.state.goodsReceipt);
+      data.append("Inventory", this.state.inventory);
+      data.append("Status", this.state.Status);
+      data.append("CategoryId", this.state.categoryId);
+      data.append("Alias", this.state.alias);
+      data.append("ThumbnailImages", this.state.thumbnailImages);
+      console.log(data);
+
+      productservice
+        .create(data)
+        .then(res => {
+          if (res.data.isSuccessed) {
+            alert(res.data.resultObj);
+          } else {
+            alert(res.data.message);
+          }
+        })
+        .catch(err => console.log(err));
+    }
+  }
   render() {
     return (
       <>
@@ -133,9 +180,9 @@ data.append('ThumbnailImages', this.state.ThumbnailImages);
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
-                        name="Name"
+                        name="name"
                         placeholder="Name"
-                        value={this.state.Name}
+                        value={this.state.name}
                         onChange={this.changeHandler}
                       />
                     </CCol>
@@ -147,9 +194,9 @@ data.append('ThumbnailImages', this.state.ThumbnailImages);
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
-                        name="Price"
+                        name="price"
                         placeholder="Price"
-                        value={this.state.Price}
+                        value={this.state.price}
                         onChange={this.changeHandler}
                       />
                     </CCol>
@@ -161,10 +208,10 @@ data.append('ThumbnailImages', this.state.ThumbnailImages);
                     </CCol>
                     <CCol xs="12" md="9">
                       <CTextarea
-                        name="Specifications"
+                        name="specifications"
                         rows="3"
                         placeholder="Specifications"
-                        value={this.state.Specifications}
+                        value={this.state.specifications}
                         onChange={this.changeHandler}
                       />
                     </CCol>
@@ -176,10 +223,10 @@ data.append('ThumbnailImages', this.state.ThumbnailImages);
                     </CCol>
                     <CCol xs="12" md="9">
                       <CTextarea
-                        name="Description"
+                        name="description"
                         rows="3"
                         placeholder="Description"
-                        value={this.state.Description}
+                        value={this.state.description}
                         onChange={this.changeHandler}
                       />
                     </CCol>
@@ -191,9 +238,9 @@ data.append('ThumbnailImages', this.state.ThumbnailImages);
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
-                        name="GoodsReceipt"
+                        name="goodsReceipt"
                         placeholder="GoodsReceipt"
-                        value={this.state.GoodsReceipt}
+                        value={this.state.goodsReceipt}
                         onChange={this.changeHandler}
                       />
                     </CCol>
@@ -205,9 +252,9 @@ data.append('ThumbnailImages', this.state.ThumbnailImages);
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
-                        name="Inventory"
+                        name="inventory"
                         placeholder="Inventory"
-                        value={this.state.Inventory}
+                        value={this.state.inventory}
                         onChange={this.changeHandler}
                       />
                     </CCol>
@@ -222,9 +269,10 @@ data.append('ThumbnailImages', this.state.ThumbnailImages);
                         <CInputRadio
                           custom
                           id="Status"
-                          name="Status"
+                          name="status"
                           onChange={this.changeHandler}
-                          value={0}
+                          value={Number(0)}
+                          checked={this.state.status === 0}
                         />
                         <CLabel variant="custom-checkbox" htmlFor="Status">
                           Active
@@ -234,11 +282,12 @@ data.append('ThumbnailImages', this.state.ThumbnailImages);
                         <CInputRadio
                           custom
                           id="Status"
-                          name="Status"
+                          name="status"
                           onChange={this.changeHandler}
-                          value={1}
+                          value={Number(1)}
+                          checked={this.state.status === 1}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Female">
+                        <CLabel variant="custom-checkbox" htmlFor="Status">
                           Delete
                         </CLabel>
                       </CFormGroup>
@@ -246,23 +295,41 @@ data.append('ThumbnailImages', this.state.ThumbnailImages);
                   </CFormGroup>
 
                   <CFormGroup row>
-                  <CCol md="3">
-                    <CLabel htmlFor="select">CategoryId</CLabel>
-                  </CCol>
-                  <CCol xs="12" md="9">
-                    {this.state.CategoryList === null ? <h3>Waiting...</h3> : 
-                    <CSelect  name="CategoryId"  onChange={this.changeHandler}>
-                      <option value="" selected={this.state.CategoryId===""}>Choose</option>
-                      {this.state.CategoryList.map((item)=>{
-                        return (
-                          <option value={item.id} selected={this.state.CategoryId===item.id} >{item.name}</option>
-                        )
-                      })}
-
-                    </CSelect>
-                  }
-                  </CCol>
-                </CFormGroup>
+                    <CCol md="3">
+                      <CLabel htmlFor="select">CategoryId</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      {this.state.categoryList === null ? (
+                        <h3>Waiting...</h3>
+                      ) : (
+                        <CSelect
+                          name="categoryId"
+                          onChange={this.changeHandler}
+                        >
+                          <option
+                          key = {Number(0)}
+                            value=""
+                            selected={this.state.categoryId === ""}
+                          >
+                            Choose
+                          </option>
+                          {this.state.categoryList.map(item => {
+                            return (
+                              <option
+                                value={item.id}
+                                selected={this.state.categoryId === item.id}
+                                key = {item.id}
+                              >
+                                {item.name}
+                              </option>
+                            );
+                          })}
+                        </CSelect>
+                       
+                        
+                      )}
+                    </CCol>
+                  </CFormGroup>
 
                   <CFormGroup row>
                     <CCol md="3">
@@ -270,9 +337,9 @@ data.append('ThumbnailImages', this.state.ThumbnailImages);
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
-                        name="Alias"
+                        name="alias"
                         placeholder="Alias"
-                        value={this.state.Alias}
+                        value={this.state.alias}
                         onChange={this.changeHandler}
                       />
                     </CCol>
@@ -286,7 +353,7 @@ data.append('ThumbnailImages', this.state.ThumbnailImages);
                       <CInputFile
                         type="file"
                         id="ThumbnailImages"
-                        name="ThumbnailImages"
+                        name="thumbnailImages"
                         multiple
                         custom
                         accept=".jpg, .jpeg, .png"

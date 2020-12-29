@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import {
   CButton,
   CCard,
@@ -20,75 +20,79 @@ import loginservice from "src/service/loginservice";
 
 class Login extends Component {
   constructor(props) {
-
     super(props);
 
     this.state = {
       email: "",
       password: "",
       rememberme: true,
-      history:""
+      history: ""
     };
   }
 
   changeHandler = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
-  
+
   submitHandler() {
-    const data ={
+    const data = {
       email: this.state.email,
       password: this.state.password,
       rememberme: this.state.rememberme
-    }
+    };
     console.log(data);
     // loginservice.login(this.state).then(res=>{Cookies.set('auth',res.data.resultObj); console.log(res)}).catch(err => console.log(err))
     //loginservice.login(this.state).then(res=>{ Cookies.set('Token',res.data.resultObj); console.log(res)}).catch(err => console.log(err))
-    loginservice.login(data)
-    .then(res=>{ 
-      if(res.data.isSuccessed)
-      {
-      Cookies.set('Token',res.data.resultObj);
-    Cookies.set('Role',res.data.message)
-    //const decoded = jwt(res.data.resultObj);    
-    //console.log(decoded.Role);
-    //this.redirect()
-    //this.props.history.push("/")
-    alert('Successed');
-    window.location.href="/";
+    loginservice
+      .login(data)
+      .then(res => {
+        if (res.data.isSuccessed) {
+          Cookies.set("Token", res.data.resultObj);
+          Cookies.set("Role", res.data.message);
+          if (res.data.message === "Admin") {
+            //const decoded = jwt(res.data.resultObj);
+            //console.log(decoded.Role);
+            //this.redirect()
+            //this.props.history.push("/")
+            alert("Đăng nhập thành công");
+            window.location.href = "/";
 
-    console.log(res)
-    console.log(res.status)
-      }
-      else
-      {
-        alert(res.data.message)
-      }
-  })
-  .catch(err => console.log(err))
-  };
+            console.log(res);
+            console.log(res.status);
+          }
+          else
+          {
+            alert("Tài khoản không có quyền quản trị viên");
+          }
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch(err => console.log(err));
+  }
 
   componentDidMount() {
-    if(this.checkRole())
-    this.props.history.push("/");
+    if (this.checkRole()) this.props.history.push("/");
   }
 
   checkRole = () => {
     const Authentication = "Admin";
     if (Cookies.get("Role") === null) return false;
+    if (Cookies.get("Token") === null) return false;
+    if (Cookies.get(".AspNetCore.Session") === null) return false;
     const Role = Cookies.get("Role");
     console.log(Authentication);
     console.log(Role);
     return Authentication === Role;
   };
 
-  render() {    
+  render() {
     const { email, password } = this.state;
     return (
       <div className="c-app c-default-layout flex-row align-items-center">
         <CContainer>
           <CRow className="justify-content-center">
-            <CCol md="8">
+            <CCol md="4">
               <CCardGroup>
                 <CCard className="p-4">
                   <CCardBody>
@@ -131,7 +135,7 @@ class Login extends Component {
                             color="primary"
                             className="px-4"
                             // type="submit"
-                            onClick={()=> this.submitHandler()}
+                            onClick={() => this.submitHandler()}
                           >
                             Login
                           </CButton>
@@ -145,7 +149,7 @@ class Login extends Component {
                     </CForm>
                   </CCardBody>
                 </CCard>
-                <CCard
+                {/* <CCard
                   className="text-white bg-primary py-5 d-md-down-none"
                   style={{ width: "44%" }}
                 >
@@ -169,7 +173,7 @@ class Login extends Component {
                       </Link>
                     </div>
                   </CCardBody>
-                </CCard>
+                </CCard> */}
               </CCardGroup>
             </CCol>
           </CRow>

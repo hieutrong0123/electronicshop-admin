@@ -38,58 +38,94 @@ import Axios from 'axios';
 import userservice from "src/service/userservice";
 
 class UserForm extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
 
     this.state = {
-      userName: '',
-      password: '',
-      confirmPassword: '',
-      email:'',
-    firstMiddleName: '',
-    lastName:'',
-    birthday: '',
-    gender: 0,
-    address: '',
-    phoneNumber: '',
-    userInRole:''
+      userName: "",
+      password: "",
+      confirmPassword: "",
+      email: "",
+      firstMiddleName: "",
+      lastName: "",
+      birthday: "2020-12-12",
+      gender: 0,
+      address: "",
+      phoneNumber: "",
+      userInRole: "User"
     };
     this.submitHandler = this.submitHandler.bind(this);
     this.cancel = this.cancel.bind(this);
   }
 
   changeHandler = e => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
-  cancel(){
-    this.props.history.push('/users')
-  }
-  
-  submitHandler() {
-    const data ={
-      userName: this.state.email,
-      password: this.state.password,
-      confirmPassword: this.state.confirmPassword,
-      firstMiddleName: this.state.firstMiddleName,
-      email: this.state.email,
-      lastName: this.state.lastName,
-      birthday: this.state.birthday,
-      gender: parseInt(this.state.gender),
-      address: this.state.address,
-      phoneNumber: this.state.phoneNumber,
-      userInRole: this.state.userInRole
+    if(e.target.name === 'gender')
+    {
+      this.setState({ gender: Number(e.target.value) });
+      console.log(this.state.gender);
+      console.log(typeof this.state.gender);
     }
-    console.log(data);
-    userservice.create(data)
-    .then(res => {
-      if (res.data.isSuccessed) {
-        alert('Successed');
-      } else {
-        alert(res.data.message);
-      }
-    })
-    .catch(err => console.log(err))
-    };
+    else if (e.target.name === 'status')
+    {
+      this.setState({ status: Number(e.target.value) });
+      console.log(this.state.status);
+      console.log(typeof this.state.status);
+    }
+    else
+    {
+      this.setState({ [e.target.name]: e.target.value });
+    }
+  };
+  cancel() {
+    this.props.history.push("/users");
+  }
+
+  submitHandler() {
+    if (!this.state.email) {
+      alert("Email error");
+    }
+    else if(!this.state.password){
+      alert("Please enter password with 8-10 characters with characters,numbers,1 upper case letter and special characters");
+    }
+    else if(this.state.password !== this.state.confirmPassword){
+      alert("Passwords do not match");
+    }
+    else if(!this.state.birthday){
+      alert("Birthday error");
+    }
+    else if(!this.state.gender){
+      alert("Gender error");
+    }
+    else if(!this.state.userInRole){
+      alert("User Role error");
+    }
+     else {
+      const data = {
+        userName: this.state.userName,
+        password: this.state.password,
+        confirmPassword: this.state.confirmPassword,
+        firstMiddleName: this.state.firstMiddleName,
+        email: this.state.email,
+        lastName: this.state.lastName,
+        birthday: this.state.birthday,
+        gender: this.state.gender,
+        address: this.state.address,
+        phoneNumber: this.state.phoneNumber,
+        userInRole: this.state.userInRole
+      };
+      console.log(data);
+      userservice
+        .create(data)
+        .then(res => {
+          if (res.data.isSuccessed) {
+            alert(res.data.resultObj);
+          } else {
+            alert(res.data.message);
+          }
+        })
+        .catch(err => console.log(err));
+    }
+  }
   render() {
     return (
       <>
@@ -105,6 +141,20 @@ class UserForm extends Component {
                   encType="multipart/form-data"
                   className="form-horizontal"
                 >
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="text-input">Username</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        name="userName"
+                        placeholder="Username"
+                        value={this.state.userName}
+                        onChange={this.changeHandler}
+                      />
+                    </CCol>
+                  </CFormGroup>
+
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="email-input">Email</CLabel>
@@ -123,6 +173,7 @@ class UserForm extends Component {
                       </CFormText>
                     </CCol>
                   </CFormGroup>
+
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="password-input">Password</CLabel>
@@ -137,7 +188,7 @@ class UserForm extends Component {
                         onChange={this.changeHandler}
                       />
                       <CFormText className="help-block">
-                        Please enter password
+                      Please enter password with 8-10 characters with characters,numbers,1 upper case letter and special characters
                       </CFormText>
                     </CCol>
                   </CFormGroup>
@@ -150,7 +201,7 @@ class UserForm extends Component {
                       <CInput
                         type="password"
                         name="confirmPassword"
-                        placeholder="Password"
+                        placeholder="Confirm Password"
                         autoComplete="new-password"
                         value={this.state.confirmPassword}
                         onChange={this.changeHandler}
@@ -215,7 +266,8 @@ class UserForm extends Component {
                           id="Male"
                           name="gender"
                           onChange={this.changeHandler}
-                          value={0}
+                          value={Number(0)}
+                          checked={this.state.gender === 0}
                         />
                         <CLabel variant="custom-checkbox" htmlFor="Male">
                           Male
@@ -227,7 +279,8 @@ class UserForm extends Component {
                           id="Female"
                           name="gender"
                           onChange={this.changeHandler}
-                          value={1}
+                          value={Number(1)}
+                          checked={this.state.gender === 1}
                         />
                         <CLabel variant="custom-checkbox" htmlFor="Female">
                           Female
@@ -263,7 +316,7 @@ class UserForm extends Component {
                       />
                     </CCol>
                   </CFormGroup>
-                  
+
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel>User Role</CLabel>
@@ -276,11 +329,9 @@ class UserForm extends Component {
                           name="userInRole"
                           onChange={this.changeHandler}
                           value="Admin"
+                          checked={this.state.userInRole === "Admin"}
                         />
-                        <CLabel
-                          variant="custom-checkbox"
-                          htmlFor="Admin"
-                        >
+                        <CLabel variant="custom-checkbox" htmlFor="Admin">
                           Admin
                         </CLabel>
                       </CFormGroup>
@@ -291,11 +342,9 @@ class UserForm extends Component {
                           name="userInRole"
                           onChange={this.changeHandler}
                           value="Employee"
+                          checked={this.state.userInRole === "Employee"}
                         />
-                        <CLabel
-                          variant="custom-checkbox"
-                          htmlFor="Employee"
-                        >
+                        <CLabel variant="custom-checkbox" htmlFor="Employee">
                           Employee
                         </CLabel>
                       </CFormGroup>
@@ -306,11 +355,9 @@ class UserForm extends Component {
                           name="userInRole"
                           onChange={this.changeHandler}
                           value="User"
+                          checked={this.state.userInRole === "User"}
                         />
-                        <CLabel
-                          variant="custom-checkbox"
-                          htmlFor="User"
-                        >
+                        <CLabel variant="custom-checkbox" htmlFor="User">
                           User
                         </CLabel>
                       </CFormGroup>
@@ -327,7 +374,9 @@ class UserForm extends Component {
                   <CIcon name="cil-scrubber" /> Submit
                 </CButton>
                 <CButton></CButton>
-                <CButton color="secondary" onClick={() => this.cancel()}>Cancel</CButton>
+                <CButton color="secondary" onClick={() => this.cancel()}>
+                  Cancel
+                </CButton>
               </CCardFooter>
             </CCard>
           </CCol>

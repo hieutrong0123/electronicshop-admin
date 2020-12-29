@@ -33,6 +33,7 @@ import {
   CSwitch
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import { Number } from "core-js";
 
 class UserEdit extends Component {
   state = {
@@ -53,13 +54,6 @@ class UserEdit extends Component {
   componentDidMount() {
     this.loadData();
   }
-  formatDate(date) {
-    var b = date.split(/\D/);
-    return b
-      .reverse()
-      .join("-")
-      .split("00-00-00-")[1];
-  }
 
   loadData() {
     userservice
@@ -71,11 +65,11 @@ class UserEdit extends Component {
               id: res.data.resultObj.id,
               userName: res.data.resultObj.userName,
               email: res.data.resultObj.email,
-              birthday: this.formatDate(res.data.resultObj.birthday),
+              birthday: res.data.resultObj.birthday.substring(0, 10),
               firstMiddleName: res.data.resultObj.firstMiddleName,
               lastName: res.data.resultObj.lastName,
               phoneNumber: res.data.resultObj.phoneNumber,
-              gender: String(res.data.resultObj.gender),
+              gender: res.data.resultObj.gender,
               address: res.data.resultObj.address,
               status: res.data.resultObj.status,
               userInRole: res.data.resultObj.userInRole,
@@ -83,6 +77,7 @@ class UserEdit extends Component {
             });
           }
           console.log(res);
+          console.log(this.state);
         } else {
           alert(res.data.message);
         }
@@ -91,8 +86,22 @@ class UserEdit extends Component {
   }
 
   changeHandler = e => {
-    this.setState({ [e.target.name]: e.target.value });
-    console.log(this.state.gender);
+    if(e.target.name === 'gender')
+    {
+      this.setState({ gender: Number(e.target.value) });
+      console.log(this.state.gender);
+      console.log(typeof this.state.gender);
+    }
+    else if (e.target.name === 'status')
+    {
+      this.setState({ status: Number(e.target.value) });
+      console.log(this.state.status);
+      console.log(typeof this.state.status);
+    }
+    else
+    {
+      this.setState({ [e.target.name]: e.target.value });
+    }
   };
   cancel() {
     this.props.history.push(`/users/${this.state.id}`);
@@ -107,7 +116,7 @@ class UserEdit extends Component {
       .updatebyId(data)
       .then(res => {
         if (res.data.isSuccessed) {
-          alert("Successed");
+          alert(res.data.resultObj);
         } else {
           alert(res.data.message);
         }
@@ -244,8 +253,8 @@ class UserEdit extends Component {
                         id="Male"
                         name="gender"
                         onChange={this.changeHandler}
-                        value = "0"
-                        checked={this.state.gender === "0"}
+                        value = {Number(0)}
+                        checked={this.state.gender === 0}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Male">
                         Male
@@ -257,8 +266,8 @@ class UserEdit extends Component {
                         id="Female"
                         name="gender"
                         onChange={this.changeHandler}
-                        value="1"
-                        checked={this.state.gender === "1"}
+                        value={Number(1)}
+                        checked={this.state.gender === 1}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Female">
                         Female
@@ -292,8 +301,8 @@ class UserEdit extends Component {
                         id="Active"
                         name="status"
                         onChange={this.changeHandler}
-                        value="0"
-                        checked={this.state.status === "0"}
+                        value={Number(0)}
+                        checked={this.state.status === 0}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Active">
                         Active
@@ -305,8 +314,8 @@ class UserEdit extends Component {
                         id="Disable"
                         name="status"
                         onChange={this.changeHandler}
-                        value="1"
-                        checked={this.state.status === "1"}
+                        value={Number(1)}
+                        checked={this.state.status === 1}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Disable">
                         Disable
@@ -318,8 +327,8 @@ class UserEdit extends Component {
                         id="Delete"
                         name="status"
                         onChange={this.changeHandler}
-                        value="2"
-                        checked={this.state.status === "2"}
+                        value={Number(2)}
+                        checked={this.state.status === 2}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Delete">
                         Delete

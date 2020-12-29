@@ -23,6 +23,8 @@ class App extends Component {
   checkRole = () => {
     const Authentication = "Admin";
     if (Cookies.get("Role") === null) return false;
+    if (Cookies.get("Token") === null) return false;
+    if (Cookies.get(".AspNetCore.Session") === null) return false;
     const Role = Cookies.get("Role");
     console.log(Authentication);
     console.log(Role);
