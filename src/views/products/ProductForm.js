@@ -35,7 +35,6 @@ import CIcon from "@coreui/icons-react";
 import productservice_formdata from "src/service/productservice_formdata";
 import categoryservice_json from "src/service/categoryservice_json";
 
-var fs = require("fs");
 
 class ProductForm extends Component {
   constructor(props) {
@@ -152,7 +151,7 @@ class ProductForm extends Component {
       data.append("Description", this.state.description);
       data.append("GoodsReceipt", this.state.goodsReceipt);
       data.append("Inventory", this.state.inventory);
-      data.append("Status", this.state.Status);
+      data.append("Status", this.state.status);
       data.append("CategoryId", this.state.categoryId);
       data.append("Alias", this.state.alias);
       data.append("ThumbnailImages", this.state.thumbnailImages);
@@ -293,26 +292,26 @@ class ProductForm extends Component {
                       <CFormGroup variant="custom-radio" inline>
                         <CInputRadio
                           custom
-                          id="Status"
+                          id="Active"
                           name="status"
                           onChange={this.changeHandler}
                           value={Number(0)}
                           checked={this.state.status === 0}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Status">
+                        <CLabel variant="custom-checkbox" htmlFor="Active">
                           Active
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-radio" inline>
                         <CInputRadio
                           custom
-                          id="Status"
+                          id="Delete"
                           name="status"
                           onChange={this.changeHandler}
                           value={Number(1)}
                           checked={this.state.status === 1}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Status">
+                        <CLabel variant="custom-checkbox" htmlFor="Delete">
                           Delete
                         </CLabel>
                       </CFormGroup>

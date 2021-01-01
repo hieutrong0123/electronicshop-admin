@@ -33,7 +33,6 @@ import {
   CImg
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import productservice_formdata from "src/service/productservice_formdata";
 import productservice_json from "src/service/productservice_json";
 import categoryservice_json from "src/service/categoryservice_json";
 
@@ -113,16 +112,16 @@ class ProductEdit extends Component {
   submitHandler() {
     const data = this.state;
     console.log(data);
-    productservice_json
-      .updatebyId(data)
-      .then(res => {
-        if (res.data.isSuccessed) {
-          alert(res.data.resultObj);
-        } else {
-          alert(res.data.message);
-        }
-      })
-      .catch(err => console.log(err));
+    // productservice_json
+    //   .updatebyId(data)
+    //   .then(res => {
+    //     if (res.data.isSuccessed) {
+    //       alert(res.data.resultObj);
+    //     } else {
+    //       alert(res.data.message);
+    //     }
+    //   })
+    //   .catch(err => console.log(err));
   }
 
   loadData() {
