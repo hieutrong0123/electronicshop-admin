@@ -29,37 +29,62 @@ import {
   CLabel,
   CSelect,
   CRow,
-  CSwitch
+  CSwitch,
+  CImg
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import productservice_formdata from "src/service/productservice_formdata";
+import productservice_json from "src/service/productservice_json";
 import categoryservice_json from "src/service/categoryservice_json";
 
-var fs = require("fs");
-
-class ProductForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      name: "",
-      price: "",
-      specifications: "",
-      description: "",
-      goodsReceipt: "",
-      inventory: "",
-      status: 0,
-      categoryId: "",
-      alias: "",
-      thumbnailImages: [],
-      categoryList: null
-    };
-    this.submitHandler = this.submitHandler.bind(this);
-    this.cancel = this.cancel.bind(this);
-  }
+class ProductDetails extends Component {
+  //state = { list: null }
+  state = {
+    id: "",
+    name: "",
+    price: "",
+    specifications: "",
+    description: "",
+    goodsReceipt: "",
+    inventory: "",
+    status: "",
+    categoryId: "",
+    alias: "",
+    createdDate: "",
+    modifiedDate: null,
+    createdBy: "",
+    modifiedBy: null,
+    productPhotos: [],
+    loading: true
+  };
 
   componentDidMount() {
     this.loadData();
+  }
+
+  changeHandler = e => {
+    //Do Nothing
+  };
+
+  cancel() {
+    this.props.history.push("/products");
+  }
+
+  edit() {
+    this.props.history.push(`/products/edit/${this.state.id}`);
+  }
+
+  delete() {
+    productservice_json
+      .deletebyId(this.state.id)
+      .then(res => {
+        if (res.data.isSuccessed) {
+          alert(res.data.resultObj);
+          window.location.reload();
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch(err => console.log(err));
   }
 
   loadData() {
@@ -74,110 +99,58 @@ class ProductForm extends Component {
         }
       })
       .catch(err => console.log(err));
-  }
 
-  changeHandler = e => {
-    if (e.target.name === "thumbnailImages") {
-      let arr = e.target.files;
-      console.log(arr);
-      this.setState({ thumbnailImages: e.target.files[0] }, () =>
-        console.log(this.state.thumbnailImages)
-      );
-    } else if (e.target.name === "status") {
-      this.setState({ status: Number(e.target.value) });
-      console.log(this.state.status);
-      console.log(typeof this.state.status);
-    } else if (e.target.name === "name") {
-      this.setState({ name: e.target.value });
-      this.setState({ alias: this.to_slug(e.target.value) });
-      console.log(this.state.alias);
-    } else {
-      this.setState({ [e.target.name]: e.target.value });
-      console.log(e.target.value);
-    }
-  };
-  to_slug(str) {
-    // Chuyển hết sang chữ thường
-    str = str.toLowerCase();
-    // xóa dấu
-    str = str.replace(/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/g, "a");
-    str = str.replace(/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/g, "e");
-    str = str.replace(/(ì|í|ị|ỉ|ĩ)/g, "i");
-    str = str.replace(/(ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ)/g, "o");
-    str = str.replace(/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/g, "u");
-    str = str.replace(/(ỳ|ý|ỵ|ỷ|ỹ)/g, "y");
-    str = str.replace(/(đ)/g, "d");
-    // Xóa ký tự đặc biệt
-    str = str.replace(/([^0-9a-z-\s])/g, "");
-    // Xóa khoảng trắng thay bằng ký tự -
-    str = str.replace(/(\s+)/g, "-");
-    // xóa phần dự - ở đầu
-    str = str.replace(/^-+/g, "");
-    // xóa phần dư - ở cuối
-    str = str.replace(/-+$/g, "");
-    // return
-    return str;
-  };
-
-
-  cancel() {
-    this.props.history.push("/products");
-  }
-
-  async submitHandler() {
-    if (!this.state.name) {
-      alert("Name error");
-    } else if (!this.state.price) {
-      alert("Price error");
-    } else if (!this.state.specifications) {
-      alert("Specifications error");
-    } else if (!this.state.goodsReceipt) {
-      alert("GoodsReceipt error");
-    } else if (!this.state.inventory) {
-      alert("Inventory error");
-    } else if (!this.state.description) {
-      alert("Description error");
-    } else if (!this.state.categoryId) {
-      alert("CategoryId error");
-    } else if (!this.state.alias) {
-      alert("Alias error");
-    } else if (!this.state.thumbnailImages) {
-      alert("ThumbnailImages error");
-    } else {
-      var FormData = require("form-data");
-      var data = new FormData();
-      data.append("Name", this.state.name);
-      data.append("Price", this.state.price);
-      data.append("Specifications", this.state.specifications);
-      data.append("Description", this.state.description);
-      data.append("GoodsReceipt", this.state.goodsReceipt);
-      data.append("Inventory", this.state.inventory);
-      data.append("Status", this.state.Status);
-      data.append("CategoryId", this.state.categoryId);
-      data.append("Alias", this.state.alias);
-      data.append("ThumbnailImages", this.state.thumbnailImages);
-      console.log(data);
-
-      productservice_formdata
-        .create(data)
-        .then(res => {
-          if (res.data.isSuccessed) {
-            alert(res.data.resultObj);
-          } else {
-            alert(res.data.message);
+    productservice_json
+      .getbyId(this.props.match.params.id)
+      .then(res => {
+        if (res.data.isSuccessed) {
+          if (res.data.resultObj !== null) {
+            if (res.data.resultObj.modifiedDate !== null) {
+              this.setState({
+                modifiedDate: res.data.resultObj.modifiedDate.substring(0, 10)
+              });
+            } else {
+              this.setState({
+                modifiedDate: res.data.resultObj.modifiedDate
+              });
+            }
+            this.setState({
+              id: res.data.resultObj.id,
+              name: res.data.resultObj.name,
+              price: res.data.resultObj.price,
+              specifications: res.data.resultObj.specifications,
+              description: res.data.resultObj.description,
+              goodsReceipt: res.data.resultObj.goodsReceipt,
+              inventory: res.data.resultObj.inventory,
+              status: res.data.resultObj.status,
+              categoryId: res.data.resultObj.categoryId,
+              alias: res.data.resultObj.alias,
+              createdDate: res.data.resultObj.createdDate.substring(0, 10),
+              createdBy: res.data.resultObj.createdBy,
+              modifiedBy: res.data.resultObj.modifiedBy,
+              productPhotos: res.data.resultObj.productPhotos,
+              loading: false
+            });
           }
-        })
-        .catch(err => console.log(err));
-    }
+          console.log(res);
+          console.log(this.state);
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch(err => console.log(err));
   }
+
   render() {
-    return (
+    return this.state.loading === true ? (
+      <h1>Loading</h1>
+    ) : (
       <>
         <CRow>
           <CCol xs="12" md="10">
             <CCard>
               <CCardHeader>
-                Products Create
+                Products Details
                 <small></small>
               </CCardHeader>
               <CCardBody>
@@ -187,6 +160,20 @@ class ProductForm extends Component {
                 >
                   <CFormGroup row>
                     <CCol md="3">
+                      <CLabel htmlFor="text-input">Id</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        name="id"
+                        placeholder="Id"
+                        value={this.state.id}
+                        onChange={this.changeHandler}
+                        disabled
+                      />
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="3">
                       <CLabel htmlFor="text-input">Name</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
@@ -194,20 +181,6 @@ class ProductForm extends Component {
                         name="name"
                         placeholder="Name"
                         value={this.state.name}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="text-input">Alias</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInput
-                        name="alias"
-                        placeholder="Alias"
-                        value={this.state.alias}
                         onChange={this.changeHandler}
                       />
                     </CCol>
@@ -293,26 +266,26 @@ class ProductForm extends Component {
                       <CFormGroup variant="custom-radio" inline>
                         <CInputRadio
                           custom
-                          id="Status"
+                          id="Active"
                           name="status"
                           onChange={this.changeHandler}
                           value={Number(0)}
                           checked={this.state.status === 0}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Status">
+                        <CLabel variant="custom-checkbox" htmlFor="Active">
                           Active
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-radio" inline>
                         <CInputRadio
                           custom
-                          id="Status"
+                          id="Delete"
                           name="status"
                           onChange={this.changeHandler}
                           value={Number(1)}
                           checked={this.state.status === 1}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Status">
+                        <CLabel variant="custom-checkbox" htmlFor="Delete">
                           Delete
                         </CLabel>
                       </CFormGroup>
@@ -330,6 +303,7 @@ class ProductForm extends Component {
                         <CSelect
                           name="categoryId"
                           onChange={this.changeHandler}
+                          disabled
                         >
                           <option
                             key={Number(0)}
@@ -356,6 +330,82 @@ class ProductForm extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
+                      <CLabel htmlFor="text-input">Alias</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        name="alias"
+                        placeholder="Alias"
+                        value={this.state.alias}
+                        onChange={this.changeHandler}
+                      />
+                    </CCol>
+                  </CFormGroup>
+
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="date-input">CreatedDate</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        type="date"
+                        name="createdDate"
+                        placeholder="CreatedDate"
+                        value={this.state.createdDate}
+                        onChange={this.changeHandler}
+                      />
+                    </CCol>
+                  </CFormGroup>
+
+                  {this.state.modifiedDate !== null ? (
+                    <CFormGroup row>
+                      <CCol md="3">
+                        <CLabel htmlFor="date-input">ModifiedDate</CLabel>
+                      </CCol>
+                      <CCol xs="12" md="9">
+                        <CInput
+                          type="date"
+                          name="modifiedDate"
+                          placeholder="ModifiedDate"
+                          value={this.state.modifiedDate}
+                          onChange={this.changeHandler}
+                        />
+                      </CCol>
+                    </CFormGroup>
+                  ) : null}
+
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="text-input">CreatedBy</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        name="createdBy"
+                        placeholder="CreatedBy"
+                        value={this.state.createdBy}
+                        onChange={this.changeHandler}
+                      />
+                    </CCol>
+                  </CFormGroup>
+
+                  {this.state.modifiedBy !== null ? (
+                    <CFormGroup row>
+                      <CCol md="3">
+                        <CLabel htmlFor="text-input">ModifiedBy</CLabel>
+                      </CCol>
+                      <CCol xs="12" md="9">
+                        <CInput
+                          name="modifiedBy"
+                          placeholder="ModifiedBy"
+                          value={this.state.modifiedBy}
+                          onChange={this.changeHandler}
+                        />
+                      </CCol>
+                    </CFormGroup>
+                  ) : null}
+
+                  {/* <CFormGroup row>
+                    <CCol md="3">
                       <CLabel>ThumbnailImages</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
@@ -372,22 +422,39 @@ class ProductForm extends Component {
                         ThumbnailImages
                       </CLabel>
                     </CCol>
+                  </CFormGroup> */}
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="text-input">ProductPhotos</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9" align="center">                          
+                    {this.state.productPhotos.map(item => {
+                      return (
+                            <CImg src={item.url} thumbnail width="250px" />
+                            );
+                          })}
+                          </CCol>
                   </CFormGroup>
                 </CForm>
               </CCardBody>
               <CCardFooter>
-                <CButton
-                  size="sm"
-                  color="primary"
-                  onClick={() => this.submitHandler()}
-                >
-                  <CIcon name="cil-scrubber" /> Submit
-                </CButton>
-                <CButton></CButton>
-                <CButton color="secondary" onClick={() => this.cancel()}>
-                  Cancel
-                </CButton>
-              </CCardFooter>
+              <CButton size="" color="primary" onClick={() => this.edit()}>
+                <CIcon name="cil-scrubber" /> Edit
+              </CButton>
+              <CButton></CButton>
+              <CButton
+                type="reset"
+                size=""
+                color="danger"
+                onClick={() => this.delete()}
+              >
+                <CIcon name="cil-ban" /> Delete
+              </CButton>
+              <CButton></CButton>
+              <CButton color="dark" size="" onClick={() => this.cancel()}>
+              <CIcon name="cil-home" />Back
+              </CButton>
+            </CCardFooter>
             </CCard>
           </CCol>
         </CRow>
@@ -396,4 +463,4 @@ class ProductForm extends Component {
   }
 }
 
-export default ProductForm;
+export default ProductDetails;

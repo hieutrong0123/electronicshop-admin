@@ -16,7 +16,7 @@ import {
   CRow
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import loginservice from "src/service/loginservice";
+import loginservice_json from "src/service/loginservice_json";
 
 class Login extends Component {
   constructor(props) {
@@ -43,7 +43,7 @@ class Login extends Component {
     console.log(data);
     // loginservice.login(this.state).then(res=>{Cookies.set('auth',res.data.resultObj); console.log(res)}).catch(err => console.log(err))
     //loginservice.login(this.state).then(res=>{ Cookies.set('Token',res.data.resultObj); console.log(res)}).catch(err => console.log(err))
-    loginservice
+    loginservice_json
       .login(data)
       .then(res => {
         if (res.data.isSuccessed) {
@@ -54,7 +54,7 @@ class Login extends Component {
             //console.log(decoded.Role);
             //this.redirect()
             //this.props.history.push("/")
-            alert("Đăng nhập thành công");
+            // alert("Đăng nhập thành công");
             window.location.href = "/";
 
             console.log(res);

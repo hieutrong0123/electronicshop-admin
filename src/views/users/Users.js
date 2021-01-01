@@ -15,8 +15,7 @@ import {
 
 import CIcon from "@coreui/icons-react";
 
-// import usersData from './UsersData'
-import userservice from "src/service/userservice";
+import userservice_json from "src/service/userservice_json";
 
 class UserPage extends Component {
   state = { list: null };
@@ -25,9 +24,16 @@ class UserPage extends Component {
     this.loadData();
   }
   loadData() {
-    userservice
+      userservice_json
       .getAll()
-      .then(res => this.setState({ list: res.data.resultObj }));
+      .then(res => {
+        if (res.data.isSuccessed) {
+          this.setState({ list: res.data.resultObj });
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch(err => console.log(err));
   }
 
   details=(id)=>{

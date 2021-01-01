@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import userservice from "src/service/userservice";
 import {
   CButton,
   CCard,
@@ -34,6 +33,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { Number } from "core-js";
+import userservice_json from "src/service/userservice_json";
 
 class UserEdit extends Component {
   state = {
@@ -56,7 +56,7 @@ class UserEdit extends Component {
   }
 
   loadData() {
-    userservice
+    userservice_json
       .getbyId(this.props.match.params.id)
       .then(res => {
         if (res.data.isSuccessed) {
@@ -112,7 +112,7 @@ class UserEdit extends Component {
     // data.gender = Number(data.gender)
 
     console.log(data);
-    userservice
+    userservice_json
       .updatebyId(data)
       .then(res => {
         if (res.data.isSuccessed) {

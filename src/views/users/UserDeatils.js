@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import userservice from "src/service/userservice";
 import {
   CButton,
   CCard,
@@ -33,6 +32,7 @@ import {
   CSwitch
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import userservice_json from "src/service/userservice_json";
 
 class UserDetails extends Component {
   //state = { list: null }
@@ -68,7 +68,7 @@ class UserDetails extends Component {
   }
 
   delete() {
-    userservice
+    userservice_json
       .deletebyId(this.state.id)
       .then(res => {
         if (res.data.isSuccessed) {
@@ -82,7 +82,7 @@ class UserDetails extends Component {
   }
 
   disable() {
-    userservice
+    userservice_json
       .disablebyId(this.state.id)
       .then(res => {
         if (res.data.isSuccessed) {
@@ -96,7 +96,7 @@ class UserDetails extends Component {
   }
 
   loadData() {
-    userservice
+    userservice_json
       .getbyId(this.props.match.params.id)
       .then(res => {
         if (res.data.isSuccessed) {
@@ -387,13 +387,13 @@ class UserDetails extends Component {
               </CForm>
             </CCardBody>
             <CCardFooter>
-              <CButton size="sm" color="primary" onClick={() => this.edit()}>
+              <CButton size="" color="primary" onClick={() => this.edit()}>
                 <CIcon name="cil-scrubber" /> Edit
               </CButton>
               <CButton></CButton>
               <CButton
                 type="reset"
-                size="sm"
+                size=""
                 color="danger"
                 onClick={() => this.delete()}
               >
@@ -402,15 +402,15 @@ class UserDetails extends Component {
               <CButton></CButton>
               <CButton
                 type="reset"
-                size="sm"
-                color="danger"
+                size=""
+                color="warning"
                 onClick={() => this.disable()}
               >
-                <CIcon name="cil-ban" /> Disable
+                <CIcon name="cil-lock-locked" /> Disable
               </CButton>
               <CButton></CButton>
-              <CButton color="secondary" onClick={() => this.cancel()}>
-                Cancel
+              <CButton color="dark" size="" onClick={() => this.cancel()}>
+              <CIcon name="cil-home" />Back
               </CButton>
             </CCardFooter>
           </CCard>
