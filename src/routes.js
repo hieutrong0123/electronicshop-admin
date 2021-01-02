@@ -33,16 +33,22 @@ import Modals from './views/notifications/modals/Modals';
 import Colors from './views/theme/colors/Colors';
 import Typography from './views/theme/typography/Typography';
 import Widgets from './views/widgets/Widgets';
+
+//Users
 import Users from './views/users/Users';
 // import User from './views/users/User';
 import UserForms from './views/users/UserForm';
 import UserDetails from './views/users/UserDeatils';
 import UserEdit from './views/users/UserEdit';
 
+//Products
 import Products from './views/products/Products';
 import ProductForm from './views/products/ProductForm';
 import ProductDetails from "./views/products/ProductDeatils";
 import ProductEdit from "./views/products/ProductEdit";
+
+//Categories
+import Categories from './views/categories/Categories';
 
 const routes = [
   // { path: '/', exact: true, name: 'Home' },
@@ -84,16 +90,22 @@ const routes = [
   { path: '/notifications/modals', exact : true, name: 'Modals', component: Modals },
   { path: '/notifications/toaster', exact : true, name: 'Toaster', component: Toaster },
   { path: '/widgets', exact : true, name: 'Widgets', component: Widgets },
+
+  //Users
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/create', exact: true, name: 'User Create', component: UserForms },
   //{ path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/users/:id', exact: true, name: 'User Details', component: UserDetails },
   { path: '/users/edit/:id', exact: true, name: 'User Edit', component: UserEdit },
 
+  //Product
   { path: '/products', exact: true,  name: 'Products', component: Products },
   { path: '/products/create', exact: true, name: 'Product Create', component: ProductForm },
   { path: '/products/:id', exact: true, name: 'Product Details', component: ProductDetails },
   { path: '/products/edit/:id', exact: true, name: 'Product Edit', component: ProductEdit },
+
+  //Categories
+  { path: '/Categories', exact: true,  name: 'Categories', component: Categories },
 ];
 
 export default routes;

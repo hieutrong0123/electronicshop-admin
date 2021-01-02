@@ -1,16 +1,8 @@
-import React, { useState, useEffect, Component } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import React, { Component } from "react";
 import {
-  CBadge,
   CCard,
-  CCardBody,
-  CCardHeader,
-  CCol,
   CDataTable,
-  CRow,
-  CPagination,
-  CButton,
-  CCollapse
+  CButton
 } from "@coreui/react";
 
 import CIcon from "@coreui/icons-react";
