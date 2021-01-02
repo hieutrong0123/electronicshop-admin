@@ -110,20 +110,30 @@ class ProductEdit extends Component {
   }
 
   submitHandler() {
-    const data = this.state;
+    const data = {
+      id: this.state.id,
+      name: this.state.name,
+      price: this.state.price,
+      specifications: this.state.specifications,
+      description: this.state.description,
+      goodsReceipt: this.state.goodsReceipt,
+      inventory: this.state.inventory,
+      status: this.state.status,
+      categoryId: this.state.categoryId,
+      alias: this.state.alias
+    };
     console.log(data);
-    // productservice_json
-    //   .updatebyId(data)
-    //   .then(res => {
-    //     if (res.data.isSuccessed) {
-    //       alert(res.data.resultObj);
-    //     } else {
-    //       alert(res.data.message);
-    //     }
-    //   })
-    //   .catch(err => console.log(err));
+    productservice_json
+      .updatebyId(data)
+      .then(res => {
+        if (res.data.isSuccessed) {
+          alert(res.data.resultObj);
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch(err => console.log(err));
   }
-
   loadData() {
     categoryservice_json
       .getAll()

@@ -1,4 +1,4 @@
-import api from "./api_formdata";
+import api from "./api_json";
 
 const getAll = () => api.get(`${api.url.productlink}`);
 const getbyId = id =>api.get(`${api.url.productlink}/${id}`);

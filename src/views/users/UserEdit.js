@@ -108,9 +108,17 @@ class UserEdit extends Component {
   }
 
   submitHandler() {
-    const data = this.state;
-    // data.gender = Number(data.gender)
-
+    const data = {
+      id: this.state.id,
+      firstMiddleName: this.state.firstMiddleName,
+      lastName: this.state.lastName,
+      birthday: this.state.birthday,
+      gender: this.state.gender,
+      phoneNumber: this.state.phoneNumber,
+      address: this.state.address,
+      status: this.state.status,
+      userInRole: this.state.userInRole
+    };
     console.log(data);
     userservice_json
       .updatebyId(data)
