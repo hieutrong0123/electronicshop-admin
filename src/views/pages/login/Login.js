@@ -16,6 +16,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import loginservice_json from "src/service/loginservice_json";
+import jwt_decode from "jwt-decode";
 
 class Login extends Component {
   constructor(props) {
@@ -42,18 +43,47 @@ class Login extends Component {
     console.log(data);
     // loginservice.login(this.state).then(res=>{Cookies.set('auth',res.data.resultObj); console.log(res)}).catch(err => console.log(err))
     //loginservice.login(this.state).then(res=>{ Cookies.set('Token',res.data.resultObj); console.log(res)}).catch(err => console.log(err))
+    // loginservice_json
+    //   .login(data)
+    //   .then(res => {
+    //     if (res.data.isSuccessed) {
+    //       Cookies.set("Token", res.data.resultObj);
+    //       Cookies.set("Role", res.data.message);
+    //       if (res.data.message === "Admin") {
+    //         window.location.href = "/";
+
+    //         console.log(res);
+    //         console.log(res.status);
+    //       }
+    //       else
+    //       {
+    //         alert("Tài khoản không có quyền quản trị viên");
+    //       }
+    //     } else {
+    //       alert(res.data.message);
+    //     }
+    //   })
+    //   .catch(err => console.log(err));
     loginservice_json
       .login(data)
       .then(res => {
         if (res.data.isSuccessed) {
+
           Cookies.set("Token", res.data.resultObj);
-          Cookies.set("Role", res.data.message);
+          // Cookies.set("Role", res.data.message);
+          let tokenDecode = jwt_decode(res.data.resultObj);
+          let Role = "";
+          Object.keys(tokenDecode).forEach(function (key){
+            let res = key.split("/");
+            if (res.length > 1){
+              if(res[res.length -1] === 'role'){
+                Role = tokenDecode[key]; 
+              }
+            }
+          });
+          console.log(Role);
+
           if (res.data.message === "Admin") {
-            //const decoded = jwt(res.data.resultObj);
-            //console.log(decoded.Role);
-            //this.redirect()
-            //this.props.history.push("/")
-            // alert("Đăng nhập thành công");
             window.location.href = "/";
 
             console.log(res);
@@ -74,15 +104,42 @@ class Login extends Component {
     if (this.checkRole()) this.props.history.push("/");
   }
 
+  // checkRole = () => {
+  //   const Authentication = "Admin";
+  //   if (Cookies.get("Role") === null) return false;
+  //   if (Cookies.get("Token") === null) return false;
+  //   if (Cookies.get(".AspNetCore.Session") === null) return false;
+  //   const Role = Cookies.get("Role");
+  //   console.log(Authentication);
+  //   console.log(Role);
+  //   return Authentication === Role;
+  // };
+  tokenDecode = () => {
+    let Role = null;
+    const token = Cookies.get("Token");
+    if (token !== null && token !== undefined) {
+      let tokenDecode = jwt_decode(token);
+      Object.keys(tokenDecode).forEach(function(key) {
+        let res = key.split("/");
+        if (res.length > 1) {
+          if (res[res.length - 1] === "role") {
+            Role = tokenDecode[key];
+          }
+        }
+      });
+    }
+    console.log(Role);
+    return Role;
+  };
+
   checkRole = () => {
     const Authentication = "Admin";
-    if (Cookies.get("Role") === null) return false;
+    const CheckRole = this.tokenDecode();
     if (Cookies.get("Token") === null) return false;
     if (Cookies.get(".AspNetCore.Session") === null) return false;
-    const Role = Cookies.get("Role");
     console.log(Authentication);
-    console.log(Role);
-    return Authentication === Role;
+    console.log(CheckRole);
+    return Authentication === CheckRole;
   };
 
   render() {
