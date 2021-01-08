@@ -1,9 +1,5 @@
 import React, { Component } from "react";
-import {
-  CCard,
-  CDataTable,
-  CButton
-} from "@coreui/react";
+import { CCard, CDataTable, CButton } from "@coreui/react";
 
 import CIcon from "@coreui/icons-react";
 
@@ -20,8 +16,9 @@ class Categories extends Component {
       .getAll()
       .then(res => {
         if (res.data.isSuccessed) {
-          this.setState({ list: res.data.resultObj});
-          console.log(res)
+          this.setState({ list: res.data.resultObj });
+          console.log(res);
+          console.log(this.state.list);
         } else {
           alert(res.data.message);
         }
@@ -38,12 +35,11 @@ class Categories extends Component {
       { key: "id", _classes: "font-weight-bold" },
       "name",
       "alias",
-      "productTypeId",
+      // "productTypeId",
+      { key: "productType", label: "Product Type" },
       "createdDate",
-      "createdBy",
-      // { key: "productPhotos[0].url", label: "ProductPhotos" },
-      { key: "link", label: "Action" }
-      // "link"
+      // "createdBy",
+      { key: "link", label: "Action" },
     ];
     return this.state.list === null ? null : (
       <CCard>
@@ -70,8 +66,25 @@ class Categories extends Component {
                   </CButton>
                 </td>
               );
-            }
-          }}
+            },
+            productType: item =>{
+              return(
+                <td>
+                  {item.productType.name}
+                  </td>
+
+              );
+            },
+            createdDate: item =>{
+              return(
+                <td>
+                  {item.createdDate.substring(0, 10)}
+                  </td>
+
+              );
+            },
+          }
+        }
         />
       </CCard>
     );

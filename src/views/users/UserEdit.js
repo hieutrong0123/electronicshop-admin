@@ -123,7 +123,7 @@ class UserEdit extends Component {
         <CCol xs="12" md="10">
           <CCard>
             <CCardHeader>
-              User Details
+              User Edit
               <small></small>
             </CCardHeader>
             <CCardBody>
@@ -153,6 +153,7 @@ class UserEdit extends Component {
                       placeholder="UserName"
                       value={this.state.userName}
                       onChange={this.changeHandler}
+                      disabled
                     />
                   </CCol>
                 </CFormGroup>
@@ -169,6 +170,7 @@ class UserEdit extends Component {
                       autoComplete="email"
                       value={this.state.email}
                       onChange={this.changeHandler}
+                      disabled
                     />
                     <CFormText className="help-block">
                       Please enter your email

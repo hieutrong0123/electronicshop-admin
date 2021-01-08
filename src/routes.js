@@ -49,6 +49,9 @@ import ProductEdit from "./views/products/ProductEdit";
 
 //Categories
 import Categories from './views/categories/Categories';
+import CategoryForm from './views/categories/CategoryForm';
+import CategoryDetails from './views/categories/CategoryDetails';
+import CategoryEdit from './views/categories/CategoryEdit';
 
 const routes = [
   // { path: '/', exact: true, name: 'Home' },
@@ -95,8 +98,8 @@ const routes = [
   { path: '/users', exact: true,  name: 'Users', component: Users },
   { path: '/users/create', exact: true, name: 'User Create', component: UserForms },
   //{ path: '/users/:id', exact: true, name: 'User Details', component: User },
-  { path: '/users/:id', exact: true, name: 'User Details', component: UserDetails },
   { path: '/users/edit/:id', exact: true, name: 'User Edit', component: UserEdit },
+  { path: '/users/:id', exact: true, name: 'User Details', component: UserDetails },
 
   //Product
   { path: '/products', exact: true,  name: 'Products', component: Products },
@@ -105,7 +108,10 @@ const routes = [
   { path: '/products/edit/:id', exact: true, name: 'Product Edit', component: ProductEdit },
 
   //Categories
-  { path: '/Categories', exact: true,  name: 'Categories', component: Categories },
+  { path: '/categories', exact: true,  name: 'Categories', component: Categories },
+  { path: '/categories/create', exact: true, name: 'Category Create', component: CategoryForm },
+  { path: '/categories/:id', exact: true,  name: 'Category Details', component: CategoryDetails },
+  { path: '/categories/edit/:id', exact: true, name: 'Product Edit', component: CategoryEdit },
 ];
 
 export default routes;

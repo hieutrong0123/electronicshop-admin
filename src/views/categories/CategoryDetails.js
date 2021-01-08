@@ -17,27 +17,21 @@ import {
   CImg
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import productservice_json from "src/service/productservice_json";
 import categoryservice_json from "src/service/categoryservice_json";
 
-class ProductDetails extends Component {
-  //state = { list: null }
+class CategoryDetails extends Component {
   state = {
     id: "",
     name: "",
-    price: "",
-    specifications: "",
-    description: "",
-    goodsReceipt: "",
-    inventory: "",
-    status: "",
-    categoryId: "",
     alias: "",
+    rootId: "",
     createdDate: "",
-    modifiedDate: null,
+    modifiedDate: "",
     createdBy: "",
-    modifiedBy: null,
-    productPhotos: [],
+    modifiedBy: "",
+    productTypeId: "",
+    productTypeName: "",
+    categoryList: null,
     loading: true
   };
 
@@ -50,25 +44,11 @@ class ProductDetails extends Component {
   };
 
   cancel() {
-    this.props.history.push("/products");
+    this.props.history.push("/categories");
   }
 
   edit() {
-    this.props.history.push(`/products/edit/${this.state.id}`);
-  }
-
-  delete() {
-    productservice_json
-      .deletebyId(this.state.id)
-      .then(res => {
-        if (res.data.isSuccessed) {
-          alert(res.data.resultObj);
-          window.location.reload();
-        } else {
-          alert(res.data.message);
-        }
-      })
-      .catch(err => console.log(err));
+    this.props.history.push(`/categories/edit/${this.state.id}`);
   }
 
   loadData() {
@@ -83,8 +63,7 @@ class ProductDetails extends Component {
         }
       })
       .catch(err => console.log(err));
-
-    productservice_json
+    categoryservice_json
       .getbyId(this.props.match.params.id)
       .then(res => {
         if (res.data.isSuccessed) {
@@ -101,18 +80,13 @@ class ProductDetails extends Component {
             this.setState({
               id: res.data.resultObj.id,
               name: res.data.resultObj.name,
-              price: res.data.resultObj.price,
-              specifications: res.data.resultObj.specifications,
-              description: res.data.resultObj.description,
-              goodsReceipt: res.data.resultObj.goodsReceipt,
-              inventory: res.data.resultObj.inventory,
-              status: res.data.resultObj.status,
-              categoryId: res.data.resultObj.categoryId,
               alias: res.data.resultObj.alias,
+              productTypeId: res.data.resultObj.productTypeId,
+              rootId: res.data.resultObj.rootId,
+              productTypeName: res.data.resultObj.productType.name,
               createdDate: res.data.resultObj.createdDate.substring(0, 10),
               createdBy: res.data.resultObj.createdBy,
               modifiedBy: res.data.resultObj.modifiedBy,
-              productPhotos: res.data.resultObj.productPhotos,
               loading: false
             });
           }
@@ -172,148 +146,6 @@ class ProductDetails extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Price</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInput
-                        name="price"
-                        placeholder="Price"
-                        value={this.state.price}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="textarea-input">Specifications</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CTextarea
-                        name="specifications"
-                        rows="3"
-                        placeholder="Specifications"
-                        value={this.state.specifications}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="textarea-input">Description</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CTextarea
-                        name="description"
-                        rows="3"
-                        placeholder="Description"
-                        value={this.state.description}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="text-input">GoodsReceipt</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInput
-                        name="goodsReceipt"
-                        placeholder="GoodsReceipt"
-                        value={this.state.goodsReceipt}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="text-input">Inventory</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInput
-                        name="inventory"
-                        placeholder="Inventory"
-                        value={this.state.inventory}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel>Status</CLabel>
-                    </CCol>
-                    <CCol md="9">
-                      <CFormGroup variant="custom-radio" inline>
-                        <CInputRadio
-                          custom
-                          id="Active"
-                          name="status"
-                          onChange={this.changeHandler}
-                          value={Number(0)}
-                          checked={this.state.status === 0}
-                        />
-                        <CLabel variant="custom-checkbox" htmlFor="Active">
-                          Active
-                        </CLabel>
-                      </CFormGroup>
-                      <CFormGroup variant="custom-radio" inline>
-                        <CInputRadio
-                          custom
-                          id="Delete"
-                          name="status"
-                          onChange={this.changeHandler}
-                          value={Number(1)}
-                          checked={this.state.status === 1}
-                        />
-                        <CLabel variant="custom-checkbox" htmlFor="Delete">
-                          Delete
-                        </CLabel>
-                      </CFormGroup>
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="select">CategoryId</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      {this.state.categoryList === null ? (
-                        <h3>Waiting...</h3>
-                      ) : (
-                        <CSelect
-                          name="categoryId"
-                          onChange={this.changeHandler}
-                          disabled
-                        >
-                          <option
-                            key={Number(0)}
-                            value=""
-                            selected={this.state.categoryId === ""}
-                          >
-                            Choose
-                          </option>
-                          {this.state.categoryList.map(item => {
-                            return (
-                              <option
-                                value={item.id}
-                                selected={this.state.categoryId === item.id}
-                                key={item.id}
-                              >
-                                {item.name}
-                              </option>
-                            );
-                          })}
-                        </CSelect>
-                      )}
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
                       <CLabel htmlFor="text-input">Alias</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
@@ -323,6 +155,44 @@ class ProductDetails extends Component {
                         value={this.state.alias}
                         onChange={this.changeHandler}
                       />
+                    </CCol>
+                  </CFormGroup>
+                  
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="select">Root Category</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      {this.state.categoryList === null ? (
+                        <h3>Waiting...</h3>
+                      ) : (
+                        <CSelect
+                          name="Root Category"
+                          onChange={this.changeHandler}
+                          disabled
+                        >
+                          <option
+                            key={Number(0)}
+                            value=""
+                            selected={this.state.rootId === ""}
+                          >
+                            Choose
+                          </option>
+                          {this.state.categoryList.map(item => {
+                            if(item.rootId === null){
+                              return (
+                                <option
+                                  value={item.id}
+                                  selected={this.state.rootId === item.id}
+                                  key={item.id}
+                                >
+                                  {item.name}
+                                </option>
+                              );
+                            }
+                          })}
+                        </CSelect>
+                      )}
                     </CCol>
                   </CFormGroup>
 
@@ -387,52 +257,60 @@ class ProductDetails extends Component {
                       </CCol>
                     </CFormGroup>
                   ) : null}
-
+                  
                   {/* <CFormGroup row>
                     <CCol md="3">
-                      <CLabel>ThumbnailImages</CLabel>
+                      <CLabel htmlFor="text-input">Product Type</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
-                      <CInputFile
-                        type="file"
-                        id="ThumbnailImages"
-                        name="thumbnailImages"
-                        multiple
-                        custom
-                        accept=".jpg, .jpeg, .png"
+                      <CInput
+                        name="productType"
+                        placeholder="Product Type"
+                        value={this.state.productTypeName}
                         onChange={this.changeHandler}
                       />
-                      <CLabel htmlFor="ThumbnailImages" variant="custom-file">
-                        ThumbnailImages
-                      </CLabel>
                     </CCol>
                   </CFormGroup> */}
+
                   <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="text-input">ProductPhotos</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9" align="center">                          
-                    {this.state.productPhotos.map(item => {
-                      return (
-                            <CImg src={item.url} thumbnail width="250px" />
-                            );
-                          })}
-                          </CCol>
-                  </CFormGroup>
+                  <CCol md="3">
+                    <CLabel>Product Type</CLabel>
+                  </CCol>
+                  <CCol md="9">
+                    <CFormGroup variant="custom-radio" inline>
+                      <CInputRadio
+                        custom
+                        id="Smart Phone"
+                        name="productTypeId"
+                        onChange={this.changeHandler}
+                        value = {Number(1)}
+                        checked={this.state.productTypeId === 1}
+                      />
+                      <CLabel variant="custom-checkbox" htmlFor="Smart Phone">
+                      Smart Phone
+                      </CLabel>
+                    </CFormGroup>
+                    <CFormGroup variant="custom-radio" inline>
+                      <CInputRadio
+                        custom
+                        id="Laptop"
+                        name="productTypeId"
+                        onChange={this.changeHandler}
+                        value={Number(2)}
+                        checked={this.state.productTypeId === 2}
+                      />
+                      <CLabel variant="custom-checkbox" htmlFor="Laptop">
+                      Laptop
+                      </CLabel>
+                    </CFormGroup>
+                  </CCol>
+                </CFormGroup>                  
+
                 </CForm>
               </CCardBody>
               <CCardFooter>
               <CButton size="" color="primary" onClick={() => this.edit()}>
                 <CIcon name="cil-scrubber" /> Edit
-              </CButton>
-              <CButton></CButton>
-              <CButton
-                type="reset"
-                size=""
-                color="danger"
-                onClick={() => this.delete()}
-              >
-                <CIcon name="cil-ban" /> Delete
               </CButton>
               <CButton></CButton>
               <CButton color="dark" size="" onClick={() => this.cancel()}>
@@ -447,4 +325,4 @@ class ProductDetails extends Component {
   }
 }
 
-export default ProductDetails;
+export default CategoryDetails;

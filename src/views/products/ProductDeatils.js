@@ -38,6 +38,7 @@ class ProductDetails extends Component {
     createdBy: "",
     modifiedBy: null,
     productPhotos: [],
+    categoryList: null,
     loading: true
   };
 
@@ -250,27 +251,40 @@ class ProductDetails extends Component {
                       <CFormGroup variant="custom-radio" inline>
                         <CInputRadio
                           custom
-                          id="Active"
+                          id="Hot"
                           name="status"
                           onChange={this.changeHandler}
                           value={Number(0)}
                           checked={this.state.status === 0}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Active">
-                          Active
+                        <CLabel variant="custom-checkbox" htmlFor="Hot">
+                        Hot
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-radio" inline>
                         <CInputRadio
                           custom
-                          id="Delete"
+                          id="Default"
                           name="status"
                           onChange={this.changeHandler}
                           value={Number(1)}
                           checked={this.state.status === 1}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Delete">
-                          Delete
+                        <CLabel variant="custom-checkbox" htmlFor="Default">
+                        Default
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="custom-radio" inline>
+                        <CInputRadio
+                          custom
+                          id="Hidden"
+                          name="status"
+                          onChange={this.changeHandler}
+                          value={Number(1)}
+                          checked={this.state.status === 2}
+                        />
+                        <CLabel variant="custom-checkbox" htmlFor="Hidden">
+                        Hidden
                         </CLabel>
                       </CFormGroup>
                     </CCol>

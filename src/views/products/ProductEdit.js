@@ -37,6 +37,7 @@ class ProductEdit extends Component {
     createdBy: "",
     modifiedBy: null,
     productPhotos: [],
+    categoryList: null,
     loading: true
   };
 

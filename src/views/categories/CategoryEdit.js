@@ -16,27 +16,16 @@ import {
   CRow
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import productservice_json from "src/service/productservice_json";
 import categoryservice_json from "src/service/categoryservice_json";
 
-class ProductEdit extends Component {
-  //state = { list: null }
+class CategoryEdit extends Component {
   state = {
     id: "",
     name: "",
-    price: "",
-    specifications: "",
-    description: "",
-    goodsReceipt: "",
-    inventory: "",
-    status: "",
-    categoryId: "",
     alias: "",
-    createdDate: "",
-    modifiedDate: null,
-    createdBy: "",
-    modifiedBy: null,
-    productPhotos: [],
+    rootId: "",
+    productTypeId: "",
+    categoryList: null,
     loading: true
   };
 
@@ -45,16 +34,11 @@ class ProductEdit extends Component {
   }
 
   changeHandler = e => {
-    if (e.target.name === "thumbnailImages") {
-      let arr = e.target.files;
-      console.log(arr);
-      this.setState({ thumbnailImages: e.target.files[0] }, () =>
-        console.log(this.state.thumbnailImages)
-      );
-    } else if (e.target.name === "status") {
-      this.setState({ status: Number(e.target.value) });
-      console.log(this.state.status);
-      console.log(typeof this.state.status);
+    if(e.target.name === 'productTypeId')
+    {
+      this.setState({ productTypeId: Number(e.target.value) });
+      console.log(this.state.productTypeId);
+      console.log(typeof this.state.productTypeId);
     } else if (e.target.name === "name") {
       this.setState({ name: e.target.value });
       this.setState({ alias: this.to_slug(e.target.value) });
@@ -89,24 +73,19 @@ class ProductEdit extends Component {
   }
 
   cancel() {
-    this.props.history.push("/products");
+    this.props.history.push("/categories");
   }
 
   submitHandler() {
     const data = {
       id: this.state.id,
       name: this.state.name,
-      price: this.state.price,
-      specifications: this.state.specifications,
-      description: this.state.description,
-      goodsReceipt: this.state.goodsReceipt,
-      inventory: this.state.inventory,
-      status: this.state.status,
-      categoryId: this.state.categoryId,
-      alias: this.state.alias
+      alias: this.state.alias,
+      rootId: this.state.rootId,
+      productTypeId: this.state.productTypeId
     };
     console.log(data);
-    productservice_json
+    categoryservice_json
       .updatebyId(data)
       .then(res => {
         if (res.data.isSuccessed) {
@@ -129,8 +108,7 @@ class ProductEdit extends Component {
         }
       })
       .catch(err => console.log(err));
-
-    productservice_json
+    categoryservice_json
       .getbyId(this.props.match.params.id)
       .then(res => {
         if (res.data.isSuccessed) {
@@ -147,14 +125,9 @@ class ProductEdit extends Component {
             this.setState({
               id: res.data.resultObj.id,
               name: res.data.resultObj.name,
-              price: res.data.resultObj.price,
-              specifications: res.data.resultObj.specifications,
-              description: res.data.resultObj.description,
-              goodsReceipt: res.data.resultObj.goodsReceipt,
-              inventory: res.data.resultObj.inventory,
-              status: res.data.resultObj.status,
-              categoryId: res.data.resultObj.categoryId,
               alias: res.data.resultObj.alias,
+              productTypeId: res.data.resultObj.productTypeId,
+              rootId: res.data.resultObj.rootId,
               loading: false
             });
           }
@@ -176,7 +149,7 @@ class ProductEdit extends Component {
           <CCol xs="12" md="10">
             <CCard>
               <CCardHeader>
-                Products Details
+                Category Edit
                 <small></small>
               </CCardHeader>
               <CCardBody>
@@ -211,6 +184,7 @@ class ProductEdit extends Component {
                       />
                     </CCol>
                   </CFormGroup>
+
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="text-input">Alias</CLabel>
@@ -224,147 +198,78 @@ class ProductEdit extends Component {
                       />
                     </CCol>
                   </CFormGroup>
-
+                  
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Price</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInput
-                        name="price"
-                        placeholder="Price"
-                        value={this.state.price}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="textarea-input">Specifications</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CTextarea
-                        name="specifications"
-                        rows="3"
-                        placeholder="Specifications"
-                        value={this.state.specifications}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="textarea-input">Description</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CTextarea
-                        name="description"
-                        rows="3"
-                        placeholder="Description"
-                        value={this.state.description}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="text-input">GoodsReceipt</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInput
-                        name="goodsReceipt"
-                        placeholder="GoodsReceipt"
-                        value={this.state.goodsReceipt}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="text-input">Inventory</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInput
-                        name="inventory"
-                        placeholder="Inventory"
-                        value={this.state.inventory}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel>Status</CLabel>
-                    </CCol>
-                    <CCol md="9">
-                      <CFormGroup variant="custom-radio" inline>
-                        <CInputRadio
-                          custom
-                          id="Active"
-                          name="status"
-                          onChange={this.changeHandler}
-                          value={Number(0)}
-                          checked={this.state.status === 0}
-                        />
-                        <CLabel variant="custom-checkbox" htmlFor="Active">
-                          Active
-                        </CLabel>
-                      </CFormGroup>
-                      <CFormGroup variant="custom-radio" inline>
-                        <CInputRadio
-                          custom
-                          id="Delete"
-                          name="status"
-                          onChange={this.changeHandler}
-                          value={Number(1)}
-                          checked={this.state.status === 1}
-                        />
-                        <CLabel variant="custom-checkbox" htmlFor="Delete">
-                          Delete
-                        </CLabel>
-                      </CFormGroup>
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="select">CategoryId</CLabel>
+                      <CLabel htmlFor="select">Root Category</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       {this.state.categoryList === null ? (
                         <h3>Waiting...</h3>
                       ) : (
                         <CSelect
-                          name="categoryId"
+                          name="rootId"
                           onChange={this.changeHandler}
                         >
                           <option
                             key={Number(0)}
                             value=""
-                            selected={this.state.categoryId === ""}
+                            selected={this.state.rootId === null}
                           >
                             Choose
                           </option>
                           {this.state.categoryList.map(item => {
-                            return (
-                              <option
-                                value={item.id}
-                                selected={this.state.categoryId === item.id}
-                                key={item.id}
-                              >
-                                {item.name}
-                              </option>
-                            );
+                            if(item.rootId === null){
+                              return (
+                                <option
+                                  value={item.id}
+                                  selected={this.state.rootId === item.id}
+                                  key={item.id}
+                                >
+                                  {item.name}
+                                </option>
+                              );
+                            }
                           })}
                         </CSelect>
                       )}
                     </CCol>
-                  </CFormGroup>                  
+                  </CFormGroup>
+
+                  <CFormGroup row>
+                  <CCol md="3">
+                    <CLabel>Product Type</CLabel>
+                  </CCol>
+                  <CCol md="9">
+                    <CFormGroup variant="custom-radio" inline>
+                      <CInputRadio
+                        custom
+                        id="Smart Phone"
+                        name="productTypeId"
+                        onChange={this.changeHandler}
+                        value = {Number(1)}
+                        checked={this.state.productTypeId === 1}
+                      />
+                      <CLabel variant="custom-checkbox" htmlFor="Smart Phone">
+                      Smart Phone
+                      </CLabel>
+                    </CFormGroup>
+                    <CFormGroup variant="custom-radio" inline>
+                      <CInputRadio
+                        custom
+                        id="Laptop"
+                        name="productTypeId"
+                        onChange={this.changeHandler}
+                        value={Number(2)}
+                        checked={this.state.productTypeId === 2}
+                      />
+                      <CLabel variant="custom-checkbox" htmlFor="Laptop">
+                      Laptop
+                      </CLabel>
+                    </CFormGroup>
+                  </CCol>
+                </CFormGroup>                  
+
                 </CForm>
               </CCardBody>
               <CCardFooter>
@@ -388,4 +293,4 @@ class ProductEdit extends Component {
   }
 }
 
-export default ProductEdit;
+export default CategoryEdit;
