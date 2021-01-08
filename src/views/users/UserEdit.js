@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import userservice from "src/service/userservice";
 import {
   CButton,
   CCard,
@@ -7,33 +6,17 @@ import {
   CCardFooter,
   CCardHeader,
   CCol,
-  CCollapse,
-  CDropdownItem,
-  CDropdownMenu,
-  CDropdownToggle,
-  CFade,
   CForm,
   CFormGroup,
   CFormText,
-  CValidFeedback,
-  CInvalidFeedback,
-  CTextarea,
   CInput,
-  CInputFile,
-  CInputCheckbox,
   CInputRadio,
-  CInputGroup,
-  CInputGroupAppend,
-  CInputGroupPrepend,
-  CDropdown,
-  CInputGroupText,
   CLabel,
-  CSelect,
-  CRow,
-  CSwitch
+  CRow
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import { Number } from "core-js";
+import userservice_json from "src/service/userservice_json";
 
 class UserEdit extends Component {
   state = {
@@ -56,7 +39,7 @@ class UserEdit extends Component {
   }
 
   loadData() {
-    userservice
+    userservice_json
       .getbyId(this.props.match.params.id)
       .then(res => {
         if (res.data.isSuccessed) {
@@ -108,11 +91,19 @@ class UserEdit extends Component {
   }
 
   submitHandler() {
-    const data = this.state;
-    // data.gender = Number(data.gender)
-
+    const data = {
+      id: this.state.id,
+      firstMiddleName: this.state.firstMiddleName,
+      lastName: this.state.lastName,
+      birthday: this.state.birthday,
+      gender: this.state.gender,
+      phoneNumber: this.state.phoneNumber,
+      address: this.state.address,
+      status: this.state.status,
+      userInRole: this.state.userInRole
+    };
     console.log(data);
-    userservice
+    userservice_json
       .updatebyId(data)
       .then(res => {
         if (res.data.isSuccessed) {
@@ -132,7 +123,7 @@ class UserEdit extends Component {
         <CCol xs="12" md="10">
           <CCard>
             <CCardHeader>
-              User Details
+              User Edit
               <small></small>
             </CCardHeader>
             <CCardBody>
@@ -162,6 +153,7 @@ class UserEdit extends Component {
                       placeholder="UserName"
                       value={this.state.userName}
                       onChange={this.changeHandler}
+                      disabled
                     />
                   </CCol>
                 </CFormGroup>
@@ -178,6 +170,7 @@ class UserEdit extends Component {
                       autoComplete="email"
                       value={this.state.email}
                       onChange={this.changeHandler}
+                      disabled
                     />
                     <CFormText className="help-block">
                       Please enter your email

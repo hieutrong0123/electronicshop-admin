@@ -7,20 +7,21 @@ import {
 
 import CIcon from "@coreui/icons-react";
 
-import userservice_json from "src/service/userservice_json";
+import productservice_json from "src/service/productservice_json";
 
-class UserPage extends Component {
+class Products extends Component {
   state = { list: null };
 
   componentDidMount() {
     this.loadData();
   }
   loadData() {
-      userservice_json
+    productservice_json
       .getAll()
       .then(res => {
         if (res.data.isSuccessed) {
           this.setState({ list: res.data.resultObj });
+          console.log(res)
         } else {
           alert(res.data.message);
         }
@@ -28,19 +29,23 @@ class UserPage extends Component {
       .catch(err => console.log(err));
   }
 
-  details=(id)=>{
-    this.props.history.push(`/users/${id}`)
-  }
+  details = id => {
+    this.props.history.push(`/products/${id}`);
+  };
 
   render() {
     const fields = [
       { key: "id", _classes: "font-weight-bold" },
-      "userName",
-      "firstMiddleName",
-      "lastName",
-      "email",
-      "phoneNumber",
-      { key: "link", label :"Action" },
+      "name",
+      "price",
+      "specifications",
+      "description",
+      "goodsReceipt",
+      "inventory",
+      "status",
+      "alias",
+      // { key: "productPhotos[0].url", label: "ProductPhotos" },
+      { key: "link", label: "Action" }
       // "link"
     ];
     return this.state.list === null ? null : (
@@ -60,11 +65,12 @@ class UserPage extends Component {
               return (
                 <td>
                   <CButton
-                size="sm"
-                color="primary"
-                onClick={() => this.details(item.id)}>
-                <CIcon name="cil-scrubber" /> Details
-              </CButton>
+                    size="sm"
+                    color="primary"
+                    onClick={() => this.details(item.id)}
+                  >
+                    <CIcon name="cil-scrubber" /> Details
+                  </CButton>
                 </td>
               );
             }
@@ -75,4 +81,4 @@ class UserPage extends Component {
   }
 }
 
-export default UserPage;
+export default Products;

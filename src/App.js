@@ -13,6 +13,9 @@ import Register from "./views/pages/register/Register";
 import Page404 from "./views/pages/page404/Page404";
 import Page500 from "./views/pages/page500/Page500";
 
+//tokenDecode
+import jwt_decode from "jwt-decode";
+
 // const loading = (
 //   <div className="pt-3 text-center">
 //     <div className="sk-spinner sk-spinner-pulse"></div>
@@ -20,15 +23,42 @@ import Page500 from "./views/pages/page500/Page500";
 // )
 
 class App extends Component {
+  // checkRole = () => {
+  //   const Authentication = "Admin";
+  //   if (Cookies.get("Role") === null) return false;
+  //   if (Cookies.get("Token") === null) return false;
+  //   if (Cookies.get(".AspNetCore.Session") === null) return false;
+  //   const Role = Cookies.get("Role");
+  //   console.log(Authentication);
+  //   console.log(Role);
+  //   return Authentication === Role;
+  // };
+  tokenDecode = () => {
+    let Role = null;
+    const token = Cookies.get("Token");
+    if (token !== null && token !== undefined) {
+      let tokenDecode = jwt_decode(token);
+      Object.keys(tokenDecode).forEach(function(key) {
+        let res = key.split("/");
+        if (res.length > 1) {
+          if (res[res.length - 1] === "role") {
+            Role = tokenDecode[key];
+          }
+        }
+      });
+    }
+    console.log(Role);
+    return Role;
+  };
+
   checkRole = () => {
     const Authentication = "Admin";
-    if (Cookies.get("Role") === null) return false;
+    const CheckRole = this.tokenDecode();
     if (Cookies.get("Token") === null) return false;
     if (Cookies.get(".AspNetCore.Session") === null) return false;
-    const Role = Cookies.get("Role");
     console.log(Authentication);
-    console.log(Role);
-    return Authentication === Role;
+    console.log(CheckRole);
+    return Authentication === CheckRole;
   };
 
   render() {

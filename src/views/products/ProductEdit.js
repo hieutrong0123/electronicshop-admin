@@ -10,54 +10,39 @@ import {
   CFormGroup,
   CTextarea,
   CInput,
-  CInputFile,
   CInputRadio,
   CLabel,
   CSelect,
   CRow
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-import productservice_formdata from "src/service/productservice_formdata";
+import productservice_json from "src/service/productservice_json";
 import categoryservice_json from "src/service/categoryservice_json";
 
-
-class ProductForm extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      name: "",
-      price: "",
-      specifications: "",
-      description: "",
-      goodsReceipt: "",
-      inventory: "",
-      status: 0,
-      categoryId: "",
-      alias: "",
-      thumbnailImages: [],
-      categoryList: null
-    };
-    this.submitHandler = this.submitHandler.bind(this);
-    this.cancel = this.cancel.bind(this);
-  }
+class ProductEdit extends Component {
+  //state = { list: null }
+  state = {
+    id: "",
+    name: "",
+    price: "",
+    specifications: "",
+    description: "",
+    goodsReceipt: "",
+    inventory: "",
+    status: "",
+    categoryId: "",
+    alias: "",
+    createdDate: "",
+    modifiedDate: null,
+    createdBy: "",
+    modifiedBy: null,
+    productPhotos: [],
+    categoryList: null,
+    loading: true
+  };
 
   componentDidMount() {
     this.loadData();
-  }
-
-  loadData() {
-    categoryservice_json
-      .getAll()
-      .then(res => {
-        if (res.data.isSuccessed) {
-          this.setState({ categoryList: res.data.resultObj });
-          console.log(this.state.categoryList);
-        } else {
-          alert(res.dat.message);
-        }
-      })
-      .catch(err => console.log(err));
   }
 
   changeHandler = e => {
@@ -80,6 +65,7 @@ class ProductForm extends Component {
       console.log(e.target.value);
     }
   };
+
   to_slug(str) {
     // Chuyển hết sang chữ thường
     str = str.toLowerCase();
@@ -101,67 +87,97 @@ class ProductForm extends Component {
     str = str.replace(/-+$/g, "");
     // return
     return str;
-  };
-
+  }
 
   cancel() {
     this.props.history.push("/products");
   }
 
-  async submitHandler() {
-    if (!this.state.name) {
-      alert("Name error");
-    } else if (!this.state.price) {
-      alert("Price error");
-    } else if (!this.state.specifications) {
-      alert("Specifications error");
-    } else if (!this.state.goodsReceipt) {
-      alert("GoodsReceipt error");
-    } else if (!this.state.inventory) {
-      alert("Inventory error");
-    } else if (!this.state.description) {
-      alert("Description error");
-    } else if (!this.state.categoryId) {
-      alert("CategoryId error");
-    } else if (!this.state.alias) {
-      alert("Alias error");
-    } else if (!this.state.thumbnailImages) {
-      alert("ThumbnailImages error");
-    } else {
-      var FormData = require("form-data");
-      var data = new FormData();
-      data.append("Name", this.state.name);
-      data.append("Price", this.state.price);
-      data.append("Specifications", this.state.specifications);
-      data.append("Description", this.state.description);
-      data.append("GoodsReceipt", this.state.goodsReceipt);
-      data.append("Inventory", this.state.inventory);
-      data.append("Status", this.state.status);
-      data.append("CategoryId", this.state.categoryId);
-      data.append("Alias", this.state.alias);
-      data.append("ThumbnailImages", this.state.thumbnailImages);
-      console.log(data);
-
-      productservice_formdata
-        .create(data)
-        .then(res => {
-          if (res.data.isSuccessed) {
-            alert(res.data.resultObj);
-          } else {
-            alert(res.data.message);
-          }
-        })
-        .catch(err => console.log(err));
-    }
+  submitHandler() {
+    const data = {
+      id: this.state.id,
+      name: this.state.name,
+      price: this.state.price,
+      specifications: this.state.specifications,
+      description: this.state.description,
+      goodsReceipt: this.state.goodsReceipt,
+      inventory: this.state.inventory,
+      status: this.state.status,
+      categoryId: this.state.categoryId,
+      alias: this.state.alias
+    };
+    console.log(data);
+    productservice_json
+      .updatebyId(data)
+      .then(res => {
+        if (res.data.isSuccessed) {
+          alert(res.data.resultObj);
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch(err => console.log(err));
   }
+  loadData() {
+    categoryservice_json
+      .getAll()
+      .then(res => {
+        if (res.data.isSuccessed) {
+          this.setState({ categoryList: res.data.resultObj });
+          console.log(this.state.categoryList);
+        } else {
+          alert(res.dat.message);
+        }
+      })
+      .catch(err => console.log(err));
+
+    productservice_json
+      .getbyId(this.props.match.params.id)
+      .then(res => {
+        if (res.data.isSuccessed) {
+          if (res.data.resultObj !== null) {
+            if (res.data.resultObj.modifiedDate !== null) {
+              this.setState({
+                modifiedDate: res.data.resultObj.modifiedDate.substring(0, 10)
+              });
+            } else {
+              this.setState({
+                modifiedDate: res.data.resultObj.modifiedDate
+              });
+            }
+            this.setState({
+              id: res.data.resultObj.id,
+              name: res.data.resultObj.name,
+              price: res.data.resultObj.price,
+              specifications: res.data.resultObj.specifications,
+              description: res.data.resultObj.description,
+              goodsReceipt: res.data.resultObj.goodsReceipt,
+              inventory: res.data.resultObj.inventory,
+              status: res.data.resultObj.status,
+              categoryId: res.data.resultObj.categoryId,
+              alias: res.data.resultObj.alias,
+              loading: false
+            });
+          }
+          console.log(res);
+          console.log(this.state);
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
   render() {
-    return (
+    return this.state.loading === true ? (
+      <h1>Loading</h1>
+    ) : (
       <>
         <CRow>
           <CCol xs="12" md="10">
             <CCard>
               <CCardHeader>
-                Products Create
+                Products Details
                 <small></small>
               </CCardHeader>
               <CCardBody>
@@ -169,6 +185,20 @@ class ProductForm extends Component {
                   encType="multipart/form-data"
                   className="form-horizontal"
                 >
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="text-input">Id</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        name="id"
+                        placeholder="Id"
+                        value={this.state.id}
+                        onChange={this.changeHandler}
+                        disabled
+                      />
+                    </CCol>
+                  </CFormGroup>
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="text-input">Name</CLabel>
@@ -182,7 +212,6 @@ class ProductForm extends Component {
                       />
                     </CCol>
                   </CFormGroup>
-
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="text-input">Alias</CLabel>
@@ -336,27 +365,7 @@ class ProductForm extends Component {
                         </CSelect>
                       )}
                     </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel>ThumbnailImages</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInputFile
-                        type="file"
-                        id="ThumbnailImages"
-                        name="thumbnailImages"
-                        multiple
-                        custom
-                        accept=".jpg, .jpeg, .png"
-                        onChange={this.changeHandler}
-                      />
-                      <CLabel htmlFor="ThumbnailImages" variant="custom-file">
-                        ThumbnailImages
-                      </CLabel>
-                    </CCol>
-                  </CFormGroup>
+                  </CFormGroup>                  
                 </CForm>
               </CCardBody>
               <CCardFooter>
@@ -380,4 +389,4 @@ class ProductForm extends Component {
   }
 }
 
-export default ProductForm;
+export default ProductEdit;

@@ -6,36 +6,16 @@ import {
   CCardFooter,
   CCardHeader,
   CCol,
-  CCollapse,
-  CDropdownItem,
-  CDropdownMenu,
-  CDropdownToggle,
-  CFade,
   CForm,
   CFormGroup,
   CFormText,
-  CValidFeedback,
-  CInvalidFeedback,
-  CTextarea,
   CInput,
-  CInputFile,
-  CInputCheckbox,
   CInputRadio,
-  CInputGroup,
-  CInputGroupAppend,
-  CInputGroupPrepend,
-  CDropdown,
-  CInputGroupText,
   CLabel,
-  CSelect,
-  CRow,
-  CSwitch
+  CRow
 }from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { DocsLink } from 'src/reusable'
-
-import Axios from 'axios';
-import userservice from "src/service/userservice";
+import CIcon from '@coreui/icons-react';
+import userservice_json from 'src/service/userservice_json';
 
 class UserForm extends Component {
   constructor(props) {
@@ -114,7 +94,7 @@ class UserForm extends Component {
         userInRole: this.state.userInRole
       };
       console.log(data);
-      userservice
+      userservice_json
         .create(data)
         .then(res => {
           if (res.data.isSuccessed) {
