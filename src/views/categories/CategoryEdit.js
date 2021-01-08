@@ -8,7 +8,6 @@ import {
   CCol,
   CForm,
   CFormGroup,
-  CTextarea,
   CInput,
   CInputRadio,
   CLabel,
@@ -229,6 +228,9 @@ class CategoryEdit extends Component {
                                   {item.name}
                                 </option>
                               );
+                            }
+                            else{
+                              return(<></>);
                             }
                           })}
                         </CSelect>

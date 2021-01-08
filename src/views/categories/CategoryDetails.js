@@ -8,13 +8,11 @@ import {
   CCol,
   CForm,
   CFormGroup,
-  CTextarea,
   CInput,
   CInputRadio,
   CLabel,
   CSelect,
-  CRow,
-  CImg
+  CRow
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import categoryservice_json from "src/service/categoryservice_json";
@@ -167,7 +165,7 @@ class CategoryDetails extends Component {
                         <h3>Waiting...</h3>
                       ) : (
                         <CSelect
-                          name="Root Category"
+                          name="rootId"
                           onChange={this.changeHandler}
                           disabled
                         >
@@ -189,6 +187,9 @@ class CategoryDetails extends Component {
                                   {item.name}
                                 </option>
                               );
+                            }
+                            else{
+                              return(<></>);
                             }
                           })}
                         </CSelect>
