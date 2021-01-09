@@ -16,12 +16,12 @@ import {
   CRow,
   CImg
 } from "@coreui/react";
+import {Link}  from "react-router-dom";
 import CIcon from "@coreui/icons-react";
 import productservice_json from "src/service/productservice_json";
 import categoryservice_json from "src/service/categoryservice_json";
-
+import ProductPhotoCreate from "src/views/productphotos/ProductPhotoCreate";
 class ProductDetails extends Component {
-  //state = { list: null }
   state = {
     id: "",
     name: "",
@@ -41,6 +41,7 @@ class ProductDetails extends Component {
     categoryList: null,
     loading: true
   };
+  createPhotoProduct = this.createPhotoProduct.bind(this);
 
   componentDidMount() {
     this.loadData();
@@ -70,6 +71,10 @@ class ProductDetails extends Component {
         }
       })
       .catch(err => console.log(err));
+  }
+
+  createPhotoProduct() {
+    
   }
 
   loadData() {
@@ -128,14 +133,14 @@ class ProductDetails extends Component {
 
   render() {
     return this.state.loading === true ? (
-      <h1>Loading</h1>
+      <h1>Đang tải dữ liệu vui vòng chờ trong giây lát</h1>
     ) : (
       <>
         <CRow>
           <CCol xs="12" md="10">
             <CCard>
               <CCardHeader>
-                Products Details
+                Chi tiết sản phẩm
                 <small></small>
               </CCardHeader>
               <CCardBody>
@@ -145,12 +150,12 @@ class ProductDetails extends Component {
                 >
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Id</CLabel>
+                      <CLabel htmlFor="text-input">Mã sản phẩm</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="id"
-                        placeholder="Id"
+                        placeholder="Mã sản phẩm"
                         value={this.state.id}
                         onChange={this.changeHandler}
                         disabled
@@ -159,12 +164,12 @@ class ProductDetails extends Component {
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Name</CLabel>
+                      <CLabel htmlFor="text-input">Tên sản phẩm</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="name"
-                        placeholder="Name"
+                        placeholder="Tên sản phẩm"
                         value={this.state.name}
                         onChange={this.changeHandler}
                       />
@@ -173,13 +178,13 @@ class ProductDetails extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Price</CLabel>
+                      <CLabel htmlFor="text-input">Bí danh</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
-                        name="price"
-                        placeholder="Price"
-                        value={this.state.price}
+                        name="alias"
+                        placeholder="Bí danh"
+                        value={this.state.alias}
                         onChange={this.changeHandler}
                       />
                     </CCol>
@@ -187,116 +192,11 @@ class ProductDetails extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="textarea-input">Specifications</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CTextarea
-                        name="specifications"
-                        rows="3"
-                        placeholder="Specifications"
-                        value={this.state.specifications}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="textarea-input">Description</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CTextarea
-                        name="description"
-                        rows="3"
-                        placeholder="Description"
-                        value={this.state.description}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="text-input">GoodsReceipt</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInput
-                        name="goodsReceipt"
-                        placeholder="GoodsReceipt"
-                        value={this.state.goodsReceipt}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="text-input">Inventory</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInput
-                        name="inventory"
-                        placeholder="Inventory"
-                        value={this.state.inventory}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel>Status</CLabel>
-                    </CCol>
-                    <CCol md="9">
-                      <CFormGroup variant="custom-radio" inline>
-                        <CInputRadio
-                          custom
-                          id="Hot"
-                          name="status"
-                          onChange={this.changeHandler}
-                          value={Number(0)}
-                          checked={this.state.status === 0}
-                        />
-                        <CLabel variant="custom-checkbox" htmlFor="Hot">
-                        Hot
-                        </CLabel>
-                      </CFormGroup>
-                      <CFormGroup variant="custom-radio" inline>
-                        <CInputRadio
-                          custom
-                          id="Default"
-                          name="status"
-                          onChange={this.changeHandler}
-                          value={Number(1)}
-                          checked={this.state.status === 1}
-                        />
-                        <CLabel variant="custom-checkbox" htmlFor="Default">
-                        Default
-                        </CLabel>
-                      </CFormGroup>
-                      <CFormGroup variant="custom-radio" inline>
-                        <CInputRadio
-                          custom
-                          id="Hidden"
-                          name="status"
-                          onChange={this.changeHandler}
-                          value={Number(1)}
-                          checked={this.state.status === 2}
-                        />
-                        <CLabel variant="custom-checkbox" htmlFor="Hidden">
-                        Hidden
-                        </CLabel>
-                      </CFormGroup>
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="select">CategoryId</CLabel>
+                      <CLabel htmlFor="select">Danh mục</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       {this.state.categoryList === null ? (
-                        <h3>Waiting...</h3>
+                        <h3>Đang tải</h3>
                       ) : (
                         <CSelect
                           name="categoryId"
@@ -308,7 +208,7 @@ class ProductDetails extends Component {
                             value=""
                             selected={this.state.categoryId === ""}
                           >
-                            Choose
+                            Lựa chọn
                           </option>
                           {this.state.categoryList.map(item => {
                             return (
@@ -328,13 +228,13 @@ class ProductDetails extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Alias</CLabel>
+                      <CLabel htmlFor="text-input">Giá bán</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
-                        name="alias"
-                        placeholder="Alias"
-                        value={this.state.alias}
+                        name="price"
+                        placeholder="Giá bán"
+                        value={this.state.price}
                         onChange={this.changeHandler}
                       />
                     </CCol>
@@ -342,13 +242,120 @@ class ProductDetails extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="date-input">CreatedDate</CLabel>
+                      <CLabel htmlFor="textarea-input">
+                        Thông số kỹ thuật
+                      </CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CTextarea
+                        name="specifications"
+                        rows="3"
+                        placeholder="Thông số kỹ thuật"
+                        value={this.state.specifications}
+                        onChange={this.changeHandler}
+                      />
+                    </CCol>
+                  </CFormGroup>
+
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="textarea-input">Mô tả</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CTextarea
+                        name="description"
+                        rows="3"
+                        placeholder="Mô tả"
+                        value={this.state.description}
+                        onChange={this.changeHandler}
+                      />
+                    </CCol>
+                  </CFormGroup>
+
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="text-input">Số lượng nhập</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        name="goodsReceipt"
+                        placeholder="Số lượng nhập"
+                        value={this.state.goodsReceipt}
+                        onChange={this.changeHandler}
+                      />
+                    </CCol>
+                  </CFormGroup>
+
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="text-input">Số lượng tồn</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        name="inventory"
+                        placeholder="Số lượng tồn"
+                        value={this.state.inventory}
+                        onChange={this.changeHandler}
+                      />
+                    </CCol>
+                  </CFormGroup>
+
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel>Trạng thái</CLabel>
+                    </CCol>
+                    <CCol md="9">
+                      <CFormGroup variant="custom-radio" inline>
+                        <CInputRadio
+                          custom
+                          id="Hot"
+                          name="status"
+                          onChange={this.changeHandler}
+                          value={Number(0)}
+                          checked={this.state.status === 0}
+                        />
+                        <CLabel variant="custom-checkbox" htmlFor="Hot">
+                          Bán chạy
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="custom-radio" inline>
+                        <CInputRadio
+                          custom
+                          id="Default"
+                          name="status"
+                          onChange={this.changeHandler}
+                          value={Number(1)}
+                          checked={this.state.status === 1}
+                        />
+                        <CLabel variant="custom-checkbox" htmlFor="Default">
+                          Mặc định
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="custom-radio" inline>
+                        <CInputRadio
+                          custom
+                          id="Hidden"
+                          name="status"
+                          onChange={this.changeHandler}
+                          value={Number(1)}
+                          checked={this.state.status === 2}
+                        />
+                        <CLabel variant="custom-checkbox" htmlFor="Hidden">
+                          Đã xoá
+                        </CLabel>
+                      </CFormGroup>
+                    </CCol>
+                  </CFormGroup>
+
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="date-input">Ngày tạo</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         type="date"
                         name="createdDate"
-                        placeholder="CreatedDate"
+                        placeholder="Ngày tạo"
                         value={this.state.createdDate}
                         onChange={this.changeHandler}
                       />
@@ -358,7 +365,7 @@ class ProductDetails extends Component {
                   {this.state.modifiedDate !== null ? (
                     <CFormGroup row>
                       <CCol md="3">
-                        <CLabel htmlFor="date-input">ModifiedDate</CLabel>
+                        <CLabel htmlFor="date-input">Ngày cập nhật</CLabel>
                       </CCol>
                       <CCol xs="12" md="9">
                         <CInput
@@ -374,12 +381,12 @@ class ProductDetails extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">CreatedBy</CLabel>
+                      <CLabel htmlFor="text-input">Người tạo</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="createdBy"
-                        placeholder="CreatedBy"
+                        placeholder="Người tạo"
                         value={this.state.createdBy}
                         onChange={this.changeHandler}
                       />
@@ -389,70 +396,49 @@ class ProductDetails extends Component {
                   {this.state.modifiedBy !== null ? (
                     <CFormGroup row>
                       <CCol md="3">
-                        <CLabel htmlFor="text-input">ModifiedBy</CLabel>
+                        <CLabel htmlFor="text-input">Người cập nhật</CLabel>
                       </CCol>
                       <CCol xs="12" md="9">
                         <CInput
                           name="modifiedBy"
-                          placeholder="ModifiedBy"
+                          placeholder="Người cập nhật"
                           value={this.state.modifiedBy}
                           onChange={this.changeHandler}
                         />
                       </CCol>
                     </CFormGroup>
                   ) : null}
-
-                  {/* <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel>ThumbnailImages</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInputFile
-                        type="file"
-                        id="ThumbnailImages"
-                        name="thumbnailImages"
-                        multiple
-                        custom
-                        accept=".jpg, .jpeg, .png"
-                        onChange={this.changeHandler}
-                      />
-                      <CLabel htmlFor="ThumbnailImages" variant="custom-file">
-                        ThumbnailImages
-                      </CLabel>
-                    </CCol>
-                  </CFormGroup> */}
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">ProductPhotos</CLabel>
+                      <CLabel htmlFor="text-input">Hình ảnh</CLabel>
                     </CCol>
-                    <CCol xs="12" md="9" align="center">                          
-                    {this.state.productPhotos.map(item => {
-                      return (
-                            <CImg src={item.url} thumbnail width="250px" />
-                            );
-                          })}
-                          </CCol>
+                    <CCol xs="12" md="9" align="center">
+                      {this.state.productPhotos.map(item => {
+                        return <CImg src={item.url} thumbnail width="250px" />;
+                      })}
+                    </CCol>
                   </CFormGroup>
                 </CForm>
               </CCardBody>
               <CCardFooter>
-              <CButton size="" color="primary" onClick={() => this.edit()}>
-                <CIcon name="cil-scrubber" /> Edit
-              </CButton>
-              <CButton></CButton>
-              <CButton
-                type="reset"
-                size=""
-                color="danger"
-                onClick={() => this.delete()}
-              >
-                <CIcon name="cil-ban" /> Delete
-              </CButton>
-              <CButton></CButton>
-              <CButton color="dark" size="" onClick={() => this.cancel()}>
-              <CIcon name="cil-home" />Back
-              </CButton>
-            </CCardFooter>
+                <CButton size="sm" color="primary" onClick={() => this.edit()}>
+                  <CIcon name="cil-settings" /> Cập nhật
+                </CButton>
+                &nbsp;&nbsp;&nbsp;
+                <Link to={{pathname :`/productphotos/create`, productId:this.state.id}}><CButton
+                  color="success"
+                  size="sm"
+                >
+                  <CIcon name="cil-scrubber" />
+                  Thêm hình ảnh
+                </CButton>
+                </Link>
+                &nbsp;&nbsp;&nbsp;
+                <CButton color="dark" size="sm" onClick={() => this.cancel()}>
+                  <CIcon name="cil-home" />
+                  Trở về danh sách
+                </CButton>
+              </CCardFooter>
             </CCard>
           </CCol>
         </CRow>

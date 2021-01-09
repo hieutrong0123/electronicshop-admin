@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
   CButton,
   CCard,
@@ -13,11 +13,11 @@ import {
   CInputRadio,
   CLabel,
   CRow
-}from '@coreui/react'
-import CIcon from '@coreui/icons-react';
-import userservice_json from 'src/service/userservice_json';
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import userservice_json from "src/service/userservice_json";
 
-class UserForm extends Component {
+class UserCreate extends Component {
   constructor(props) {
     super(props);
 
@@ -28,7 +28,7 @@ class UserForm extends Component {
       email: "",
       firstMiddleName: "",
       lastName: "",
-      birthday: "2020-12-12",
+      birthday: "2000-01-01",
       gender: 0,
       address: "",
       phoneNumber: "",
@@ -39,20 +39,13 @@ class UserForm extends Component {
   }
 
   changeHandler = e => {
-    if(e.target.name === 'gender')
-    {
+    if (e.target.name === "gender") {
       this.setState({ gender: Number(e.target.value) });
-      console.log(this.state.gender);
-      console.log(typeof this.state.gender);
-    }
-    else if (e.target.name === 'status')
-    {
+    } else if (e.target.name === "status") {
       this.setState({ status: Number(e.target.value) });
-      console.log(this.state.status);
-      console.log(typeof this.state.status);
-    }
-    else
-    {
+    } else if (e.target.name === "email") {
+      this.setState({ userName: e.target.value });
+    } else {
       this.setState({ [e.target.name]: e.target.value });
     }
   };
@@ -60,26 +53,42 @@ class UserForm extends Component {
     this.props.history.push("/users");
   }
 
+  validateEmail(email) {
+    if (
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+        email
+      )
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  validatePasword(password) {
+    if (
+      /^(?=.*[A-Z])(?=.*[\W])(?=.*[0-9])(?=.*[a-z]).{8,128}$/.test(password)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   submitHandler() {
-    if (!this.state.email) {
-      alert("Email error");
-    }
-    else if(!this.state.password){
-      alert("Please enter password with 8-10 characters with characters,numbers,1 upper case letter and special characters");
-    }
-    else if(this.state.password !== this.state.confirmPassword){
+    if (!this.validateEmail(this.state.email)) {
+      alert("Email invalidate");
+    } else if (!this.validatePasword(this.state.password)) {
+      alert(
+        "Please enter password with 8-30 characters with characters, numbers, 1 upper case letter and special characters"
+      );
+    } else if (this.state.password !== this.state.confirmPassword) {
       alert("Passwords do not match");
-    }
-    else if(!this.state.birthday){
+    } else if (!this.state.birthday) {
       alert("Birthday error");
-    }
-    else if(!this.state.gender){
+    } else if (!this.state.gender) {
       alert("Gender error");
-    }
-    else if(!this.state.userInRole){
+    } else if (!this.state.userInRole) {
       alert("User Role error");
-    }
-     else {
+    } else {
       const data = {
         userName: this.state.userName,
         password: this.state.password,
@@ -113,7 +122,7 @@ class UserForm extends Component {
           <CCol xs="12" md="10">
             <CCard>
               <CCardHeader>
-                Users Form
+                Thêm người dùng
                 <small></small>
               </CCardHeader>
               <CCardBody>
@@ -123,12 +132,28 @@ class UserForm extends Component {
                 >
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Username</CLabel>
+                      <CLabel htmlFor="email-input">Email</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        autoComplete="email"
+                        value={this.state.email}
+                        onChange={this.changeHandler}
+                      />
+                    </CCol>
+                  </CFormGroup>
+
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="text-input">Tài khoản</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="userName"
-                        placeholder="Username"
+                        placeholder="Tài khoản"
                         value={this.state.userName}
                         onChange={this.changeHandler}
                       />
@@ -137,83 +162,53 @@ class UserForm extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="email-input">Email</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInput
-                        type="email"
-                        name="email"
-                        placeholder="Enter Email"
-                        autoComplete="email"
-                        value={this.state.email}
-                        onChange={this.changeHandler}
-                      />
-                      <CFormText className="help-block">
-                        Please enter your email
-                      </CFormText>
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="password-input">Password</CLabel>
+                      <CLabel htmlFor="password-input">Mật khẩu</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         type="password"
                         name="password"
-                        placeholder="Password"
+                        placeholder="Mật khẩu"
                         autoComplete="new-password"
                         value={this.state.password}
                         onChange={this.changeHandler}
                       />
                       <CFormText className="help-block">
-                      Please enter password with 8-10 characters with characters,numbers,1 upper case letter and special characters
+                        Vui lòng nhập mật khẩu có 8-30 ký tự với số, chữ hoa,
+                        chữ thường và ký tự đặc biệt
                       </CFormText>
                     </CCol>
                   </CFormGroup>
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="password-input">Confirm Password</CLabel>
+                      <CLabel htmlFor="password-input">
+                        Xác nhận mật khẩu
+                      </CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         type="password"
                         name="confirmPassword"
-                        placeholder="Confirm Password"
+                        placeholder="Xác nhận mật khẩu"
                         autoComplete="new-password"
                         value={this.state.confirmPassword}
                         onChange={this.changeHandler}
                       />
                       <CFormText className="help-block">
-                        Please enter password again
+                        Vui lòng nhập lại mật khẩu
                       </CFormText>
                     </CCol>
                   </CFormGroup>
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Last Name</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInput
-                        name="lastName"
-                        placeholder="Last Name"
-                        value={this.state.lastName}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup>
-
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="text-input">First Middle Name</CLabel>
+                      <CLabel htmlFor="text-input">Tên</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="firstMiddleName"
-                        placeholder="First Middle Name"
+                        placeholder="Tên"
                         value={this.state.firstMiddleName}
                         onChange={this.changeHandler}
                       />
@@ -222,13 +217,27 @@ class UserForm extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="date-input">Birthday</CLabel>
+                      <CLabel htmlFor="text-input">Họ</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        name="lastName"
+                        placeholder="Họ"
+                        value={this.state.lastName}
+                        onChange={this.changeHandler}
+                      />
+                    </CCol>
+                  </CFormGroup>
+
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="date-input">Sinh nhật</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         type="date"
                         name="birthday"
-                        placeholder="Birthday"
+                        placeholder="Sinh nhật"
                         value={this.state.birthday}
                         onChange={this.changeHandler}
                       />
@@ -237,7 +246,7 @@ class UserForm extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel>Gender</CLabel>
+                      <CLabel>Giới tính</CLabel>
                     </CCol>
                     <CCol md="9">
                       <CFormGroup variant="custom-radio" inline>
@@ -250,7 +259,7 @@ class UserForm extends Component {
                           checked={this.state.gender === 0}
                         />
                         <CLabel variant="custom-checkbox" htmlFor="Male">
-                          Male
+                          Nam
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-radio" inline>
@@ -263,7 +272,7 @@ class UserForm extends Component {
                           checked={this.state.gender === 1}
                         />
                         <CLabel variant="custom-checkbox" htmlFor="Female">
-                          Female
+                          Nữ
                         </CLabel>
                       </CFormGroup>
                     </CCol>
@@ -271,12 +280,12 @@ class UserForm extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Address</CLabel>
+                      <CLabel htmlFor="text-input">Địa chỉ</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="address"
-                        placeholder="Address"
+                        placeholder="Địa chỉ"
                         value={this.state.address}
                         onChange={this.changeHandler}
                       />
@@ -285,12 +294,12 @@ class UserForm extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Phone Number</CLabel>
+                      <CLabel htmlFor="text-input">Số điện thoại</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="phoneNumber"
-                        placeholder="Phone Number"
+                        placeholder="Số điện thoại"
                         value={this.state.phoneNumber}
                         onChange={this.changeHandler}
                       />
@@ -299,7 +308,7 @@ class UserForm extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel>User Role</CLabel>
+                      <CLabel>Phân quyền</CLabel>
                     </CCol>
                     <CCol md="9">
                       <CFormGroup variant="custom-radio" inline>
@@ -312,7 +321,7 @@ class UserForm extends Component {
                           checked={this.state.userInRole === "Admin"}
                         />
                         <CLabel variant="custom-checkbox" htmlFor="Admin">
-                          Admin
+                          Quản trị viên
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-radio" inline>
@@ -325,7 +334,7 @@ class UserForm extends Component {
                           checked={this.state.userInRole === "Employee"}
                         />
                         <CLabel variant="custom-checkbox" htmlFor="Employee">
-                          Employee
+                          Nhân viên
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-radio" inline>
@@ -338,7 +347,7 @@ class UserForm extends Component {
                           checked={this.state.userInRole === "User"}
                         />
                         <CLabel variant="custom-checkbox" htmlFor="User">
-                          User
+                          Người dùng
                         </CLabel>
                       </CFormGroup>
                     </CCol>
@@ -351,11 +360,12 @@ class UserForm extends Component {
                   color="primary"
                   onClick={() => this.submitHandler()}
                 >
-                  <CIcon name="cil-scrubber" /> Submit
+                  <CIcon name="cil-scrubber" /> Thêm
                 </CButton>
                 <CButton></CButton>
-                <CButton color="secondary" onClick={() => this.cancel()}>
-                  Cancel
+                <CButton size="sm" color="secondary" onClick={() => this.cancel()}>
+                <CIcon name="cil-home" />
+                  Huỷ bỏ và trở về danh sách
                 </CButton>
               </CCardFooter>
             </CCard>
@@ -366,4 +376,4 @@ class UserForm extends Component {
   }
 }
 
-export default UserForm;
+export default UserCreate;

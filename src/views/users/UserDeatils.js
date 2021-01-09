@@ -48,7 +48,7 @@ class UserDetails extends Component {
 
   edit() {
     this.props.history.push(`/users/edit/${this.state.id}`);
-  }
+  };
 
   delete() {
     userservice_json
@@ -62,7 +62,7 @@ class UserDetails extends Component {
         }
       })
       .catch(err => console.log(err));
-  }
+  };
 
   disable() {
     userservice_json
@@ -76,7 +76,7 @@ class UserDetails extends Component {
         }
       })
       .catch(err => console.log(err));
-  }
+  };
 
   loadData() {
     userservice_json
@@ -373,7 +373,7 @@ class UserDetails extends Component {
               <CButton size="" color="primary" onClick={() => this.edit()}>
                 <CIcon name="cil-scrubber" /> Edit
               </CButton>
-              <CButton></CButton>
+              &nbsp;&nbsp;&nbsp;
               <CButton
                 type="reset"
                 size=""
@@ -382,7 +382,7 @@ class UserDetails extends Component {
               >
                 <CIcon name="cil-ban" /> Delete
               </CButton>
-              <CButton></CButton>
+              &nbsp;&nbsp;&nbsp;
               <CButton
                 type="reset"
                 size=""

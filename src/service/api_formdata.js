@@ -2,11 +2,9 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const url = {
-  /// tat ca cac duong dan thi nam o day
   baseURL: "https://localhost:5001/api",
-  authLink: "/Auth",
-  userlink: "/Users",
-  productlink: "/Products"
+  productlink: "/Products",
+  photoproductlink: "/ProductPhotos",
 };
 
 const Token = Cookies.get("Token");

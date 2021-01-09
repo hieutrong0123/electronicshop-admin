@@ -37,13 +37,13 @@ import Widgets from './views/widgets/Widgets';
 //Users
 import Users from './views/users/Users';
 // import User from './views/users/User';
-import UserForms from './views/users/UserForm';
+import UserCreate from './views/users/UserCreate';
 import UserDetails from './views/users/UserDeatils';
 import UserEdit from './views/users/UserEdit';
 
 //Products
 import Products from './views/products/Products';
-import ProductForm from './views/products/ProductForm';
+import ProductCreate from './views/products/ProductCreate';
 import ProductDetails from "./views/products/ProductDeatils";
 import ProductEdit from "./views/products/ProductEdit";
 
@@ -53,9 +53,16 @@ import CategoryForm from './views/categories/CategoryForm';
 import CategoryDetails from './views/categories/CategoryDetails';
 import CategoryEdit from './views/categories/CategoryEdit';
 
+//Orders
+import Orders from './views/orders/Orders';
+import OrderById from './views/orders/OrderById';
+
+// ProductPhotos
+import ProductPhotoCreate from './views/productphotos/ProductPhotoCreate';
+
 const routes = [
   // { path: '/', exact: true, name: 'Home' },
-  { path: '/', exact : true, name: 'Home', component: Dashboard },
+  { path: '/', exact : true, name: 'Trang chủ', component: Dashboard },
   { path: '/dashboard', exact : true, name: 'Dashboard', component: Dashboard },
   { path: '/theme', exact : true, name: 'Theme', component: Colors },
   { path: '/theme/colors', exact : true, name: 'Colors', component: Colors },
@@ -95,23 +102,29 @@ const routes = [
   { path: '/widgets', exact : true, name: 'Widgets', component: Widgets },
 
   //Users
-  { path: '/users', exact: true,  name: 'Users', component: Users },
-  { path: '/users/create', exact: true, name: 'User Create', component: UserForms },
-  //{ path: '/users/:id', exact: true, name: 'User Details', component: User },
-  { path: '/users/edit/:id', exact: true, name: 'User Edit', component: UserEdit },
-  { path: '/users/:id', exact: true, name: 'User Details', component: UserDetails },
+  { path: '/users', exact: true,  name: 'Danh sách người dùng', component: Users },
+  { path: '/users/create', exact: true, name: 'Thêm người dùng', component: UserCreate },
+  { path: '/users/edit/:id', exact: true, name: 'Cập nhật', component: UserEdit },
+  { path: '/users/:id', exact: true, name: 'Chi tiết', component: UserDetails },
 
   //Product
-  { path: '/products', exact: true,  name: 'Products', component: Products },
-  { path: '/products/create', exact: true, name: 'Product Create', component: ProductForm },
-  { path: '/products/:id', exact: true, name: 'Product Details', component: ProductDetails },
-  { path: '/products/edit/:id', exact: true, name: 'Product Edit', component: ProductEdit },
+  { path: '/products', exact: true,  name: 'Danh sách sản phẩm', component: Products },
+  { path: '/products/create', exact: true, name: 'Thêm sản phẩm', component: ProductCreate },
+  { path: '/products/edit/:id', exact: true, name: 'Cập nhật', component: ProductEdit },
+  { path: '/products/:id', exact: true, name: 'Chi tiết', component: ProductDetails },
 
   //Categories
-  { path: '/categories', exact: true,  name: 'Categories', component: Categories },
-  { path: '/categories/create', exact: true, name: 'Category Create', component: CategoryForm },
-  { path: '/categories/:id', exact: true,  name: 'Category Details', component: CategoryDetails },
-  { path: '/categories/edit/:id', exact: true, name: 'Product Edit', component: CategoryEdit },
+  { path: '/categories', exact: true,  name: 'Danh sách danh mục', component: Categories },
+  { path: '/categories/create', exact: true, name: 'Thêm danh mục', component: CategoryForm },
+  { path: '/categories/:id', exact: true,  name: 'Chi tiết', component: CategoryDetails },
+  { path: '/categories/edit/:id', exact: true, name: 'Cập nhật', component: CategoryEdit },
+  
+  //Orders
+  { path: '/orders', exact: true,  name: 'Danh sách đơn hàng', component: Orders },
+  { path: '/orders/:id', exact: true,  name: 'Xem thêm đơn hàng', component: OrderById },
+  
+  //ProductPhoto
+  { path: '/productphotos/create', exact: true,  name: 'Thêm hình ảnh sản phẩm', component: ProductPhotoCreate },
 ];
 
 export default routes;
