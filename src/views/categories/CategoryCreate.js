@@ -17,7 +17,7 @@ import {
 import CIcon from "@coreui/icons-react";
 import categoryservice_json from "src/service/categoryservice_json";
 
-class CategoryForm extends Component {
+class CategoryCreate extends Component {
   constructor(props) {
     super(props);
 
@@ -25,7 +25,7 @@ class CategoryForm extends Component {
       name: "",
       alias: "",
       rootId: "",
-      productTypeId: "",
+      productTypeId: 1,
       categoryList: null
     };
     this.submitHandler = this.submitHandler.bind(this);
@@ -119,7 +119,7 @@ class CategoryForm extends Component {
           <CCol xs="12" md="10">
             <CCard>
               <CCardHeader>
-                Category Create
+                Thêm danh mục
                 <small></small>
               </CCardHeader>
               <CCardBody>
@@ -130,12 +130,12 @@ class CategoryForm extends Component {
                   
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Name</CLabel>
+                      <CLabel htmlFor="text-input">Tên danh mục</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="name"
-                        placeholder="Name"
+                        placeholder="Tên danh mục"
                         value={this.state.name}
                         onChange={this.changeHandler}
                       />
@@ -144,12 +144,12 @@ class CategoryForm extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Alias</CLabel>
+                      <CLabel htmlFor="text-input">Bí danh</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="alias"
-                        placeholder="Alias"
+                        placeholder="Bí danh"
                         value={this.state.alias}
                         onChange={this.changeHandler}
                       />
@@ -158,11 +158,11 @@ class CategoryForm extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="select">Root Category</CLabel>
+                      <CLabel htmlFor="select">Danh mục gốc</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       {this.state.categoryList === null ? (
-                        <h3>Waiting...</h3>
+                        <h3>Đang tải</h3>
                       ) : (
                         <CSelect
                           name="rootId"
@@ -173,7 +173,7 @@ class CategoryForm extends Component {
                             value=""
                             selected={this.state.rootId === null}
                           >
-                            Choose
+                            Lựa chọn
                           </option>
                           {this.state.categoryList.map(item => {
                             return (
@@ -193,33 +193,33 @@ class CategoryForm extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel>Product Type</CLabel>
+                      <CLabel>Loại sản phẩm</CLabel>
                     </CCol>
                     <CCol md="9">
                       <CFormGroup variant="custom-radio" inline>
                         <CInputRadio
                           custom
-                          id="Smart Phone"
+                          id="1"
                           name="productTypeId"
                           onChange={this.changeHandler}
                           value={Number(1)}
                           checked={this.state.productTypeId === 1}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Smart Phone">
-                          Smart Phone
+                        <CLabel variant="custom-checkbox" htmlFor="1">
+                        Laptop - Thiết bị IT
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-radio" inline>
                         <CInputRadio
                           custom
-                          id="Laptop"
+                          id="2"
                           name="productTypeId"
                           onChange={this.changeHandler}
                           value={Number(2)}
                           checked={this.state.productTypeId === 2}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Laptop">
-                          Laptop
+                        <CLabel variant="custom-checkbox" htmlFor="2">
+                        Điện Thoại - Máy tính bảng
                         </CLabel>
                       </CFormGroup>
                     </CCol>
@@ -232,11 +232,12 @@ class CategoryForm extends Component {
                   color="primary"
                   onClick={() => this.submitHandler()}
                 >
-                  <CIcon name="cil-scrubber" /> Submit
+                  <CIcon name="cil-scrubber" /> Thêm
                 </CButton>
-                <CButton></CButton>
-                <CButton color="secondary" onClick={() => this.cancel()}>
-                  Cancel
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <CButton size="sm" color="secondary" onClick={() => this.cancel()}>
+                <CIcon name="cil-home" />
+                  Huỷ bỏ và trở về danh sách
                 </CButton>
               </CCardFooter>
             </CCard>
@@ -247,4 +248,4 @@ class CategoryForm extends Component {
   }
 }
 
-export default CategoryForm;
+export default CategoryCreate;

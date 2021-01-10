@@ -102,8 +102,8 @@ class UserPage extends Component {
     const fields = [
       { key: "id", label: "Mã người dùng" },
       { key: "userName", label: "Tài khoản" },
-      { key: "lastName", label: "Họ" },
-      { key: "firstMiddleName", label: "Tên" },
+      { key: "firstMiddleName", label: "Họ và tên lót" },
+      { key: "lastName", label: "Tên" },
       { key: "email", label: "Email" },
       // { key: "phoneNumber", label: "Số điện thoại" },
       { key: "link", label: "Action", _style: { width: "35%" } }

@@ -30,15 +30,17 @@ class Categories extends Component {
     this.props.history.push(`/categories/${id}`);
   };
 
+  edit = id => {
+    this.props.history.push(`/categories/edit/${id}`);
+  };
+
   render() {
     const fields = [
-      { key: "id", _classes: "font-weight-bold" },
-      "name",
-      "alias",
-      // "productTypeId",
-      { key: "productType", label: "Product Type" },
-      "createdDate",
-      // "createdBy",
+      { key: "id", label: "Mã danh mục" },
+      { key: "name", label: "Tên danh mục" },
+      { key: "alias", label: "Bí danh" },      
+      // { key: "productType", label: "Loại sản phẩm" },
+      { key: "createdDate", label: "Ngày tạo" },
       { key: "link", label: "Action" },
     ];
     return this.state.list === null ? null : (
@@ -62,17 +64,17 @@ class Categories extends Component {
                     color="primary"
                     onClick={() => this.details(item.id)}
                   >
-                    <CIcon name="cil-scrubber" /> Details
+                    <CIcon name="cil-scrubber" /> Chi tiết
+                  </CButton>
+                  &nbsp;&nbsp;&nbsp;
+                  <CButton
+                    size="sm"
+                    color="success"
+                    onClick={() => this.edit(item.id)}
+                  >
+                    <CIcon name="cil-settings" /> Cập nhật
                   </CButton>
                 </td>
-              );
-            },
-            productType: item =>{
-              return(
-                <td>
-                  {item.productType.name}
-                  </td>
-
               );
             },
             createdDate: item =>{

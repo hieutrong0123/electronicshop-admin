@@ -343,39 +343,52 @@ class ProductEdit extends Component {
                       <CFormGroup variant="custom-radio" inline>
                         <CInputRadio
                           custom
-                          id="Hot"
+                          id="0"
                           name="status"
                           onChange={this.changeHandler}
                           value={Number(0)}
                           checked={this.state.status === 0}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Hot">
-                          Bán chạy
-                        </CLabel>
-                      </CFormGroup>
-                      <CFormGroup variant="custom-radio" inline>
-                        <CInputRadio
-                          custom
-                          id="Default"
-                          name="status"
-                          onChange={this.changeHandler}
-                          value={Number(1)}
-                          checked={this.state.status === 1}
-                        />
-                        <CLabel variant="custom-checkbox" htmlFor="Default">
+                        <CLabel variant="custom-checkbox" htmlFor="0">
                           Mặc định
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-radio" inline>
                         <CInputRadio
                           custom
-                          id="Hidden"
+                          id="1"
                           name="status"
                           onChange={this.changeHandler}
                           value={Number(1)}
+                          checked={this.state.status === 1}
+                        />
+                        <CLabel variant="custom-checkbox" htmlFor="1">
+                          Hàng mới về
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="custom-radio" inline>
+                        <CInputRadio
+                          custom
+                          id="2"
+                          name="status"
+                          onChange={this.changeHandler}
+                          value={Number(2)}
                           checked={this.state.status === 2}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Hidden">
+                        <CLabel variant="custom-checkbox" htmlFor="2">
+                          Hàng khuyến mãi
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="custom-radio" inline>
+                        <CInputRadio
+                          custom
+                          id="3"
+                          name="status"
+                          onChange={this.changeHandler}
+                          value={Number(3)}
+                          checked={this.state.status === 3}
+                        />
+                        <CLabel variant="custom-checkbox" htmlFor="3">
                           Đã xoá
                         </CLabel>
                       </CFormGroup>
@@ -399,7 +412,7 @@ class ProductEdit extends Component {
                   onClick={() => this.cancel()}
                 >
                   <CIcon name="cil-home" />
-                  Huỷ và trở về danh sach
+                  Huỷ và trở về danh sách
                 </CButton>
               </CCardFooter>
             </CCard>

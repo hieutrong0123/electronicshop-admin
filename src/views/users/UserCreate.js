@@ -362,7 +362,7 @@ class UserCreate extends Component {
                 >
                   <CIcon name="cil-scrubber" /> Thêm
                 </CButton>
-                <CButton></CButton>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <CButton size="sm" color="secondary" onClick={() => this.cancel()}>
                 <CIcon name="cil-home" />
                   Huỷ bỏ và trở về danh sách

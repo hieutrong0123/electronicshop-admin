@@ -49,7 +49,7 @@ import ProductEdit from "./views/products/ProductEdit";
 
 //Categories
 import Categories from './views/categories/Categories';
-import CategoryForm from './views/categories/CategoryForm';
+import CategoryCreate from './views/categories/CategoryCreate';
 import CategoryDetails from './views/categories/CategoryDetails';
 import CategoryEdit from './views/categories/CategoryEdit';
 
@@ -115,7 +115,7 @@ const routes = [
 
   //Categories
   { path: '/categories', exact: true,  name: 'Danh sách danh mục', component: Categories },
-  { path: '/categories/create', exact: true, name: 'Thêm danh mục', component: CategoryForm },
+  { path: '/categories/create', exact: true, name: 'Thêm danh mục', component: CategoryCreate },
   { path: '/categories/:id', exact: true,  name: 'Chi tiết', component: CategoryDetails },
   { path: '/categories/edit/:id', exact: true, name: 'Cập nhật', component: CategoryEdit },
   

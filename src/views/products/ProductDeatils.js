@@ -14,13 +14,14 @@ import {
   CLabel,
   CSelect,
   CRow,
-  CImg
+  CImg,
+  CDataTable
 } from "@coreui/react";
-import {Link}  from "react-router-dom";
+import { Link } from "react-router-dom";
 import CIcon from "@coreui/icons-react";
 import productservice_json from "src/service/productservice_json";
 import categoryservice_json from "src/service/categoryservice_json";
-import ProductPhotoCreate from "src/views/productphotos/ProductPhotoCreate";
+
 class ProductDetails extends Component {
   state = {
     id: "",
@@ -39,6 +40,7 @@ class ProductDetails extends Component {
     modifiedBy: null,
     productPhotos: [],
     categoryList: null,
+    list: null,
     loading: true
   };
   createPhotoProduct = this.createPhotoProduct.bind(this);
@@ -73,9 +75,7 @@ class ProductDetails extends Component {
       .catch(err => console.log(err));
   }
 
-  createPhotoProduct() {
-    
-  }
+  createPhotoProduct() {}
 
   loadData() {
     categoryservice_json
@@ -119,11 +119,13 @@ class ProductDetails extends Component {
               createdBy: res.data.resultObj.createdBy,
               modifiedBy: res.data.resultObj.modifiedBy,
               productPhotos: res.data.resultObj.productPhotos,
+              list: res.data.resultObj.productPhotos,
               loading: false
             });
           }
-          console.log(res);
-          console.log(this.state);
+          // console.log(res);
+          // console.log(this.state);
+          console.log(this.state.list);
         } else {
           alert(res.data.message);
         }
@@ -132,6 +134,10 @@ class ProductDetails extends Component {
   }
 
   render() {
+    const fields = [
+      { key: "id", label: "Mã hình ảnh" },
+      { key: "url", label: "Hình ảnh" }
+    ];
     return this.state.loading === true ? (
       <h1>Đang tải dữ liệu vui vòng chờ trong giây lát</h1>
     ) : (
@@ -308,39 +314,52 @@ class ProductDetails extends Component {
                       <CFormGroup variant="custom-radio" inline>
                         <CInputRadio
                           custom
-                          id="Hot"
+                          id="0"
                           name="status"
                           onChange={this.changeHandler}
                           value={Number(0)}
                           checked={this.state.status === 0}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Hot">
-                          Bán chạy
-                        </CLabel>
-                      </CFormGroup>
-                      <CFormGroup variant="custom-radio" inline>
-                        <CInputRadio
-                          custom
-                          id="Default"
-                          name="status"
-                          onChange={this.changeHandler}
-                          value={Number(1)}
-                          checked={this.state.status === 1}
-                        />
-                        <CLabel variant="custom-checkbox" htmlFor="Default">
+                        <CLabel variant="custom-checkbox" htmlFor="0">
                           Mặc định
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-radio" inline>
                         <CInputRadio
                           custom
-                          id="Hidden"
+                          id="1"
                           name="status"
                           onChange={this.changeHandler}
                           value={Number(1)}
+                          checked={this.state.status === 1}
+                        />
+                        <CLabel variant="custom-checkbox" htmlFor="1">
+                          Hàng mới về
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="custom-radio" inline>
+                        <CInputRadio
+                          custom
+                          id="2"
+                          name="status"
+                          onChange={this.changeHandler}
+                          value={Number(2)}
                           checked={this.state.status === 2}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Hidden">
+                        <CLabel variant="custom-checkbox" htmlFor="2">
+                          Hàng khuyến mãi
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="custom-radio" inline>
+                        <CInputRadio
+                          custom
+                          id="3"
+                          name="status"
+                          onChange={this.changeHandler}
+                          value={Number(3)}
+                          checked={this.state.status === 3}
+                        />
+                        <CLabel variant="custom-checkbox" htmlFor="3">
                           Đã xoá
                         </CLabel>
                       </CFormGroup>
@@ -408,7 +427,7 @@ class ProductDetails extends Component {
                       </CCol>
                     </CFormGroup>
                   ) : null}
-                  <CFormGroup row>
+                  {/* <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="text-input">Hình ảnh</CLabel>
                     </CCol>
@@ -416,6 +435,31 @@ class ProductDetails extends Component {
                       {this.state.productPhotos.map(item => {
                         return <CImg src={item.url} thumbnail width="250px" />;
                       })}
+                    </CCol>
+                  </CFormGroup> */}
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="text-input">Hình ảnh</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9" align="center">
+                      <CDataTable
+                        items={this.state.list}
+                        fields={fields}
+                        // tableFilter
+                        // itemsPerPageSelect
+                        // itemsPerPage={5}
+                        hover
+                        // pagination
+                        scopedSlots={{
+                          url: item => {
+                            return (
+                              <td>
+                                <CImg src={item.url} width="250px" />
+                              </td>
+                            );
+                          }
+                        }}
+                      />
                     </CCol>
                   </CFormGroup>
                 </CForm>
@@ -425,13 +469,16 @@ class ProductDetails extends Component {
                   <CIcon name="cil-settings" /> Cập nhật
                 </CButton>
                 &nbsp;&nbsp;&nbsp;
-                <Link to={{pathname :`/productphotos/create`, productId:this.state.id}}><CButton
-                  color="success"
-                  size="sm"
+                <Link
+                  to={{
+                    pathname: `/productphotos/create`,
+                    productId: this.state.id
+                  }}
                 >
-                  <CIcon name="cil-scrubber" />
-                  Thêm hình ảnh
-                </CButton>
+                  <CButton color="success" size="sm">
+                    <CIcon name="cil-scrubber" />
+                    Thêm hình ảnh
+                  </CButton>
                 </Link>
                 &nbsp;&nbsp;&nbsp;
                 <CButton color="dark" size="sm" onClick={() => this.cancel()}>

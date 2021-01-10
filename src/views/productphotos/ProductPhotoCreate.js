@@ -52,7 +52,7 @@ class ProductPhotoCreate extends Component {
     if (e.target.name === "thumbnailImages") {
       let arr = e.target.files;
       console.log(arr);
-      this.setState({ thumbnailImages: e.target.files[0] }, () =>
+      this.setState({ thumbnailImages: e.target.files }, () =>
         console.log(this.state.thumbnailImages)
       );
     } else {
@@ -74,7 +74,9 @@ class ProductPhotoCreate extends Component {
       var FormData = require("form-data");
       var data = new FormData();
       data.append("ProductId", this.state.productId);
-      data.append("ThumbnailImages", this.state.thumbnailImages);
+      this.state.thumbnailImages.forEach(item =>{
+        data.append("ThumbnailImages", item);
+      });
       console.log(this.state.productId, this.state.thumbnailImages);
 
       productphotoservice_formdata
@@ -106,7 +108,7 @@ class ProductPhotoCreate extends Component {
                 >
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="select">ProductId</CLabel>
+                      <CLabel htmlFor="select">Tên sản phẩm</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       {this.state.productList === null ? (

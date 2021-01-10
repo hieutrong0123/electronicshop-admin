@@ -63,7 +63,7 @@ class ProductCreate extends Component {
     if (e.target.name === "thumbnailImages") {
       let arr = e.target.files;
       console.log(arr);
-      this.setState({ thumbnailImages: e.target.files[0] }, () =>
+      this.setState({ thumbnailImages: e.target.files }, () =>
         console.log(this.state.thumbnailImages)
       );
     } else if (e.target.name === "status") {
@@ -109,7 +109,7 @@ class ProductCreate extends Component {
   async submitHandler() {
     if (!this.state.name) {
       alert("Name error");
-    } else if (!this.state.price) {
+    } else if (this.state.price < 1) {
       alert("Price error");
     } else if (!this.state.specifications) {
       alert("Specifications error");
@@ -137,7 +137,9 @@ class ProductCreate extends Component {
       data.append("Status", this.state.status);
       data.append("CategoryId", this.state.categoryId);
       data.append("Alias", this.state.alias);
-      data.append("ThumbnailImages", this.state.thumbnailImages);
+      this.state.thumbnailImages.forEach(item =>{
+        data.append("ThumbnailImages", item);
+      });
       console.log(data);
 
       productservice_formdata
@@ -236,8 +238,11 @@ class ProductCreate extends Component {
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
+                        type="number"
+                        min="1"
                         name="price"
                         placeholder="Giá bán"
+                        number
                         value={this.state.price}
                         onChange={this.changeHandler}
                       />
@@ -282,6 +287,7 @@ class ProductCreate extends Component {
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
+                        type="number"
                         name="goodsReceipt"
                         placeholder="Số lượng nhập"
                         value={this.state.goodsReceipt}
@@ -296,6 +302,7 @@ class ProductCreate extends Component {
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
+                        type="number"
                         name="inventory"
                         placeholder="Số lượng tồn"
                         value={this.state.inventory}
@@ -312,27 +319,53 @@ class ProductCreate extends Component {
                       <CFormGroup variant="custom-radio" inline>
                         <CInputRadio
                           custom
-                          id="Hot"
+                          id="0"
                           name="status"
                           onChange={this.changeHandler}
                           value={Number(0)}
                           checked={this.state.status === 0}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Hot">
-                          Bán chạy
+                        <CLabel variant="custom-checkbox" htmlFor="0">
+                          Mặc định
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-radio" inline>
                         <CInputRadio
                           custom
-                          id="Default"
+                          id="1"
                           name="status"
                           onChange={this.changeHandler}
                           value={Number(1)}
                           checked={this.state.status === 1}
                         />
-                        <CLabel variant="custom-checkbox" htmlFor="Default">
-                          Mặc định
+                        <CLabel variant="custom-checkbox" htmlFor="1">
+                          Hàng mới về
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="custom-radio" inline>
+                        <CInputRadio
+                          custom
+                          id="2"
+                          name="status"
+                          onChange={this.changeHandler}
+                          value={Number(2)}
+                          checked={this.state.status === 2}
+                        />
+                        <CLabel variant="custom-checkbox" htmlFor="2">
+                          Hàng khuyến mãi
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="custom-radio" inline>
+                        <CInputRadio
+                          custom
+                          id="3"
+                          name="status"
+                          onChange={this.changeHandler}
+                          value={Number(3)}
+                          checked={this.state.status === 3}
+                        />
+                        <CLabel variant="custom-checkbox" htmlFor="3">
+                          Đã xoá
                         </CLabel>
                       </CFormGroup>
                     </CCol>
