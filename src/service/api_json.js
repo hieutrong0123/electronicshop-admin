@@ -7,7 +7,8 @@ const url = {
   userlink: "/Users",
   productlink: "/Products",
   categorylink: "/Categories",
-  orderlink: "/Orders"
+  orderlink: "/Orders",
+  orderdetaillink : "/OrderDetails"
 };
 
 const Token = Cookies.get("Token");

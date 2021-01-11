@@ -60,6 +60,9 @@ import OrderById from './views/orders/OrderById';
 // ProductPhotos
 import ProductPhotoCreate from './views/productphotos/ProductPhotoCreate';
 
+//OrderDetails
+import OrderDetails from './views/orderdetails/OrderDetails';
+
 const routes = [
   // { path: '/', exact: true, name: 'Home' },
   { path: '/', exact : true, name: 'Trang chủ', component: Dashboard },
@@ -125,6 +128,9 @@ const routes = [
   
   //ProductPhoto
   { path: '/productphotos/create', exact: true,  name: 'Thêm hình ảnh sản phẩm', component: ProductPhotoCreate },
+
+  //OrderDetails
+  { path: '/orderdetails/:id', exact: true,  name: 'Chi tiết hoá đơn', component: OrderDetails },
 ];
 
 export default routes;

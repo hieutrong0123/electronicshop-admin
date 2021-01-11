@@ -46,13 +46,16 @@ class OrderById extends Component {
     ]
   };
 
-  componentWillMount() {
-    this.loadData1();    
-  };
+  componentDidMount() {
+    this.loadData1();
+  }
 
   changeHandler = e => {
     //Do Nothing
   };
+  viewOrderDetails() {
+    this.props.history.push(`/orderdetails/${this.state.id}`);
+  }
 
   cancel() {
     this.props.history.push("/orders");
@@ -178,7 +181,6 @@ class OrderById extends Component {
                       />
                     </CCol>
                   </CFormGroup>
-                 
 
                   <CFormGroup row>
                     <CCol md="3">
@@ -285,10 +287,17 @@ class OrderById extends Component {
                         onChange={this.changeHandler}
                       />
                     </CCol>
-                  </CFormGroup>                  
+                  </CFormGroup>
                 </CForm>
               </CCardBody>
               <CCardFooter>
+                <CButton
+                  size="sm"
+                  color="primary"
+                  onClick={() => this.viewOrderDetails()}
+                >
+                  <CIcon name="cil-settings" /> Xem và in hoá đơn
+                </CButton>
                 &nbsp;&nbsp;&nbsp;
                 <CButton color="dark" size="" onClick={() => this.cancel()}>
                   <CIcon name="cil-home" />
