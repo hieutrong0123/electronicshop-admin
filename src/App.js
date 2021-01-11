@@ -9,7 +9,7 @@ import TheLayout from "./containers/TheLayout";
 
 // Pages
 import Login from "./views/pages/login/Login";
-import Register from "./views/pages/register/Register";
+// import Register from "./views/pages/register/Register";
 import Page404 from "./views/pages/page404/Page404";
 import Page500 from "./views/pages/page500/Page500";
 
@@ -23,16 +23,6 @@ import jwt_decode from "jwt-decode";
 // )
 
 class App extends Component {
-  // checkRole = () => {
-  //   const Authentication = "Admin";
-  //   if (Cookies.get("Role") === null) return false;
-  //   if (Cookies.get("Token") === null) return false;
-  //   if (Cookies.get(".AspNetCore.Session") === null) return false;
-  //   const Role = Cookies.get("Role");
-  //   console.log(Authentication);
-  //   console.log(Role);
-  //   return Authentication === Role;
-  // };
   tokenDecode = () => {
     let Role = null;
     const token = Cookies.get("Token");
@@ -52,13 +42,10 @@ class App extends Component {
   };
 
   checkRole = () => {
-    const Authentication = "Admin";
     const CheckRole = this.tokenDecode();
     if (Cookies.get("Token") === null) return false;
     if (Cookies.get(".AspNetCore.Session") === null) return false;
-    console.log(Authentication);
-    console.log(CheckRole);
-    return Authentication === CheckRole;
+    return "Admin" === CheckRole || "Emp" === CheckRole;
   };
 
   render() {
@@ -77,12 +64,12 @@ class App extends Component {
       <BrowserRouter>
         <Switch>
           <Route path="/login" name="Login Page" exact component={Login} />
-          <Route
+          {/* <Route
             path="/register"
             name="Register Page"
             exact
             component={Register}
-          />
+          /> */}
           <Route path="/404" name="Page 404" exact component={Page404} />
           <Route path="/500" name="Page 500" exact component={Page500} />
           {this.checkRole() === true ? (

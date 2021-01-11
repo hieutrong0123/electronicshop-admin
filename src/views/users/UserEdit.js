@@ -8,7 +8,6 @@ import {
   CCol,
   CForm,
   CFormGroup,
-  CFormText,
   CInput,
   CInputRadio,
   CLabel,

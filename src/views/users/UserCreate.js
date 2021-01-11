@@ -44,6 +44,7 @@ class UserCreate extends Component {
     } else if (e.target.name === "status") {
       this.setState({ status: Number(e.target.value) });
     } else if (e.target.name === "email") {
+      this.setState({ email: e.target.value });
       this.setState({ userName: e.target.value });
     } else {
       this.setState({ [e.target.name]: e.target.value });
@@ -55,7 +56,7 @@ class UserCreate extends Component {
 
   validateEmail(email) {
     if (
-      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
+      /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
         email
       )
     ) {
@@ -66,7 +67,7 @@ class UserCreate extends Component {
 
   validatePasword(password) {
     if (
-      /^(?=.*[A-Z])(?=.*[\W])(?=.*[0-9])(?=.*[a-z]).{8,128}$/.test(password)
+      /^(?=.*[A-Z])(?=.*[\W])(?=.*[0-9])(?=.*[a-z]).{8,30}$/.test(password)
     ) {
       return true;
     }
@@ -75,18 +76,20 @@ class UserCreate extends Component {
 
   submitHandler() {
     if (!this.validateEmail(this.state.email)) {
-      alert("Email invalidate");
+      alert("Email không đúng định dạng");
     } else if (!this.validatePasword(this.state.password)) {
       alert(
-        "Please enter password with 8-30 characters with characters, numbers, 1 upper case letter and special characters"
+        "Mật khẩu không đúng định dạng. Vui lòng nhập mật khẩu có 8-30 ký tự với các ký tự, số, 1 chữ hoa và các ký tự đặc biệt"
       );
     } else if (this.state.password !== this.state.confirmPassword) {
       alert("Passwords do not match");
     } else if (!this.state.birthday) {
       alert("Birthday error");
-    } else if (!this.state.gender) {
-      alert("Gender error");
-    } else if (!this.state.userInRole) {
+    } 
+    // else if (!this.state.gender) {
+    //   alert("Gender error");
+    // } 
+    else if (!this.state.userInRole) {
       alert("User Role error");
     } else {
       const data = {
@@ -203,12 +206,12 @@ class UserCreate extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Tên</CLabel>
+                      <CLabel htmlFor="text-input">Họ và tên lót</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="firstMiddleName"
-                        placeholder="Tên"
+                        placeholder="Họ và tên lót"
                         value={this.state.firstMiddleName}
                         onChange={this.changeHandler}
                       />
@@ -217,12 +220,12 @@ class UserCreate extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Họ</CLabel>
+                      <CLabel htmlFor="text-input">Tên</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="lastName"
-                        placeholder="Họ"
+                        placeholder="Tên"
                         value={this.state.lastName}
                         onChange={this.changeHandler}
                       />

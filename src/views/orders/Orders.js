@@ -2,8 +2,6 @@ import React, { Component } from "react";
 
 import {
   CCard,
-  CDataTable,
-  CButton,
   CCardHeader,
   CCardBody,
   CTabs,
@@ -11,11 +9,9 @@ import {
   CNavItem,
   CNavLink,
   CTabContent,
-  CTabPane,
-  CCol
+  CTabPane
 } from "@coreui/react";
 
-import CIcon from "@coreui/icons-react";
 
 import orderservice_json from "src/service/orderservice_json";
 import OrdersTabStatus from "src/views/orders/OrdersTabStatus";

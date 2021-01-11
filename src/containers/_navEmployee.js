@@ -9,28 +9,28 @@ export default [
     icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
     
   },
-   
+  
   {
     _tag: 'CSidebarNavTitle',
     _children: ['Thanh điều hướng']
   },
-  {
-    _tag: 'CSidebarNavDropdown',
-    name: 'Quản lý người dùng',
-    icon: 'cil-puzzle',
-    _children: [
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Thêm',
-        to: '/users/create',
-      },
-      {
-        _tag: 'CSidebarNavItem',
-        name: 'Xem danh sách',
-        to: '/users',
-      },      
-    ],
-  },
+  // {
+  //   _tag: 'CSidebarNavDropdown',
+  //   name: 'Quản lý người dùng',
+  //   icon: 'cil-puzzle',
+  //   _children: [
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Thêm',
+  //       to: '/users/create',
+  //     },
+  //     {
+  //       _tag: 'CSidebarNavItem',
+  //       name: 'Xem danh sách',
+  //       to: '/users',
+  //     },      
+  //   ],
+  // },
   {
     _tag: 'CSidebarNavDropdown',
     name: 'Quản ký sản phẩm',
@@ -83,3 +83,4 @@ export default [
     ]
   },
 ]
+

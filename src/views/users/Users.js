@@ -13,7 +13,7 @@ import CIcon from "@coreui/icons-react";
 
 import userservice_json from "src/service/userservice_json";
 
-class UserPage extends Component {
+class Users extends Component {
   state = {
     list: null,
     toggleDelete: false,
@@ -201,4 +201,4 @@ class UserPage extends Component {
   }
 }
 
-export default UserPage;
+export default Users;
