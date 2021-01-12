@@ -35,7 +35,7 @@ class Orders extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
   }
   render() {
     return this.state.list === null ? null : (

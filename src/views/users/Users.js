@@ -42,7 +42,7 @@ class Users extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
   }
 
   toggleDisable = id => {
@@ -73,7 +73,7 @@ class Users extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
   };
 
   delete() {
@@ -88,7 +88,7 @@ class Users extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
   };
 
   escFunction(event) {

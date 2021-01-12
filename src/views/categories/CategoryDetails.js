@@ -60,7 +60,7 @@ class CategoryDetails extends Component {
           alert(res.dat.message);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
     categoryservice_json
       .getbyId(this.props.match.params.id)
       .then(res => {
@@ -94,7 +94,7 @@ class CategoryDetails extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
   };
 
   render() {

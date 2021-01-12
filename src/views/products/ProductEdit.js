@@ -116,7 +116,7 @@ class ProductEdit extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
   }
   loadData() {
     categoryservice_json
@@ -129,7 +129,7 @@ class ProductEdit extends Component {
           alert(res.dat.message);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
 
     productservice_json
       .getbyId(this.props.match.params.id)
@@ -165,7 +165,7 @@ class ProductEdit extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
   }
 
   render() {

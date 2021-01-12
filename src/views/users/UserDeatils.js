@@ -55,11 +55,19 @@ class UserDetails extends Component {
       .then(res => {
         if (res.data.isSuccessed) {
           if (res.data.resultObj !== null) {
+            if (res.data.resultObj.birthday === "0001-01-01T00:00:00") {
+              this.setState({
+                birthday: ""
+              });
+            } else {
+              this.setState({
+                birthday: res.data.resultObj.birthday.substring(0, 10)
+              });
+            }
             this.setState({
               id: res.data.resultObj.id,
               userName: res.data.resultObj.userName,
               email: res.data.resultObj.email,
-              birthday: res.data.resultObj.birthday.substring(0, 10),
               firstMiddleName: res.data.resultObj.firstMiddleName,
               lastName: res.data.resultObj.lastName,
               phoneNumber: res.data.resultObj.phoneNumber,
@@ -76,7 +84,7 @@ class UserDetails extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
   };
 
   render() {
@@ -136,21 +144,21 @@ class UserDetails extends Component {
                     />
                   </CCol>
                 </CFormGroup>
-
+                
                 <CFormGroup row>
-                  <CCol md="3">
-                    <CLabel htmlFor="date-input">Sinh nhật</CLabel>
-                  </CCol>
-                  <CCol xs="12" md="9">
-                    <CInput
-                      type="date"
-                      name="birthday"
-                      placeholder="Sinh nhật"
-                      value={this.state.birthday}
-                      onChange={this.changeHandler}
-                    />
-                  </CCol>
-                </CFormGroup>
+                    <CCol md="3">
+                      <CLabel htmlFor="date-input">Sinh nhật</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        type="date"
+                        name="birthday"
+                        placeholder="Sinh nhật"
+                        value={this.state.birthday}
+                        onChange={this.changeHandler}
+                      />
+                    </CCol>
+                  </CFormGroup>
 
                 <CFormGroup row>
                   <CCol md="3">
