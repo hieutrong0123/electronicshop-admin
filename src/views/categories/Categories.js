@@ -23,7 +23,7 @@ class Categories extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
+      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
 
   details = id => {

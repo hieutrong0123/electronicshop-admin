@@ -42,7 +42,7 @@ class Users extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
+      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
 
   toggleDisable = id => {
@@ -73,7 +73,7 @@ class Users extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
+      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
   };
 
   delete() {
@@ -88,7 +88,7 @@ class Users extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
+      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
   };
 
   escFunction(event) {
@@ -106,7 +106,7 @@ class Users extends Component {
       { key: "lastName", label: "Tên" },
       { key: "email", label: "Email" },
       // { key: "phoneNumber", label: "Số điện thoại" },
-      { key: "link", label: "Action", _style: { width: "35%" } }
+      { key: "link", label: "Tuỳ chọn", _style: { width: "35%" } }
     ];
     return this.state.list === null ? null : (
       <CCard>
@@ -174,7 +174,7 @@ class Users extends Component {
                 this.setState({ toggleDisable: false });
               }}
             >
-              Cancel
+              Huỷ
             </CButton>
           </CModalFooter>
         </CModal>
@@ -192,7 +192,7 @@ class Users extends Component {
                 this.setState({ toggleDelete: false });
               }}
             >
-              Cancel
+              Huỷ
             </CButton>
           </CModalFooter>
         </CModal>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   CCreateElement,
@@ -21,10 +21,21 @@ import navigation from './_nav'
 
 
 const TheSidebar = () => {
+  const [nav, setNav ] = useState([])
+  //const state = {nav: []}
+  //setNav = this.setState({nav: navigation()})
   const dispatch = useDispatch()
   const show = useSelector(state => state.sidebarShow)
-  
-
+  const getType = async () =>{
+    let a = await navigation()
+    //doi wait lam xong thi moi lam tiep
+    setNav(a)
+    // console.log(a)
+  }
+  useEffect(()=>{
+    getType()
+  },[])
+  //componentDidMount
   return (
     <CSidebar
       show={show}
@@ -44,7 +55,7 @@ const TheSidebar = () => {
       </CSidebarBrand>
       <CSidebarNav>
         <CCreateElement
-          items={navigation}
+          items={nav}
           components={{
             CSidebarNavDivider,
             CSidebarNavDropdown,
