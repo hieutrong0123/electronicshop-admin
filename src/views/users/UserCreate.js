@@ -301,6 +301,7 @@ class UserCreate extends Component {
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
+                       type="number"
                         name="phoneNumber"
                         placeholder="Số điện thoại"
                         value={this.state.phoneNumber}

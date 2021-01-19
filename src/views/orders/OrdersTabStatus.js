@@ -67,6 +67,7 @@ class OrdersTabStatus extends Component {
         }
       })
       .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
+      // .catch(err => console.log(err));
   };
 
   cancelOrder() {
@@ -82,6 +83,7 @@ class OrdersTabStatus extends Component {
         }
       })
       .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
+      // .catch(err => console.log(err));
   };
 
   escFunction(event){
