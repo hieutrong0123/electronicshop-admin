@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  CBadge,
   CDropdown,
   CDropdownItem,
   CDropdownMenu,
@@ -30,14 +29,14 @@ const TheHeaderDropdown = () => {
       <CDropdownToggle className="c-header-nav-link" caret={false}>
         <div className="c-avatar">
           <CImg
-            src={".././avatars/6.jpg"}
+            src={"../.././avatars/6.jpg"}
             className="c-avatar-img"
             alt="admin@bootstrapmaster.com"
           />
         </div>
       </CDropdownToggle>
       <CDropdownMenu className="pt-0" placement="bottom-end">
-        <CDropdownItem header tag="div" color="light" className="text-center">
+        {/* <CDropdownItem header tag="div" color="light" className="text-center">
           <strong>Account</strong>
         </CDropdownItem>
         <CDropdownItem>
@@ -97,11 +96,11 @@ const TheHeaderDropdown = () => {
         <CDropdownItem>
           <CIcon name="cil-lock-locked" className="mfe-2" />
           Lock Account
-        </CDropdownItem>
+        </CDropdownItem> */}
         <CDropdownItem>
           <CButton onClick={() => logOut()}>
             <CIcon name="cil-lock-locked" className="mfe-2" />
-            Logout
+            Đăng xuất
           </CButton>
         </CDropdownItem>
       </CDropdownMenu>

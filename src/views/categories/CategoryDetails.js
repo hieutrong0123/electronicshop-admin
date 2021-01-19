@@ -8,13 +8,11 @@ import {
   CCol,
   CForm,
   CFormGroup,
-  CTextarea,
   CInput,
   CInputRadio,
   CLabel,
   CSelect,
-  CRow,
-  CImg
+  CRow
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import categoryservice_json from "src/service/categoryservice_json";
@@ -37,7 +35,7 @@ class CategoryDetails extends Component {
 
   componentDidMount() {
     this.loadData();
-  }
+  };
 
   changeHandler = e => {
     //Do Nothing
@@ -45,11 +43,11 @@ class CategoryDetails extends Component {
 
   cancel() {
     this.props.history.push("/categories");
-  }
+  };
 
   edit() {
     this.props.history.push(`/categories/edit/${this.state.id}`);
-  }
+  };
 
   loadData() {
     categoryservice_json
@@ -62,7 +60,7 @@ class CategoryDetails extends Component {
           alert(res.dat.message);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
     categoryservice_json
       .getbyId(this.props.match.params.id)
       .then(res => {
@@ -83,7 +81,7 @@ class CategoryDetails extends Component {
               alias: res.data.resultObj.alias,
               productTypeId: res.data.resultObj.productTypeId,
               rootId: res.data.resultObj.rootId,
-              productTypeName: res.data.resultObj.productType.name,
+              productTypeName: res.data.resultObj.productType,
               createdDate: res.data.resultObj.createdDate.substring(0, 10),
               createdBy: res.data.resultObj.createdBy,
               modifiedBy: res.data.resultObj.modifiedBy,
@@ -96,19 +94,19 @@ class CategoryDetails extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err => console.log(err));
-  }
+      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
+  };
 
   render() {
     return this.state.loading === true ? (
-      <h1>Loading</h1>
+      <h1>Đang tải dữ liệu vui vòng chờ trong giây lát</h1>
     ) : (
       <>
         <CRow>
           <CCol xs="12" md="10">
             <CCard>
               <CCardHeader>
-                Products Details
+                Chi tiết danh mục
                 <small></small>
               </CCardHeader>
               <CCardBody>
@@ -118,12 +116,12 @@ class CategoryDetails extends Component {
                 >
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Id</CLabel>
+                      <CLabel htmlFor="text-input">Mã danh mục</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="id"
-                        placeholder="Id"
+                        placeholder="Mã danh mục"
                         value={this.state.id}
                         onChange={this.changeHandler}
                         disabled
@@ -132,12 +130,12 @@ class CategoryDetails extends Component {
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Name</CLabel>
+                      <CLabel htmlFor="text-input">Tên danh mục</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="name"
-                        placeholder="Name"
+                        placeholder="Tên danh mục"
                         value={this.state.name}
                         onChange={this.changeHandler}
                       />
@@ -146,12 +144,12 @@ class CategoryDetails extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Alias</CLabel>
+                      <CLabel htmlFor="text-input">Bí danh</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="alias"
-                        placeholder="Alias"
+                        placeholder="Bí danh"
                         value={this.state.alias}
                         onChange={this.changeHandler}
                       />
@@ -160,14 +158,14 @@ class CategoryDetails extends Component {
                   
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="select">Root Category</CLabel>
+                      <CLabel htmlFor="select">Danh mục gốc</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       {this.state.categoryList === null ? (
-                        <h3>Waiting...</h3>
+                        <h3>Đang tải</h3>
                       ) : (
                         <CSelect
-                          name="Root Category"
+                          name="rootId"
                           onChange={this.changeHandler}
                           disabled
                         >
@@ -176,7 +174,7 @@ class CategoryDetails extends Component {
                             value=""
                             selected={this.state.rootId === ""}
                           >
-                            Choose
+                            Lựa chọn
                           </option>
                           {this.state.categoryList.map(item => {
                             if(item.rootId === null){
@@ -190,6 +188,9 @@ class CategoryDetails extends Component {
                                 </option>
                               );
                             }
+                            else{
+                              return(<></>);
+                            }
                           })}
                         </CSelect>
                       )}
@@ -198,13 +199,13 @@ class CategoryDetails extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="date-input">CreatedDate</CLabel>
+                      <CLabel htmlFor="date-input">Ngày tạo</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         type="date"
                         name="createdDate"
-                        placeholder="CreatedDate"
+                        placeholder="Ngày tạo"
                         value={this.state.createdDate}
                         onChange={this.changeHandler}
                       />
@@ -214,13 +215,13 @@ class CategoryDetails extends Component {
                   {this.state.modifiedDate !== null ? (
                     <CFormGroup row>
                       <CCol md="3">
-                        <CLabel htmlFor="date-input">ModifiedDate</CLabel>
+                        <CLabel htmlFor="date-input">Ngày cập nhật</CLabel>
                       </CCol>
                       <CCol xs="12" md="9">
                         <CInput
                           type="date"
                           name="modifiedDate"
-                          placeholder="ModifiedDate"
+                          placeholder="Ngày cập nhật"
                           value={this.state.modifiedDate}
                           onChange={this.changeHandler}
                         />
@@ -230,12 +231,12 @@ class CategoryDetails extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">CreatedBy</CLabel>
+                      <CLabel htmlFor="text-input">Người tạo</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="createdBy"
-                        placeholder="CreatedBy"
+                        placeholder="Người tạo"
                         value={this.state.createdBy}
                         onChange={this.changeHandler}
                       />
@@ -245,49 +246,35 @@ class CategoryDetails extends Component {
                   {this.state.modifiedBy !== null ? (
                     <CFormGroup row>
                       <CCol md="3">
-                        <CLabel htmlFor="text-input">ModifiedBy</CLabel>
+                        <CLabel htmlFor="text-input">Người cập nhật</CLabel>
                       </CCol>
                       <CCol xs="12" md="9">
                         <CInput
                           name="modifiedBy"
-                          placeholder="ModifiedBy"
+                          placeholder="Người cập nhật"
                           value={this.state.modifiedBy}
                           onChange={this.changeHandler}
                         />
                       </CCol>
                     </CFormGroup>
                   ) : null}
-                  
-                  {/* <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="text-input">Product Type</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CInput
-                        name="productType"
-                        placeholder="Product Type"
-                        value={this.state.productTypeName}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup> */}
 
                   <CFormGroup row>
                   <CCol md="3">
-                    <CLabel>Product Type</CLabel>
+                    <CLabel>Loại sản phẩm</CLabel>
                   </CCol>
                   <CCol md="9">
                     <CFormGroup variant="custom-radio" inline>
                       <CInputRadio
                         custom
-                        id="Smart Phone"
+                        id="1"
                         name="productTypeId"
                         onChange={this.changeHandler}
                         value = {Number(1)}
                         checked={this.state.productTypeId === 1}
                       />
-                      <CLabel variant="custom-checkbox" htmlFor="Smart Phone">
-                      Smart Phone
+                      <CLabel variant="custom-checkbox" htmlFor="1">
+                      Laptop - Thiết bị IT
                       </CLabel>
                     </CFormGroup>
                     <CFormGroup variant="custom-radio" inline>
@@ -300,7 +287,7 @@ class CategoryDetails extends Component {
                         checked={this.state.productTypeId === 2}
                       />
                       <CLabel variant="custom-checkbox" htmlFor="Laptop">
-                      Laptop
+                      Điện Thoại - Máy tính bảng
                       </CLabel>
                     </CFormGroup>
                   </CCol>
@@ -309,12 +296,17 @@ class CategoryDetails extends Component {
                 </CForm>
               </CCardBody>
               <CCardFooter>
-              <CButton size="" color="primary" onClick={() => this.edit()}>
-                <CIcon name="cil-scrubber" /> Edit
+              <CButton size="sm" color="primary" onClick={() => this.edit()}>
+                <CIcon name="cil-scrubber" /> Cập nhật
               </CButton>
-              <CButton></CButton>
-              <CButton color="dark" size="" onClick={() => this.cancel()}>
-              <CIcon name="cil-home" />Back
+              &nbsp;&nbsp;&nbsp;
+              <CButton
+                size="sm"
+                color="dark"
+                onClick={() => this.cancel()}
+              >
+                <CIcon name="cil-home" />
+                Trở về danh sách
               </CButton>
             </CCardFooter>
             </CCard>

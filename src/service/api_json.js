@@ -2,12 +2,13 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const url = {
-  /// tat ca cac duong dan thi nam o day
   baseURL: "https://localhost:5001/api",
   authLink: "/Auth",
   userlink: "/Users",
   productlink: "/Products",
-  categorylink: "/Categories"
+  categorylink: "/Categories",
+  orderlink: "/Orders",
+  orderdetaillink : "/OrderDetails"
 };
 
 const Token = Cookies.get("Token");
@@ -19,13 +20,8 @@ const instance = axios.create({
   origin: true,
   headers: {
     "Content-Type": "application/json",
-    //"Content-Type": "multipart/form-data",
     Accept: "application/json",
-    // "Access-Control-Allow-Credentials": true
-    //"Authorization": `Bearer ${cookieUlti.getCookie("Token")}`,
     Authorization: `Bearer ${Token}`
-
-    // 'Cookie': `.AspNetCore.Identity.Application=${cookieUlti.getCookie(".AspNetCore.Identity.Application")}`
   }
 });
 

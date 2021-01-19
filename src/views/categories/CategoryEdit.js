@@ -8,7 +8,6 @@ import {
   CCol,
   CForm,
   CFormGroup,
-  CTextarea,
   CInput,
   CInputRadio,
   CLabel,
@@ -94,7 +93,7 @@ class CategoryEdit extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
   loadData() {
     categoryservice_json
@@ -107,7 +106,7 @@ class CategoryEdit extends Component {
           alert(res.dat.message);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
     categoryservice_json
       .getbyId(this.props.match.params.id)
       .then(res => {
@@ -137,19 +136,19 @@ class CategoryEdit extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
 
   render() {
     return this.state.loading === true ? (
-      <h1>Loading</h1>
+      <h1>Đang tải dữ liệu vui vòng chờ trong giây lát</h1>
     ) : (
       <>
         <CRow>
           <CCol xs="12" md="10">
             <CCard>
               <CCardHeader>
-                Category Edit
+                Cập nhật danh mục
                 <small></small>
               </CCardHeader>
               <CCardBody>
@@ -159,12 +158,12 @@ class CategoryEdit extends Component {
                 >
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Id</CLabel>
+                      <CLabel htmlFor="text-input">Mã danh mục</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="id"
-                        placeholder="Id"
+                        placeholder="Mã danh mục"
                         value={this.state.id}
                         onChange={this.changeHandler}
                         disabled
@@ -173,12 +172,12 @@ class CategoryEdit extends Component {
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Name</CLabel>
+                      <CLabel htmlFor="text-input">Tên danh mục</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="name"
-                        placeholder="Name"
+                        placeholder="Tên danh mục"
                         value={this.state.name}
                         onChange={this.changeHandler}
                       />
@@ -187,12 +186,12 @@ class CategoryEdit extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Alias</CLabel>
+                      <CLabel htmlFor="text-input">Bí danh</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="alias"
-                        placeholder="Alias"
+                        placeholder="Bí danh"
                         value={this.state.alias}
                         onChange={this.changeHandler}
                       />
@@ -201,11 +200,11 @@ class CategoryEdit extends Component {
                   
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="select">Root Category</CLabel>
+                      <CLabel htmlFor="select">Danh mục gốc</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       {this.state.categoryList === null ? (
-                        <h3>Waiting...</h3>
+                        <h3>Đang tải</h3>
                       ) : (
                         <CSelect
                           name="rootId"
@@ -216,7 +215,7 @@ class CategoryEdit extends Component {
                             value=""
                             selected={this.state.rootId === null}
                           >
-                            Choose
+                            Lựa chọn
                           </option>
                           {this.state.categoryList.map(item => {
                             if(item.rootId === null){
@@ -230,6 +229,9 @@ class CategoryEdit extends Component {
                                 </option>
                               );
                             }
+                            else{
+                              return(<></>);
+                            }
                           })}
                         </CSelect>
                       )}
@@ -238,33 +240,33 @@ class CategoryEdit extends Component {
 
                   <CFormGroup row>
                   <CCol md="3">
-                    <CLabel>Product Type</CLabel>
+                    <CLabel>Loại sản phẩm</CLabel>
                   </CCol>
                   <CCol md="9">
                     <CFormGroup variant="custom-radio" inline>
                       <CInputRadio
                         custom
-                        id="Smart Phone"
+                        id="1"
                         name="productTypeId"
                         onChange={this.changeHandler}
                         value = {Number(1)}
                         checked={this.state.productTypeId === 1}
                       />
-                      <CLabel variant="custom-checkbox" htmlFor="Smart Phone">
-                      Smart Phone
+                      <CLabel variant="custom-checkbox" htmlFor="1">
+                      Laptop - Thiết bị IT
                       </CLabel>
                     </CFormGroup>
                     <CFormGroup variant="custom-radio" inline>
                       <CInputRadio
                         custom
-                        id="Laptop"
+                        id="2"
                         name="productTypeId"
                         onChange={this.changeHandler}
                         value={Number(2)}
                         checked={this.state.productTypeId === 2}
                       />
-                      <CLabel variant="custom-checkbox" htmlFor="Laptop">
-                      Laptop
+                      <CLabel variant="custom-checkbox" htmlFor="2">
+                      Điện Thoại - Máy tính bảng
                       </CLabel>
                     </CFormGroup>
                   </CCol>
@@ -273,18 +275,19 @@ class CategoryEdit extends Component {
                 </CForm>
               </CCardBody>
               <CCardFooter>
-                <CButton
-                  size="sm"
-                  color="primary"
-                  onClick={() => this.submitHandler()}
-                >
-                  <CIcon name="cil-scrubber" /> Submit
-                </CButton>
-                <CButton></CButton>
-                <CButton color="secondary" onClick={() => this.cancel()}>
-                  Cancel
-                </CButton>
-              </CCardFooter>
+              <CButton
+                size="sm"
+                color="primary"
+                onClick={() => this.submitHandler()}
+              >
+                <CIcon name="cil-scrubber" /> Cập nhật
+              </CButton>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <CButton color="dark" onClick={() => this.cancel()}>
+                <CIcon name="cil-home" />
+                Huỷ và trở về danh sách
+              </CButton>
+            </CCardFooter>
             </CCard>
           </CCol>
         </CRow>

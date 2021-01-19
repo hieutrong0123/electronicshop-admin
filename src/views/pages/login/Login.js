@@ -34,86 +34,72 @@ class Login extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  validateEmail(email) {
+    if (
+      /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(
+        email
+      )
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  validatePasword(password) {
+    if (
+      /^(?=.*[A-Z])(?=.*[\W])(?=.*[0-9])(?=.*[a-z]).{8,30}$/.test(password)
+    ) {
+      return true;
+    }
+    return false;
+  }
+
   submitHandler() {
-    const data = {
-      email: this.state.email,
-      password: this.state.password,
-      rememberme: this.state.rememberme
-    };
-    console.log(data);
-    // loginservice.login(this.state).then(res=>{Cookies.set('auth',res.data.resultObj); console.log(res)}).catch(err => console.log(err))
-    //loginservice.login(this.state).then(res=>{ Cookies.set('Token',res.data.resultObj); console.log(res)}).catch(err => console.log(err))
-    // loginservice_json
-    //   .login(data)
-    //   .then(res => {
-    //     if (res.data.isSuccessed) {
-    //       Cookies.set("Token", res.data.resultObj);
-    //       Cookies.set("Role", res.data.message);
-    //       if (res.data.message === "Admin") {
-    //         window.location.href = "/";
-
-    //         console.log(res);
-    //         console.log(res.status);
-    //       }
-    //       else
-    //       {
-    //         alert("Tài khoản không có quyền quản trị viên");
-    //       }
-    //     } else {
-    //       alert(res.data.message);
-    //     }
-    //   })
-    //   .catch(err => console.log(err));
-    loginservice_json
-      .login(data)
-      .then(res => {
-        if (res.data.isSuccessed) {
-
-          Cookies.set("Token", res.data.resultObj);
-          // Cookies.set("Role", res.data.message);
-          let tokenDecode = jwt_decode(res.data.resultObj);
-          let Role = "";
-          Object.keys(tokenDecode).forEach(function (key){
-            let res = key.split("/");
-            if (res.length > 1){
-              if(res[res.length -1] === 'role'){
-                Role = tokenDecode[key]; 
+    if (!this.validateEmail(this.state.email)) {
+      alert("Email không đúng định dạng");
+    } else if (!this.validatePasword(this.state.password)) {
+      alert(
+        "Mật khẩu không đúng định dạng. Vui lòng nhập mật khẩu có 8-30 ký tự với các ký tự, số, 1 chữ hoa và các ký tự đặc biệt"
+      );
+    } else {
+      const data = {
+        email: this.state.email,
+        password: this.state.password,
+        rememberme: this.state.rememberme
+      };
+      loginservice_json
+        .login(data)
+        .then(res => {
+          if (res.data.isSuccessed) {
+            Cookies.set("Token", res.data.resultObj);
+            let tokenDecode = jwt_decode(res.data.resultObj);
+            let Role = "";
+            Object.keys(tokenDecode).forEach(function(key) {
+              let res = key.split("/");
+              if (res.length > 1) {
+                if (res[res.length - 1] === "role") {
+                  Role = tokenDecode[key];
+                }
               }
+            });
+
+            if (Role === "Admin" || Role === "Emp") {
+              window.location.href = "/";
+            } else {
+              alert("Email hoặc mật khẩu không đúng");
             }
-          });
-          console.log(Role);
-
-          if (res.data.message === "Admin") {
-            window.location.href = "/";
-
-            console.log(res);
-            console.log(res.status);
+          } else {
+            alert(res.data.message);
           }
-          else
-          {
-            alert("Tài khoản không có quyền quản trị viên");
-          }
-        } else {
-          alert(res.data.message);
-        }
-      })
-      .catch(err => console.log(err));
+        })
+        // .catch(err => console.log(err));
+        .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
+    }
   }
 
   componentDidMount() {
     if (this.checkRole()) this.props.history.push("/");
   }
-
-  // checkRole = () => {
-  //   const Authentication = "Admin";
-  //   if (Cookies.get("Role") === null) return false;
-  //   if (Cookies.get("Token") === null) return false;
-  //   if (Cookies.get(".AspNetCore.Session") === null) return false;
-  //   const Role = Cookies.get("Role");
-  //   console.log(Authentication);
-  //   console.log(Role);
-  //   return Authentication === Role;
-  // };
   tokenDecode = () => {
     let Role = null;
     const token = Cookies.get("Token");
@@ -128,18 +114,14 @@ class Login extends Component {
         }
       });
     }
-    console.log(Role);
     return Role;
   };
 
   checkRole = () => {
-    const Authentication = "Admin";
     const CheckRole = this.tokenDecode();
     if (Cookies.get("Token") === null) return false;
     if (Cookies.get(".AspNetCore.Session") === null) return false;
-    console.log(Authentication);
-    console.log(CheckRole);
-    return Authentication === CheckRole;
+    return "Admin" === CheckRole || "Emp" === CheckRole;
   };
 
   render() {
@@ -153,8 +135,10 @@ class Login extends Component {
                 <CCard className="p-4">
                   <CCardBody>
                     <CForm>
-                      <h1>Login</h1>
-                      <p className="text-muted">Sign In to your account</p>
+                      <h1>Đăng nhập</h1>
+                      <p className="text-muted">
+                        Đăng nhập vào tài khoản của bạn
+                      </p>
                       <CInputGroup className="mb-3">
                         <CInputGroupPrepend>
                           <CInputGroupText>
@@ -163,8 +147,8 @@ class Login extends Component {
                         </CInputGroupPrepend>
                         <CInput
                           type="text"
-                          placeholder="Username"
-                          autoComplete="username"
+                          placeholder="Email"
+                          autoComplete="Email"
                           name="email"
                           value={email}
                           onChange={this.changeHandler}
@@ -186,50 +170,19 @@ class Login extends Component {
                         />
                       </CInputGroup>
                       <CRow>
-                        <CCol xs="6">
+                        <CCol xs="7">
                           <CButton
                             color="primary"
                             className="px-4"
-                            // type="submit"
                             onClick={() => this.submitHandler()}
                           >
-                            Login
-                          </CButton>
-                        </CCol>
-                        <CCol xs="6" className="text-right">
-                          <CButton color="link" className="px-0">
-                            Forgot password?
+                            Đăng nhập
                           </CButton>
                         </CCol>
                       </CRow>
                     </CForm>
                   </CCardBody>
                 </CCard>
-                {/* <CCard
-                  className="text-white bg-primary py-5 d-md-down-none"
-                  style={{ width: "44%" }}
-                >
-                  <CCardBody className="text-center">
-                    <div>
-                      <h2>Sign up</h2>
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit, sed do eiusmod tempor incididunt ut labore et
-                        dolore magna aliqua.
-                      </p>
-                      <Link to="/register">
-                        <CButton
-                          color="primary"
-                          className="mt-3"
-                          active
-                          tabIndex={-1}
-                        >
-                          Register Now!
-                        </CButton>
-                      </Link>
-                    </div>
-                  </CCardBody>
-                </CCard> */}
               </CCardGroup>
             </CCol>
           </CRow>
