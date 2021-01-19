@@ -16,6 +16,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import categoryservice_json from "src/service/categoryservice_json";
+import producttypeservice_json from "src/service/producttypeservice_json";
 
 class CategoryEdit extends Component {
   state = {
@@ -126,9 +127,9 @@ class CategoryEdit extends Component {
               name: res.data.resultObj.name,
               alias: res.data.resultObj.alias,
               productTypeId: res.data.resultObj.productTypeId,
-              rootId: res.data.resultObj.rootId,
-              loading: false
+              rootId: res.data.resultObj.rootId
             });
+            this.loadProductType();
           }
           console.log(res);
           console.log(this.state);
@@ -137,6 +138,22 @@ class CategoryEdit extends Component {
         }
       })
       .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
+  }
+  loadProductType() {
+    producttypeservice_json
+      .getAll()
+      .then(res => {
+        if (res.data.isSuccessed) {
+          this.setState({
+            producttypeList: res.data.resultObj,
+            loading: false
+          });
+          console.log(this.state.producttypeList);
+        } else {
+          alert(res.dat.message);
+        }
+      })
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
 
   render() {
@@ -239,6 +256,41 @@ class CategoryEdit extends Component {
                   </CFormGroup>
 
                   <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="select">Loại sản phẩm</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      {this.state.producttypeList === null ? (
+                        <h3>Đang tải</h3>
+                      ) : (
+                        <CSelect
+                          name="productTypeId"
+                          onChange={this.changeHandler}                          
+                        >
+                          <option
+                            key={Number(0)}
+                            value=""
+                            selected={this.state.productTypeId === null}
+                          >
+                            Lựa chọn
+                          </option>
+                          {this.state.producttypeList.map(item => {
+                            return (
+                              <option
+                                value={item.id}
+                                selected={this.state.productTypeId === item.id}
+                                key={item.id}
+                              >
+                                {item.name}
+                              </option>
+                            );
+                          })}
+                        </CSelect>
+                      )}
+                    </CCol>
+                  </CFormGroup>
+
+                  {/* <CFormGroup row>
                   <CCol md="3">
                     <CLabel>Loại sản phẩm</CLabel>
                   </CCol>
@@ -270,7 +322,7 @@ class CategoryEdit extends Component {
                       </CLabel>
                     </CFormGroup>
                   </CCol>
-                </CFormGroup>                  
+                </CFormGroup>                   */}
 
                 </CForm>
               </CCardBody>

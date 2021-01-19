@@ -16,6 +16,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import categoryservice_json from "src/service/categoryservice_json";
+import producttypeservice_json from "src/service/producttypeservice_json";
 
 class CategoryCreate extends Component {
   constructor(props) {
@@ -26,7 +27,8 @@ class CategoryCreate extends Component {
       alias: "",
       rootId: "",
       productTypeId: 1,
-      categoryList: null
+      categoryList: null,
+      producttypeList: null
     };
     this.submitHandler = this.submitHandler.bind(this);
     this.cancel = this.cancel.bind(this);
@@ -37,8 +39,7 @@ class CategoryCreate extends Component {
   }
 
   changeHandler = e => {
-    if(e.target.name === 'productTypeId')
-    {
+    if (e.target.name === "productTypeId") {
       this.setState({ productTypeId: Number(e.target.value) });
       console.log(this.state.productTypeId);
       console.log(typeof this.state.productTypeId);
@@ -96,7 +97,7 @@ class CategoryCreate extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
 
   loadData() {
@@ -110,7 +111,18 @@ class CategoryCreate extends Component {
           alert(res.dat.message);
         }
       })
-      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
+    producttypeservice_json
+      .getAll()
+      .then(res => {
+        if (res.data.isSuccessed) {
+          this.setState({ producttypeList: res.data.resultObj });
+          console.log(this.state.producttypeList);
+        } else {
+          alert(res.dat.message);
+        }
+      })
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
   render() {
     return (
@@ -127,7 +139,6 @@ class CategoryCreate extends Component {
                   encType="multipart/form-data"
                   className="form-horizontal"
                 >
-                  
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="text-input">Tên danh mục</CLabel>
@@ -164,10 +175,7 @@ class CategoryCreate extends Component {
                       {this.state.categoryList === null ? (
                         <h3>Đang tải</h3>
                       ) : (
-                        <CSelect
-                          name="rootId"
-                          onChange={this.changeHandler}
-                        >
+                        <CSelect name="rootId" onChange={this.changeHandler}>
                           <option
                             key={Number(0)}
                             value=""
@@ -192,6 +200,41 @@ class CategoryCreate extends Component {
                   </CFormGroup>
 
                   <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="select">Loại sản phẩm</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      {this.state.producttypeList === null ? (
+                        <h3>Đang tải</h3>
+                      ) : (
+                        <CSelect
+                          name="productTypeId"
+                          onChange={this.changeHandler}
+                        >
+                          <option
+                            key={Number(0)}
+                            value=""
+                            selected={this.state.productTypeId === null}
+                          >
+                            Lựa chọn
+                          </option>
+                          {this.state.producttypeList.map(item => {
+                            return (
+                              <option
+                                value={item.id}
+                                selected={this.state.productTypeId === item.id}
+                                key={item.id}
+                              >
+                                {item.name}
+                              </option>
+                            );
+                          })}
+                        </CSelect>
+                      )}
+                    </CCol>
+                  </CFormGroup>
+
+                  {/* <CFormGroup row>
                     <CCol md="3">
                       <CLabel>Loại sản phẩm</CLabel>
                     </CCol>
@@ -223,7 +266,7 @@ class CategoryCreate extends Component {
                         </CLabel>
                       </CFormGroup>
                     </CCol>
-                  </CFormGroup>
+                  </CFormGroup> */}
                 </CForm>
               </CCardBody>
               <CCardFooter>
@@ -235,8 +278,12 @@ class CategoryCreate extends Component {
                   <CIcon name="cil-scrubber" /> Thêm
                 </CButton>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <CButton size="sm" color="secondary" onClick={() => this.cancel()}>
-                <CIcon name="cil-home" />
+                <CButton
+                  size="sm"
+                  color="secondary"
+                  onClick={() => this.cancel()}
+                >
+                  <CIcon name="cil-home" />
                   Huỷ bỏ và trở về danh sách
                 </CButton>
               </CCardFooter>
