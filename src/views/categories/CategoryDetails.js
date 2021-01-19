@@ -16,6 +16,7 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import categoryservice_json from "src/service/categoryservice_json";
+import producttypeservice_json from "src/service/producttypeservice_json";
 
 class CategoryDetails extends Component {
   state = {
@@ -35,7 +36,7 @@ class CategoryDetails extends Component {
 
   componentDidMount() {
     this.loadData();
-  };
+  }
 
   changeHandler = e => {
     //Do Nothing
@@ -43,11 +44,11 @@ class CategoryDetails extends Component {
 
   cancel() {
     this.props.history.push("/categories");
-  };
+  }
 
   edit() {
     this.props.history.push(`/categories/edit/${this.state.id}`);
-  };
+  }
 
   loadData() {
     categoryservice_json
@@ -60,7 +61,7 @@ class CategoryDetails extends Component {
           alert(res.dat.message);
         }
       })
-      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
     categoryservice_json
       .getbyId(this.props.match.params.id)
       .then(res => {
@@ -84,9 +85,9 @@ class CategoryDetails extends Component {
               productTypeName: res.data.resultObj.productType,
               createdDate: res.data.resultObj.createdDate.substring(0, 10),
               createdBy: res.data.resultObj.createdBy,
-              modifiedBy: res.data.resultObj.modifiedBy,
-              loading: false
+              modifiedBy: res.data.resultObj.modifiedBy
             });
+            this.loadProductType();
           }
           console.log(res);
           console.log(this.state);
@@ -94,8 +95,24 @@ class CategoryDetails extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
-  };
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
+  }
+  loadProductType() {
+    producttypeservice_json
+      .getAll()
+      .then(res => {
+        if (res.data.isSuccessed) {
+          this.setState({
+            producttypeList: res.data.resultObj,
+            loading: false
+          });
+          console.log(this.state.producttypeList);
+        } else {
+          alert(res.dat.message);
+        }
+      })
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
+  }
 
   render() {
     return this.state.loading === true ? (
@@ -155,7 +172,7 @@ class CategoryDetails extends Component {
                       />
                     </CCol>
                   </CFormGroup>
-                  
+
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="select">Danh mục gốc</CLabel>
@@ -177,7 +194,7 @@ class CategoryDetails extends Component {
                             Lựa chọn
                           </option>
                           {this.state.categoryList.map(item => {
-                            if(item.rootId === null){
+                            if (item.rootId === null) {
                               return (
                                 <option
                                   value={item.id}
@@ -187,9 +204,8 @@ class CategoryDetails extends Component {
                                   {item.name}
                                 </option>
                               );
-                            }
-                            else{
-                              return(<></>);
+                            } else {
+                              return <></>;
                             }
                           })}
                         </CSelect>
@@ -260,6 +276,42 @@ class CategoryDetails extends Component {
                   ) : null}
 
                   <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="select">Loại sản phẩm</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      {this.state.producttypeList === null ? (
+                        <h3>Đang tải</h3>
+                      ) : (
+                        <CSelect
+                          name="productTypeId"
+                          onChange={this.changeHandler}
+                          disabled
+                        >
+                          <option
+                            key={Number(0)}
+                            value=""
+                            selected={this.state.productTypeId === null}
+                          >
+                            Lựa chọn
+                          </option>
+                          {this.state.producttypeList.map(item => {
+                            return (
+                              <option
+                                value={item.id}
+                                selected={this.state.productTypeId === item.id}
+                                key={item.id}
+                              >
+                                {item.name}
+                              </option>
+                            );
+                          })}
+                        </CSelect>
+                      )}
+                    </CCol>
+                  </CFormGroup>
+
+                  {/* <CFormGroup row>
                   <CCol md="3">
                     <CLabel>Loại sản phẩm</CLabel>
                   </CCol>
@@ -291,24 +343,19 @@ class CategoryDetails extends Component {
                       </CLabel>
                     </CFormGroup>
                   </CCol>
-                </CFormGroup>                  
-
+                </CFormGroup>                   */}
                 </CForm>
               </CCardBody>
               <CCardFooter>
-              <CButton size="sm" color="primary" onClick={() => this.edit()}>
-                <CIcon name="cil-scrubber" /> Cập nhật
-              </CButton>
-              &nbsp;&nbsp;&nbsp;
-              <CButton
-                size="sm"
-                color="dark"
-                onClick={() => this.cancel()}
-              >
-                <CIcon name="cil-home" />
-                Trở về danh sách
-              </CButton>
-            </CCardFooter>
+                <CButton size="sm" color="primary" onClick={() => this.edit()}>
+                  <CIcon name="cil-scrubber" /> Cập nhật
+                </CButton>
+                &nbsp;&nbsp;&nbsp;
+                <CButton size="sm" color="dark" onClick={() => this.cancel()}>
+                  <CIcon name="cil-home" />
+                  Trở về danh sách
+                </CButton>
+              </CCardFooter>
             </CCard>
           </CCol>
         </CRow>
