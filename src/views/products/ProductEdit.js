@@ -19,6 +19,9 @@ import CIcon from "@coreui/icons-react";
 import productservice_json from "src/service/productservice_json";
 import categoryservice_json from "src/service/categoryservice_json";
 
+import { CKEditor} from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 class ProductEdit extends Component {
   //state = { list: null }
   state = {
@@ -275,6 +278,23 @@ class ProductEdit extends Component {
                     </CCol>
                   </CFormGroup>
 
+                  {/* <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="textarea-input">
+                        Thông số kỹ thuật
+                      </CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CTextarea
+                        name="specifications"
+                        rows="3"
+                        placeholder="Thông số kỹ thuật"
+                        value={this.state.specifications}
+                        onChange={this.changeHandler}
+                      />
+                    </CCol>
+                  </CFormGroup> */}
+                  
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="textarea-input">
@@ -282,6 +302,14 @@ class ProductEdit extends Component {
                       </CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
+                      <CKEditor
+                      editor = {ClassicEditor}
+                      data = {this.state.specifications}
+                      onChange = {(e, editor) => {
+                        this.setState({specifications: editor.getData()})
+                      }}
+                      />
+                      &nbsp;
                       <CTextarea
                         name="specifications"
                         rows="3"
