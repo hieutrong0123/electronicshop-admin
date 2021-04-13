@@ -309,14 +309,14 @@ class ProductEdit extends Component {
                         this.setState({specifications: editor.getData()})
                       }}
                       />
-                      &nbsp;
+                      {/* &nbsp;
                       <CTextarea
                         name="specifications"
                         rows="3"
                         placeholder="Thông số kỹ thuật"
                         value={this.state.specifications}
                         onChange={this.changeHandler}
-                      />
+                      /> */}
                     </CCol>
                   </CFormGroup>
 

@@ -265,8 +265,7 @@ class ProductDetails extends Component {
                       />
                     </CCol>
                   </CFormGroup> */}
-
-<CFormGroup row>
+                  <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="textarea-input">
                         Thông số kỹ thuật
@@ -281,14 +280,14 @@ class ProductDetails extends Component {
                         this.setState({specifications: editor.getData()})
                       }}
                       />
-                      &nbsp;
+                      {/* &nbsp;
                       <CTextarea
                         name="specifications"
                         rows="3"
                         placeholder="Thông số kỹ thuật"
                         value={this.state.specifications}
                         onChange={this.changeHandler}
-                      />
+                      /> */}
                     </CCol>
                   </CFormGroup>
 
@@ -497,7 +496,7 @@ class ProductDetails extends Component {
                 <CButton size="sm" color="primary" onClick={() => this.edit()}>
                   <CIcon name="cil-settings" /> Cập nhật
                 </CButton>
-                &nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;                
                 <Link
                   to={{
                     pathname: `/productphotos/create`,
