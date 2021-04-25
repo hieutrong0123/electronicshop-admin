@@ -60,8 +60,8 @@ class Count extends Component {
             var date = moment().format("YYYY-MM-DD");
             let arr = [];
             for (let i = 0; i < res.data.resultObj.length; i++) {
-              if (res.data.resultObj[i].birthday !== null) {
-                if (res.data.resultObj[i].birthday.substring(0, 10) === date) {
+              if (res.data.resultObj[i].createdDate !== null) {
+                if (res.data.resultObj[i].createdDate.substring(0, 10) === date) {
                   arr.push(res.data.resultObj[i]);
                 }
               }
