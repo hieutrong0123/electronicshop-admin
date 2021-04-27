@@ -32,7 +32,7 @@ class ProductCreate extends Component {
     this.state = {
       name: "",
       price: "",
-      specifications: "<p><strong>Tên:</strong> Mô tả</p>",
+      specifications: "<p><strong>Tên:</strong> Thông số</p>",
       description: "",
       goodsReceipt: "",
       inventory: "",
@@ -295,14 +295,14 @@ class ProductCreate extends Component {
                           this.setState({ specifications: editor.getData() });
                         }}
                       />
-                      &nbsp;
+                      {/* &nbsp;
                       <CTextarea
                         name="specifications"
                         rows="3"
                         placeholder="Thông số kỹ thuật"
                         value={this.state.specifications}
                         onChange={this.changeHandler}
-                      />
+                      /> */}
                     </CCol>
                   </CFormGroup>
                   <CFormGroup row>
