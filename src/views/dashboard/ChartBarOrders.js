@@ -4,10 +4,14 @@ import { CCard, CCardBody, CCardGroup, CCardHeader } from "@coreui/react";
 import { DocsLink } from "src/reusable";
 import orderservice_json from "src/service/orderservice_json";
 
+import moment from "moment";
+
 class ChartBarOrders extends Component {
   state = {
     list: null,
     arrTotalMoney: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    arrTotalMoney2020: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    arrTotalMoney2021: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     arrTotalStatus: [0, 0, 0, 0, 0, 0, 0, 0]
   };
   componentDidMount() {
@@ -22,11 +26,37 @@ class ChartBarOrders extends Component {
             console.log(this.state.list)
           );
 
-          res.data.resultObj.map(item => {
-            let date = new Date(String(item.createdDate));
-            this.state.arrTotalMoney[date.getMonth()] += item.totalMoney;
-            return null
-          });
+          for (let i = 0; i < res.data.resultObj.length; i++) {
+            if (res.data.resultObj[i].createdDate !== null) {
+              if (res.data.resultObj[i].createdDate.substring(0, 4) == 2020) {
+                // console.log(res.data.resultObj[i].createdDate.substring(0,4));
+                if(res.data.resultObj[i].statusId !== 0)
+                {
+                // console.log(res.data.resultObj[i].statusId);
+
+                let date = new Date(String((res.data.resultObj[i].createdDate)));
+                this.state.arrTotalMoney2020[date.getMonth()] += res.data.resultObj[i].totalMoney;
+                }
+              }
+              else
+              {
+                // console.log(res.data.resultObj[i].createdDate.substring(0,4));
+                if(res.data.resultObj[i].statusId !== 0)
+                {
+                  // console.log(res.data.resultObj[i].statusId);
+
+                  let date = new Date(String((res.data.resultObj[i].createdDate)));
+                  this.state.arrTotalMoney2021[date.getMonth()] += res.data.resultObj[i].totalMoney;
+                }
+              }
+            }
+          }
+
+          // res.data.resultObj.map(item => {
+          //   let date = new Date(String(item.createdDate));
+          //   this.state.arrTotalMoney[date.getMonth()] += item.totalMoney;
+          //   return null
+          // });
           res.data.resultObj.map(item => {            
             this.state.arrTotalStatus[item.statusId-1] += 1;
             return null
@@ -49,9 +79,14 @@ class ChartBarOrders extends Component {
             <CChartBar
               datasets={[
                 {
-                  label: "Doanh thu theo tháng",
-                  backgroundColor: "#1EBE53",
-                  data: this.state.arrTotalMoney
+                  label: "Doanh thu năm 2020",
+                  backgroundColor: "#321fdb",
+                  data: this.state.arrTotalMoney2020
+                },
+                {
+                  label: "Doanh thu năm 2021",
+                  backgroundColor: "#FF0000",
+                  data: this.state.arrTotalMoney2021
                 }
               ]}
               labels="months"
