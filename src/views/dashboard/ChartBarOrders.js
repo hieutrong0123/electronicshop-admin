@@ -10,9 +10,10 @@ class ChartBarOrders extends Component {
   state = {
     list: null,
     arrTotalMoney: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    arrTotalMoney2020: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    arrTotalMoney2021: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    arrTotalStatus: [0, 0, 0, 0, 0, 0, 0, 0]
+    arrTotalMoneyLastYear: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    arrTotalMoneyThisYear: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    arrTotalStatus: [0, 0, 0, 0, 0, 0, 0, 0],
+    thisYear : moment().format("YYYY")
   };
   componentDidMount() {
     this.loadData();
@@ -27,26 +28,27 @@ class ChartBarOrders extends Component {
           );
 
           for (let i = 0; i < res.data.resultObj.length; i++) {
-            if (res.data.resultObj[i].createdDate !== null) {
-              if (res.data.resultObj[i].createdDate.substring(0, 4) == 2020) {
+            if (res.data.resultObj[i].createdDate !== null) {              
+              if (res.data.resultObj[i].createdDate.substring(0, 4) == this.state.thisYear)
+              {
+                // console.log(res.data.resultObj[i].createdDate.substring(0,4));
+                // console.log(this.state.thisYear);
+                if(res.data.resultObj[i].statusId !== 0)
+                {
+                  // console.log(res.data.resultObj[i].statusId);
+
+                  let date = new Date(String((res.data.resultObj[i].createdDate)));
+                  this.state.arrTotalMoneyThisYear[date.getMonth()] += res.data.resultObj[i].totalMoney;
+                }
+              }
+              else if (res.data.resultObj[i].createdDate.substring(0, 4) == this.state.thisYear - 1) {
                 // console.log(res.data.resultObj[i].createdDate.substring(0,4));
                 if(res.data.resultObj[i].statusId !== 0)
                 {
                 // console.log(res.data.resultObj[i].statusId);
 
                 let date = new Date(String((res.data.resultObj[i].createdDate)));
-                this.state.arrTotalMoney2020[date.getMonth()] += res.data.resultObj[i].totalMoney;
-                }
-              }
-              else
-              {
-                // console.log(res.data.resultObj[i].createdDate.substring(0,4));
-                if(res.data.resultObj[i].statusId !== 0)
-                {
-                  // console.log(res.data.resultObj[i].statusId);
-
-                  let date = new Date(String((res.data.resultObj[i].createdDate)));
-                  this.state.arrTotalMoney2021[date.getMonth()] += res.data.resultObj[i].totalMoney;
+                this.state.arrTotalMoneyLastYear[date.getMonth()] += res.data.resultObj[i].totalMoney;
                 }
               }
             }
@@ -79,14 +81,14 @@ class ChartBarOrders extends Component {
             <CChartBar
               datasets={[
                 {
-                  label: "Doanh thu năm 2020",
+                  label: "Doanh thu năm " + [this.state.thisYear - 1],
                   backgroundColor: "#321fdb",
-                  data: this.state.arrTotalMoney2020
+                  data: this.state.arrTotalMoneyLastYear
                 },
                 {
-                  label: "Doanh thu năm 2021",
+                  label: "Doanh thu năm " + this.state.thisYear,
                   backgroundColor: "#FF0000",
-                  data: this.state.arrTotalMoney2021
+                  data: this.state.arrTotalMoneyThisYear
                 }
               ]}
               labels="months"
