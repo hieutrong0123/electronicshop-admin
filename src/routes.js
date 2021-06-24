@@ -63,6 +63,10 @@ import ProductPhotoCreate from './views/productphotos/ProductPhotoCreate';
 //OrderDetails
 import OrderDetails from './views/orderdetails/OrderDetails';
 
+
+//Statistical
+import SellingProducts from './views/statistical/SellingProducts';
+
 const routes = [
   // { path: '/', exact: true, name: 'Home' },
   { path: '/', exact : true, name: 'Trang chủ', component: Dashboard },
@@ -131,6 +135,9 @@ const routes = [
 
   //OrderDetails
   { path: '/orderdetails/:id', exact: true,  name: 'Chi tiết hoá đơn', component: OrderDetails },
+
+  //Statistical
+  { path: '/statistical/sellingProducts', exact: true,  name: 'Sản phẩm bán chạ', component: SellingProducts },
 ];
 
 export default routes;

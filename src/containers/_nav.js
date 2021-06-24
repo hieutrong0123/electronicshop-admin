@@ -17,6 +17,23 @@ let defaultNav = [
   },
 
   {
+    _tag: 'CSidebarNavDropdown',
+    name: 'Thống kê',
+    to: '/widgets',
+    icon: 'cil-calculator',
+    badge: {
+      color: 'info'
+    },
+    _children: [
+      {
+        _tag: "CSidebarNavItem",
+        name: "Sản phẩm bán chạy",
+        to: "/statistical/sellingProducts"
+      },
+    ]
+  },
+
+  {
     _tag: "CSidebarNavDropdown",
     name: "Quản ký sản phẩm",
     icon: "cil-cursor",

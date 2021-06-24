@@ -7,7 +7,7 @@ const Dashboard = () => {
   return (
     <>
       <Count />
-      <ChartBarOrders/>      
+      <ChartBarOrders/>
     </>
   )
 }
