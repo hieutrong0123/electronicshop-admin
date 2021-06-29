@@ -82,15 +82,15 @@ class UserCreate extends Component {
         "Mật khẩu không đúng định dạng. Vui lòng nhập mật khẩu có 8-30 ký tự với các ký tự, số, 1 chữ hoa và các ký tự đặc biệt"
       );
     } else if (this.state.password !== this.state.confirmPassword) {
-      alert("Passwords do not match");
+      alert("Mật khẩu không khớp, vui lòng thử lại");
     } else if (!this.state.birthday) {
-      alert("Birthday error");
+      alert("Sinh nhật không đúng định dạng");
     } 
-    // else if (!this.state.gender) {
-    //   alert("Gender error");
-    // } 
+    else if (!this.state.phoneNumber) {
+      alert("Số điện thoại không đúng định dạng");
+    } 
     else if (!this.state.userInRole) {
-      alert("User Role error");
+      alert("Chưa phân quyền người dùng");
     } else {
       const data = {
         userName: this.state.userName,
@@ -115,7 +115,7 @@ class UserCreate extends Component {
             alert(res.data.message);
           }
         })
-        .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
+        .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
     }
   }
   render() {
@@ -135,7 +135,7 @@ class UserCreate extends Component {
                 >
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="email-input">Email</CLabel>
+                      <CLabel htmlFor="email-input">Email *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -151,7 +151,7 @@ class UserCreate extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Tài khoản</CLabel>
+                      <CLabel htmlFor="text-input">Tài khoản *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -165,7 +165,7 @@ class UserCreate extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="password-input">Mật khẩu</CLabel>
+                      <CLabel htmlFor="password-input">Mật khẩu *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -186,7 +186,7 @@ class UserCreate extends Component {
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="password-input">
-                        Xác nhận mật khẩu
+                        Xác nhận mật khẩu *
                       </CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
@@ -234,7 +234,7 @@ class UserCreate extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="date-input">Sinh nhật</CLabel>
+                      <CLabel htmlFor="date-input">Sinh nhật *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -249,7 +249,7 @@ class UserCreate extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel>Giới tính</CLabel>
+                      <CLabel>Giới tính *</CLabel>
                     </CCol>
                     <CCol md="9">
                       <CFormGroup variant="custom-radio" inline>
@@ -297,7 +297,7 @@ class UserCreate extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Số điện thoại</CLabel>
+                      <CLabel htmlFor="text-input">Số điện thoại *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -312,7 +312,7 @@ class UserCreate extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel>Phân quyền</CLabel>
+                      <CLabel>Phân quyền *</CLabel>
                     </CCol>
                     <CCol md="9">
                       <CFormGroup variant="custom-radio" inline>

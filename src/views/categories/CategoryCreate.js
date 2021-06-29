@@ -140,7 +140,7 @@ class CategoryCreate extends Component {
                 >
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Tên danh mục</CLabel>
+                      <CLabel htmlFor="text-input">Tên danh mục *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -154,7 +154,7 @@ class CategoryCreate extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Bí danh</CLabel>
+                      <CLabel htmlFor="text-input">Bí danh *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -168,7 +168,7 @@ class CategoryCreate extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="select">Danh mục gốc</CLabel>
+                      <CLabel htmlFor="select">Danh mục gốc *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       {this.state.categoryList === null ? (
@@ -200,7 +200,7 @@ class CategoryCreate extends Component {
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="select">Loại sản phẩm</CLabel>
+                      <CLabel htmlFor="select">Loại sản phẩm *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       {this.state.producttypeList === null ? (

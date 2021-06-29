@@ -127,23 +127,23 @@ class ProductCreate extends Component {
 
   async submitHandler() {
     if (!this.state.name) {
-      alert("Name error");
+      alert("Tên sản phẩm không đúng định dạng");
     } else if (this.state.price < 1) {
-      alert("Price error");
+      alert("Giá bán không đúng định dạng");
     } else if (!this.state.specifications) {
-      alert("Specifications error");
+      alert("Thông số kỹ thuật không đúng định dạng");
     } else if (!this.state.goodsReceipt) {
-      alert("GoodsReceipt error");
+      alert("Số lượng nhập không đúng định dạng");
     } else if (!this.state.inventory) {
-      alert("Inventory error");
+      alert("Số lượng tồn không đúng định dạng");
     } else if (!this.state.description) {
-      alert("Description error");
+      alert("Mô tả không đúng định dạng");
     } else if (!this.state.categoryId) {
-      alert("CategoryId error");
+      alert("Danh mục không đúng định dạng");
     } else if (!this.state.alias) {
-      alert("Alias error");
+      alert("Bí danh không đúng định dạng");
     } else if (!this.state.thumbnailImages) {
-      alert("ThumbnailImages error");
+      alert("Hình ảnh không đúng định dạng");
     } else {
       var FormData = require("form-data");
       var data = new FormData();
@@ -190,7 +190,7 @@ class ProductCreate extends Component {
                 >
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Tên sản phẩm</CLabel>
+                      <CLabel htmlFor="text-input">Tên sản phẩm *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -203,7 +203,7 @@ class ProductCreate extends Component {
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Bí danh</CLabel>
+                      <CLabel htmlFor="text-input">Bí danh *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -216,7 +216,7 @@ class ProductCreate extends Component {
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="select">Danh mục</CLabel>
+                      <CLabel htmlFor="select">Danh mục *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       {this.state.categoryList === null ? (
@@ -250,7 +250,7 @@ class ProductCreate extends Component {
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Giá bán</CLabel>
+                      <CLabel htmlFor="text-input">Giá bán *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -284,7 +284,7 @@ class ProductCreate extends Component {
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="textarea-input">
-                        Thông số kỹ thuật
+                        Thông số kỹ thuật *
                       </CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
@@ -307,7 +307,7 @@ class ProductCreate extends Component {
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="textarea-input">Mô tả</CLabel>
+                      <CLabel htmlFor="textarea-input">Mô tả *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CTextarea
@@ -321,7 +321,7 @@ class ProductCreate extends Component {
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Số lượng nhập</CLabel>
+                      <CLabel htmlFor="text-input">Số lượng nhập *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -336,7 +336,7 @@ class ProductCreate extends Component {
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Số lượng tồn</CLabel>
+                      <CLabel htmlFor="text-input">Số lượng tồn *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -351,7 +351,7 @@ class ProductCreate extends Component {
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel>Trạng thái</CLabel>
+                      <CLabel>Trạng thái *</CLabel>
                     </CCol>
                     <CCol md="9">
                       <CFormGroup variant="custom-radio" inline>
@@ -410,7 +410,7 @@ class ProductCreate extends Component {
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel>Hình ảnh</CLabel>
+                      <CLabel>Hình ảnh *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInputFile
@@ -423,7 +423,7 @@ class ProductCreate extends Component {
                         onChange={this.changeHandler}
                       />
                       <CLabel htmlFor="ThumbnailImages" variant="custom-file">
-                        Chọn một hoặc nhiều
+                        Chọn 4 hình ảnh
                       </CLabel>
                     </CCol>
                   </CFormGroup>

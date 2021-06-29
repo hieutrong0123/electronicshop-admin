@@ -104,7 +104,7 @@ class OrderById extends Component {
           alert(res.dat.message);
         }
       })
-      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
+      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
 
   render() {
