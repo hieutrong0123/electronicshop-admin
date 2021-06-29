@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { CWidgetDropdown, CRow, CCol } from "@coreui/react";
+import {
+  CWidgetDropdown,
+  CRow,
+  CCol,
+  CCard,
+  CCardHeader,
+  CCardBody
+} from "@coreui/react";
 
 import moment from "moment";
 
@@ -25,7 +32,9 @@ class Count extends Component {
     loadingCategory: true,
     listOrders: null,
     newOrder: null,
-    loadingOrder: true
+    loadingOrder: true,
+    thisMonth: Number(moment().format("MM")),
+    thisYear: Number(moment().format("YYYY")),
   };
 
   async componentDidMount() {
@@ -61,7 +70,9 @@ class Count extends Component {
             let arr = [];
             for (let i = 0; i < res.data.resultObj.length; i++) {
               if (res.data.resultObj[i].createdDate !== null) {
-                if (res.data.resultObj[i].createdDate.substring(0, 10) === date) {
+                if (
+                  res.data.resultObj[i].createdDate.substring(0, 10) === date
+                ) {
                   arr.push(res.data.resultObj[i]);
                 }
               }
@@ -153,104 +164,112 @@ class Count extends Component {
   render() {
     return (
       <>
-        <CRow>
-          {this.state.loadingUser === false ? (
-            <CCol sm="6" lg="3">
-              <CWidgetDropdown
-                color="gradient-success"
-                header={
-                  this.state.newUser.length === 0
-                    ? "Có 0"
-                    : `Có ` + this.state.newUser.length
-                }
-                text="Thành viên mới"
-              ></CWidgetDropdown>
-            </CCol>
-          ) : null}
+        <CCard>
+          <CCardHeader>
+            Trong tháng {this.state.thisMonth}/{this.state.thisYear} này
+            <small></small>
+          </CCardHeader>
+          <CCardBody>
+            <CRow>
+              {this.state.loadingUser === false ? (
+                <CCol sm="6" lg="3">
+                  <CWidgetDropdown
+                    color="gradient-success"
+                    header={
+                      this.state.newUser.length === 0
+                        ? "Có 0"
+                        : `Có ` + this.state.newUser.length
+                    }
+                    text="Thành viên mới"
+                  ></CWidgetDropdown>
+                </CCol>
+              ) : null}
 
-          {this.state.loadingProduct === false ? (
-            <CCol sm="6" lg="3">
-              <CWidgetDropdown
-                color="gradient-primary"
-                header={
-                  this.state.newProduct.length === 0
-                    ? "Có 0"
-                    : `Có ` + this.state.newProduct.length
-                }
-                text="Sản phẩm mới"
-              ></CWidgetDropdown>
-            </CCol>
-          ) : null}
+              {this.state.loadingProduct === false ? (
+                <CCol sm="6" lg="3">
+                  <CWidgetDropdown
+                    color="gradient-primary"
+                    header={
+                      this.state.newProduct.length === 0
+                        ? "Có 0"
+                        : `Có ` + this.state.newProduct.length
+                    }
+                    text="Sản phẩm mới"
+                  ></CWidgetDropdown>
+                </CCol>
+              ) : null}
 
-          {this.state.loadingCategory === false ? (
-            <CCol sm="6" lg="3">
-              <CWidgetDropdown
-                color="gradient-warning"
-                header={
-                  this.state.newCategory.length === 0
-                    ? "Có 0"
-                    : `Có ` + this.state.newCategory.length
-                }
-                text="Danh mục mới"
-              ></CWidgetDropdown>
-            </CCol>
-          ) : null}
+              {this.state.loadingCategory === false ? (
+                <CCol sm="6" lg="3">
+                  <CWidgetDropdown
+                    color="gradient-warning"
+                    header={
+                      this.state.newCategory.length === 0
+                        ? "Có 0"
+                        : `Có ` + this.state.newCategory.length
+                    }
+                    text="Danh mục mới"
+                  ></CWidgetDropdown>
+                </CCol>
+              ) : null}
 
-          {this.state.loadingOrder === false ? (
-            <CCol sm="6" lg="3">
-              <CWidgetDropdown
-                color="gradient-info"
-                header={
-                  this.state.newOrder.length === 0
-                    ? "Có 0"
-                    : `Có ` + this.state.newOrder.length
-                }
-                text="Đơn hàng mới"
-              ></CWidgetDropdown>
-            </CCol>
-          ) : null}
-        </CRow>
-        <CRow>
-          {this.state.loadingUser === false ? (
-            <CCol sm="6" lg="3">
-              <CWidgetDropdown
-                color="gradient-primary"
-                header={`Trong tổng số ` + this.state.listUsers.length}
-                text="Thành viên"
-              ></CWidgetDropdown>
-            </CCol>
-          ) : null}
+              {this.state.loadingOrder === false ? (
+                <CCol sm="6" lg="3">
+                  <CWidgetDropdown
+                    color="gradient-info"
+                    header={
+                      this.state.newOrder.length === 0
+                        ? "Có 0"
+                        : `Có ` + this.state.newOrder.length
+                    }
+                    text="Đơn hàng mới"
+                  ></CWidgetDropdown>
+                </CCol>
+              ) : null}
+            </CRow>
+            <CRow>
+              {this.state.loadingUser === false ? (
+                <CCol sm="6" lg="3">
+                  <CWidgetDropdown
+                    color="gradient-primary"
+                    header={`Trong tổng số ` + this.state.listUsers.length}
+                    text="Thành viên"
+                  ></CWidgetDropdown>
+                </CCol>
+              ) : null}
 
-          {this.state.loadingProduct === false ? (
-            <CCol sm="6" lg="3">
-              <CWidgetDropdown
-                color="gradient-warning"
-                header={`Trong tổng số ` + this.state.listProducts.length}
-                text="Sản phẩm"
-              ></CWidgetDropdown>
-            </CCol>
-          ) : null}
+              {this.state.loadingProduct === false ? (
+                <CCol sm="6" lg="3">
+                  <CWidgetDropdown
+                    color="gradient-warning"
+                    header={`Trong tổng số ` + this.state.listProducts.length}
+                    text="Sản phẩm"
+                  ></CWidgetDropdown>
+                </CCol>
+              ) : null}
 
-          {this.state.loadingCategory === false ? (
-            <CCol sm="6" lg="3">
-              <CWidgetDropdown
-                color="gradient-info"
-                header={`Trong tổng số ` + this.state.listCatelogies.length}
-                text="Danh mục"
-              ></CWidgetDropdown>
-            </CCol>
-          ) : null}
+              {this.state.loadingCategory === false ? (
+                <CCol sm="6" lg="3">
+                  <CWidgetDropdown
+                    color="gradient-info"
+                    header={`Trong tổng số ` + this.state.listCatelogies.length}
+                    text="Danh mục"
+                  ></CWidgetDropdown>
+                </CCol>
+              ) : null}
 
-          {this.state.loadingOrder === false ? (
-            <CCol sm="6" lg="3">
-              <CWidgetDropdown
-                color="gradient-success"
-                header={`Trong tổng số ` + this.state.listOrders.length}
-                text="Đơn hàng"
-              ></CWidgetDropdown>
-            </CCol>
-          ) : null}
-        </CRow>
+              {this.state.loadingOrder === false ? (
+                <CCol sm="6" lg="3">
+                  <CWidgetDropdown
+                    color="gradient-success"
+                    header={`Trong tổng số ` + this.state.listOrders.length}
+                    text="Đơn hàng"
+                  ></CWidgetDropdown>
+                </CCol>
+              ) : null}
+            </CRow>
+          </CCardBody>
+        </CCard>
       </>
     );
   }

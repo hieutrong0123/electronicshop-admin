@@ -3,10 +3,6 @@ import {
   CCard,
   CDataTable,
   CButton,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter,
   CCardBody,
   CCardHeader,
   CCol,
@@ -46,7 +42,7 @@ class sellingProducts extends Component {
       .then(res => {
         if (res.data.isSuccessed) {
           if (res.data.resultObj.length === 0) {
-            alert("Không tìm thấy sản phẩm bán chạy của tháng và năm vừa chọn");
+            alert(`Không tìm thấy sản phẩm bán chạy của ${this.state.month}/${this.state.year} vừa chọn`);
           }
           this.setState({ list: res.data.resultObj });
           console.log(res);
@@ -69,7 +65,7 @@ class sellingProducts extends Component {
       .then(res => {
         if (res.data.isSuccessed) {
           if (res.data.resultObj.length === 0) {
-            alert("Không tìm thấy sản phẩm bán chạy của tháng và năm hiện tại");
+            alert(`Không tìm thấy sản phẩm bán chạy của ${this.state.month}/${this.state.year} hiện tại`);
           }
           this.setState({ list: res.data.resultObj });
           console.log(res);

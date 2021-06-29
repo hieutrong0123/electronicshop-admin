@@ -6,7 +6,7 @@ import Count from './Count.js'
 const Dashboard = () => {
   return (
     <>
-      <Count />
+      <Count/>
       <ChartBarOrders/>
     </>
   )
