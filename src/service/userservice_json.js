@@ -6,6 +6,8 @@ const create = data => api.post(`${api.url.userlink}/create`,data);
 const deletebyId = id =>api.delete(`${api.url.userlink}/delete/${id}`);
 const disablebyId = id =>api.put(`${api.url.userlink}/disable/${id}`);
 const updatebyId =  data => api.put(`${api.url.userlink}/update`,data);
+// const getloginhistory = (month, year) =>api.get(`${api.url.userlink}/get-login-history/m=${month}/y=${year}`);
+const getloginhistory = (month, year) =>api.get(`${api.url.userlink}/get-login-history`, {params: {month: month, year: year}});
 
 export default {
   getAll,
@@ -13,5 +15,6 @@ export default {
   create,
   updatebyId,
   deletebyId,
-  disablebyId
+  disablebyId,
+  getloginhistory
 };

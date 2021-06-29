@@ -100,6 +100,11 @@ const adminAddOn = {
       _tag: "CSidebarNavItem",
       name: "Xem danh sách",
       to: "/users"
+    },
+    {
+      _tag: "CSidebarNavItem",
+      name: "Thống kê lượt đăng nhập",
+      to: "/statistical/loginhistory"
     }
   ]
 };
