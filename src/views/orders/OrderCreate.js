@@ -8,17 +8,17 @@ import {
   CCol,
   CForm,
   CFormGroup,
-  CFormText,
   CInput,
-  CInputRadio,
   CLabel,
   CRow,
+  CInputRadio,
   CTextarea,
   CDataTable
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import productservice_json from "src/service/productservice_json";
 import orderdetailservice_json from "src/service/orderdetailservice_json";
+import moment from "moment"
 
 class OrderCreate extends Component {
   constructor(props) {
@@ -26,15 +26,18 @@ class OrderCreate extends Component {
 
     this.state = {
       receiver: "",
+      deliveryDate: moment().format("YYYY-MM-DD"),
+      paid: false,
+      receiversAddress: "Số 1, Võ Văn Ngân, P.Linh Chiểu, Q.Thủ Đức, TP HCM",
       phoneNumber: "",
       email: "email@example.com",
       totalMoney: 0,
       note: "",
-      orderDetails: [{ productId: 0, quantity: 0, total: 0 }],
+      orderDetails: [],
       listOrderDetails: [],
       productNameItem: "",
-      productIdItem: "",
-      quantityItem: "",
+      productIdItem: 1,
+      quantityItem: 1,
       productPriceItem: 0,
       loadingProductById: true
     };
@@ -140,7 +143,10 @@ class OrderCreate extends Component {
     } else {
       const data = {
         receiver: this.state.receiver,
+        deliveryDate: this.state.deliveryDate,
+        paid: this.state.paid,
         phoneNumber: this.state.phoneNumber,
+        receiversAddress: this.state.receiversAddress,
         email: this.state.email,
         totalMoney: totalPrice,
         note: this.state.note,
@@ -227,6 +233,52 @@ class OrderCreate extends Component {
                   </CFormGroup>
                   <CFormGroup row>
                     <CCol md="3">
+                      <CLabel htmlFor="text-input">Địa chỉ nhận hàng *</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        name="receiversAddress"
+                        placeholder="Họ và tên lót"
+                        value={this.state.receiversAddress}
+                        onChange={this.changeHandler}
+                      />
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel>Tình trang thanh toán*</CLabel>
+                    </CCol>
+                    <CCol md="9">
+                      <CFormGroup variant="custom-radio" inline>
+                        <CInputRadio
+                          custom
+                          id="true"
+                          name="paid"
+                          onChange={this.changeHandler}
+                          value={true}
+                          checked={this.state.paid === true}
+                        />
+                        <CLabel variant="custom-checkbox" htmlFor="true">
+                          Đã thanh toán
+                        </CLabel>
+                      </CFormGroup>
+                      <CFormGroup variant="custom-radio" inline>
+                        <CInputRadio
+                          custom
+                          id="false"
+                          name="paid"
+                          onChange={this.changeHandler}
+                          value={false}
+                          checked={this.state.paid === false}
+                        />
+                        <CLabel variant="custom-checkbox" htmlFor="false">
+                          Chưa thanh toán
+                        </CLabel>
+                      </CFormGroup>
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="3">
                       <CLabel htmlFor="textarea-input">Ghi chú</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
@@ -266,7 +318,7 @@ class OrderCreate extends Component {
                                 <CInput
                                   type="number"
                                   name="productIdItem"
-                                  placeholder="123"
+                                  placeholder="1"
                                   value={this.state.productIdItem}
                                   onChange={this.changeHandler}
                                 />
@@ -281,7 +333,7 @@ class OrderCreate extends Component {
                                 <CInput
                                   type="number"
                                   name="quantityItem"
-                                  placeholder="10"
+                                  placeholder="1"
                                   value={this.state.quantityItem}
                                   onChange={this.changeHandler}
                                 />
