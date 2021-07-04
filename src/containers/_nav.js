@@ -74,12 +74,12 @@ let defaultNav = [
     _children: [
       {
         _tag: "CSidebarNavItem",
-        name: "Danh sách",
-        to: "/orders"
+        name: "Thêm đơn hàng",
+        to: "/orders/create"
       },
       {
         _tag: "CSidebarNavItem",
-        name: "Duyệt đơn",
+        name: "Xem danh sách và duyệt đơn",
         to: "/orders"
       }
     ]

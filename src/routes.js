@@ -57,6 +57,7 @@ import CategoryEdit from './views/categories/CategoryEdit';
 //Orders
 import Orders from './views/orders/Orders';
 import OrderById from './views/orders/OrderById';
+import OrderCreate from './views/orders/OrderCreate';
 
 // ProductPhotos
 import ProductPhotoCreate from './views/productphotos/ProductPhotoCreate';
@@ -68,6 +69,7 @@ import OrderDetails from './views/orderdetails/OrderDetails';
 //Statistical
 import SellingProducts from './views/statistical/SellingProducts';
 import LoginHistory from './views/statistical/LoginHistory';
+
 
 const routes = [
   // { path: '/', exact: true, name: 'Home' },
@@ -131,6 +133,7 @@ const routes = [
   
   //Orders
   { path: '/orders', exact: true,  name: 'Danh sách đơn hàng', component: Orders },
+  {path: '/orders/create', exact: true, name: 'Thêm đơn hàng', component: OrderCreate},
   { path: '/orders/:id', exact: true,  name: 'Xem thêm đơn hàng', component: OrderById },
   
   //ProductPhoto

@@ -29,10 +29,6 @@ class OrderById extends Component {
     phoneNumber: "",
     totalMoney: "",
     statusId: "",
-    userId: null,
-    customerName: "",
-    loading1: true,
-    loading2: true,
     OrderStatus: [
       "",
       "Đặt hàng thành công",
@@ -47,7 +43,7 @@ class OrderById extends Component {
   };
 
   componentDidMount() {
-    this.loadData1();
+    this.loadOrderById();
   }
 
   changeHandler = e => {
@@ -60,8 +56,7 @@ class OrderById extends Component {
   cancel() {
     this.props.history.push("/orders");
   }
-
-  loadData1() {
+  loadOrderById() {
     orderservice_json
       .getbyId(this.props.match.params.id)
       .then(res => {
@@ -81,27 +76,8 @@ class OrderById extends Component {
               loading1: false
             });
           }
-          this.loadData2();
         } else {
           alert(res.data.message);
-        }
-      })
-      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
-  }
-
-  loadData2() {
-    userservice_json
-      .getbyId(this.state.userId)
-      .then(res => {
-        if (res.data.isSuccessed) {
-          if (res.data.resultObj !== null) {
-            this.setState({
-              customerName: `${res.data.resultObj.firstMiddleName} ${res.data.resultObj.lastName}`,
-              loading2: false
-            });
-          }
-        } else {
-          alert(res.dat.message);
         }
       })
       .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
@@ -138,19 +114,19 @@ class OrderById extends Component {
                     </CCol>
                   </CFormGroup>
 
-                  <CFormGroup row>
+                  {/* <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="text-input">Tên khách hàng</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="user"
-                        placeholder="Tổng số tiền"
-                        value={this.state.customerName}
+                        placeholder="Tên khách hàng"
+                        value={this.state.receiver}
                         onChange={this.changeHandler}
                       />
                     </CCol>
-                  </CFormGroup>
+                  </CFormGroup> */}
 
                   <CFormGroup row>
                     <CCol md="3">
@@ -166,6 +142,8 @@ class OrderById extends Component {
                       />
                     </CCol>
                   </CFormGroup>
+
+                  
 
                   <CFormGroup row>
                     <CCol md="3">
