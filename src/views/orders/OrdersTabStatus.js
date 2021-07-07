@@ -60,7 +60,7 @@ class OrdersTabStatus extends Component {
       .changeStatus(this.state.id)
       .then(res => {
         if (res.data.isSuccessed) {
-          alert(res.data.resultObj);
+          alert(res.data.message);
           window.location.reload();
         } else {
           alert(res.data.message);
@@ -76,7 +76,7 @@ class OrdersTabStatus extends Component {
       .canclebyId(this.state.id)
       .then(res => {
         if (res.data.isSuccessed) {
-          alert(res.data.resultObj);
+          alert("Hủy đơn hàng thành công");
           window.location.reload();
         } else {
           alert(res.data.message);
