@@ -41,7 +41,7 @@ class Categories extends Component {
       { key: "alias", label: "Bí danh" },      
       // { key: "productType", label: "Loại sản phẩm" },
       { key: "createdDate", label: "Ngày tạo" },
-      { key: "link", label: "Action" },
+      { key: "link", label: "Tùy chọn" },
     ];
     return this.state.list === null ? null : (
       <CCard>
@@ -54,6 +54,7 @@ class Categories extends Component {
           itemsPerPageSelect
           itemsPerPage={5}
           hover
+          sorter
           pagination
           scopedSlots={{
             link: item => {

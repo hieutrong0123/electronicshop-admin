@@ -95,6 +95,7 @@ class Products extends Component {
           itemsPerPageSelect
           itemsPerPage={5}
           hover
+          sorter
           pagination
           scopedSlots={{
             link: item => {

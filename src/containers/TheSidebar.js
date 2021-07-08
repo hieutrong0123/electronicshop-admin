@@ -10,6 +10,7 @@ import {
   CSidebarMinimizer,
   CSidebarNavDropdown,
   CSidebarNavItem,
+  CImg
 } from '@coreui/react'
 
 import CIcon from '@coreui/icons-react'
@@ -18,7 +19,6 @@ import CIcon from '@coreui/icons-react'
 import navigation from './_nav'
 // import navigationAdmin from './_navAdmin'
 // import navigationEmployee from './_navEmployee'
-
 
 const TheSidebar = () => {
   const [nav, setNav ] = useState([])
@@ -39,9 +39,9 @@ const TheSidebar = () => {
   return (
     <CSidebar
       show={show}
-      onShowChange={(val) => dispatch({type: 'set', sidebarShow: val })}
+      onShowChange={val => dispatch({ type: "set", sidebarShow: val })}
     >
-      <CSidebarBrand className="d-md-down-none" to="/">
+      {/* <CSidebarBrand className="d-md-down-none" to="/">
         <CIcon
           className="c-sidebar-brand-full"
           name="logo-negative"
@@ -52,6 +52,9 @@ const TheSidebar = () => {
           name="sygnet"
           height={35}
         />
+      </CSidebarBrand> */}
+      <CSidebarBrand className="d-md-down-none" to="/">
+        <CImg src=".././logo/logo.png" width="190px" />
       </CSidebarBrand>
       <CSidebarNav>
         <CCreateElement
@@ -64,9 +67,9 @@ const TheSidebar = () => {
           }}
         />
       </CSidebarNav>
-      <CSidebarMinimizer className="c-d-md-down-none"/>
+      <CSidebarMinimizer className="c-d-md-down-none" />
     </CSidebar>
-  )
+  );
 }
 
 export default React.memo(TheSidebar)

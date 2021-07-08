@@ -1,16 +1,20 @@
 import React from 'react'
-import { CFooter } from '@coreui/react'
+import { CFooter, CCardHeader,  } from '@coreui/react'
+import CIcon from "@coreui/icons-react";
+import moment from "moment";
 
 const TheFooter = () => {
+  var thisYear = moment().format("YYYY")
   return (
     <CFooter fixed={false}>
       <div>
-        <a href="https://coreui.io" target="_blank" rel="noopener noreferrer">CoreUI</a>
-        <span className="ml-1">&copy; 2020 creativeLabs.</span>
-      </div>
-      <div className="mfs-auto">
-        <span className="mr-1">Powered by</span>
-        <a href="https://coreui.io/react" target="_blank" rel="noopener noreferrer">CoreUI for React</a>
+        <span className="mr-1">Địa chỉ: Số 1, Võ Văn Ngân, Linh Chiểu, Thủ Đức, TP.HCM</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span className="mr-1">Số điện thoại: 038 4341 437</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span className="mr-1">Email: Electronicshop0123@gmail.com</span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span className="ml-1">&copy; {thisYear} Electronicshop</span>
       </div>
     </CFooter>
   )
