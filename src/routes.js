@@ -38,14 +38,14 @@ import Dashboard from './views/dashboard/Dashboard';
 import Users from './views/users/Users';
 // import User from './views/users/User';
 import UserCreate from './views/users/UserCreate';
-import UserDetails from './views/users/UserDeatils';
+import UserDetails from './views/users/UserDetails';
 import UserEdit from './views/users/UserEdit';
 
 
 //Products
 import Products from './views/products/Products';
 import ProductCreate from './views/products/ProductCreate';
-import ProductDetails from "./views/products/ProductDeatils";
+import ProductDetails from "./views/products/ProductDetails";
 import ProductEdit from "./views/products/ProductEdit";
 
 //Categories
