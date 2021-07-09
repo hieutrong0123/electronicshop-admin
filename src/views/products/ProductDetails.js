@@ -15,7 +15,11 @@ import {
   CSelect,
   CRow,
   CImg,
-  CDataTable
+  CDataTable,
+  CModal,
+  CModalHeader,
+  CModalBody,
+  CModalFooter
 } from "@coreui/react";
 import { Link } from "react-router-dom";
 import CIcon from "@coreui/icons-react";
@@ -24,6 +28,7 @@ import categoryservice_json from "src/service/categoryservice_json";
 
 import { CKEditor} from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import productphotoservice_json from "src/service/productphotoservice_json";
 
 class ProductDetails extends Component {
   state = {
@@ -44,12 +49,20 @@ class ProductDetails extends Component {
     productPhotos: [],
     categoryList: null,
     list: null,
-    loading: true
+    loading: true,
+    toggleDelete: false,
+    idPhoto: null
   };
-  createPhotoProduct = this.createPhotoProduct.bind(this);
+
+  escFunction = this.escFunction.bind(this);
 
   componentDidMount() {
     this.loadData();
+    document.addEventListener("keydown", this.escFunction, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("keydown", this.escFunction, false);
   }
 
   changeHandler = e => {
@@ -64,9 +77,11 @@ class ProductDetails extends Component {
     this.props.history.push(`/products/edit/${this.state.id}`);
   }
 
-  delete() {
-    productservice_json
-      .deletebyId(this.state.id)
+  deletePhoto() {
+    console.log(this.state.idPhoto);
+    this.setState({ toggleDelete: false });
+    productphotoservice_json
+      .deletebyId(this.state.idPhoto)
       .then(res => {
         if (res.data.isSuccessed) {
           alert(res.data.resultObj);
@@ -78,7 +93,16 @@ class ProductDetails extends Component {
       .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
 
-  createPhotoProduct() {}
+
+  toggleDelete = id => {
+    this.setState({ toggleDelete: true, id: id });
+  };
+
+  escFunction(event) {
+    if (event.keyCode === 27) {
+      this.setState({ toggleDelete: false });
+    }
+  }
 
   loadData() {
     categoryservice_json
@@ -126,8 +150,6 @@ class ProductDetails extends Component {
               loading: false
             });
           }
-          // console.log(res);
-          // console.log(this.state);
           console.log(this.state.list);
         } else {
           alert(res.data.message);
@@ -139,7 +161,8 @@ class ProductDetails extends Component {
   render() {
     const fields = [
       { key: "id", label: "Mã hình ảnh" },
-      { key: "url", label: "Hình ảnh" }
+      { key: "url", label: "Hình ảnh" },
+      { key: "link", label: "Tuỳ chọn" }
     ];
     return this.state.loading === true ? (
       <h1>Đang tải dữ liệu vui vòng chờ trong giây lát</h1>
@@ -248,23 +271,6 @@ class ProductDetails extends Component {
                       />
                     </CCol>
                   </CFormGroup>
-
-                  {/* <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="textarea-input">
-                        Thông số kỹ thuật
-                      </CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9">
-                      <CTextarea
-                        name="specifications"
-                        rows="3"
-                        placeholder="Thông số kỹ thuật"
-                        value={this.state.specifications}
-                        onChange={this.changeHandler}
-                      />
-                    </CCol>
-                  </CFormGroup> */}
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="textarea-input">
@@ -403,6 +409,7 @@ class ProductDetails extends Component {
                         type="date"
                         name="createdDate"
                         placeholder="Ngày tạo"
+                        disabled
                         value={this.state.createdDate}
                         onChange={this.changeHandler}
                       />
@@ -419,6 +426,7 @@ class ProductDetails extends Component {
                           type="date"
                           name="modifiedDate"
                           placeholder="ModifiedDate"
+                          disabled
                           value={this.state.modifiedDate}
                           onChange={this.changeHandler}
                         />
@@ -455,17 +463,7 @@ class ProductDetails extends Component {
                       </CCol>
                     </CFormGroup>
                   ) : null}
-                  {/* <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel htmlFor="text-input">Hình ảnh</CLabel>
-                    </CCol>
-                    <CCol xs="12" md="9" align="center">
-                      {this.state.productPhotos.map(item => {
-                        return <CImg src={item.url} thumbnail width="250px" />;
-                      })}
-                    </CCol>
-                  </CFormGroup> */}
-                  <CFormGroup row>
+                                    <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="text-input">Hình ảnh</CLabel>
                     </CCol>
@@ -483,6 +481,22 @@ class ProductDetails extends Component {
                             return (
                               <td>
                                 <CImg src={item.url} width="250px" />
+                              </td>
+                            );
+                          },
+                          link: item => {
+                            return (
+                              <td>
+                                <CButton
+                                  size="sm"
+                                  color="danger"
+                                  onClick={() => 
+                                    {this.toggleDelete(item.id),
+                                      this.setState({ idPhoto: item.id });
+                                    }}
+                                >
+                                  <CIcon name="cil-ban" /> Xoá
+                                </CButton>
                               </td>
                             );
                           }
@@ -517,6 +531,24 @@ class ProductDetails extends Component {
             </CCard>
           </CCol>
         </CRow>
+
+        <CModal show={this.state.toggleDelete}>
+          <CModalHeader>Dừng lại!</CModalHeader>
+          <CModalBody>Hình ảnh #{this.state.idPhoto} sẽ bị xoá</CModalBody>
+          <CModalFooter>
+            <CButton color="primary" onClick={() => this.deletePhoto()}>
+              OK
+            </CButton>
+            <CButton
+              color="secondary"
+              onClick={() => {
+                this.setState({ toggleDelete: false });
+              }}
+            >
+              Cancel
+            </CButton>
+          </CModalFooter>
+        </CModal>
       </>
     );
   }

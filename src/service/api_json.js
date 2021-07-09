@@ -6,6 +6,7 @@ const url = {
   authLink: "/Auth",
   userlink: "/Users",
   productlink: "/Products",
+  productphotolink: "/ProductPhotos",
   categorylink: "/Categories",
   orderlink: "/Orders",
   orderdetaillink : "/OrderDetails"
