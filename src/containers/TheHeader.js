@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   CHeader,
@@ -12,7 +12,10 @@ import {
   TheHeaderDropdown,
 }  from './index'
 
+import {nameDecode} from 'src/service/decodeToken'
+
 const TheHeader = () => {
+  const [name] = useState(nameDecode)
   const dispatch = useDispatch()
   const sidebarShow = useSelector(state => state.sidebarShow)
 
@@ -43,6 +46,9 @@ const TheHeader = () => {
       </CHeaderBrand>
 
       <CHeaderNav className="d-md-down-none mr-auto">
+      </CHeaderNav>
+      <CHeaderNav>
+        <h6>Xin chào {name}</h6>
       </CHeaderNav>
 
       <CHeaderNav className="px-3">

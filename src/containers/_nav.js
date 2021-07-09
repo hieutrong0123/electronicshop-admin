@@ -8,7 +8,8 @@ let defaultNav = [
     _tag: "CSidebarNavItem",
     name: "Trang chủ",
     to: "/",
-    icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon" />
+    // icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon" />
+    icon:'cil-home'
   },
 
   {
@@ -20,7 +21,7 @@ let defaultNav = [
     _tag: 'CSidebarNavDropdown',
     name: 'Thống kê',
     to: '/widgets',
-    icon: 'cil-calculator',
+    icon:'cil-chart-pie',
     badge: {
       color: 'info'
     },
@@ -30,13 +31,18 @@ let defaultNav = [
         name: "Sản phẩm bán chạy",
         to: "/statistical/sellingProducts"
       },
+      {
+      _tag: "CSidebarNavItem",
+      name: "Lượt đăng nhập",
+      to: "/statistical/loginhistory"
+      }
     ]
   },
 
   {
     _tag: "CSidebarNavDropdown",
     name: "Quản ký sản phẩm",
-    icon: "cil-cursor",
+    icon:'cil-spreadsheet',
     _children: [
       {
         _tag: "CSidebarNavItem",
@@ -53,7 +59,8 @@ let defaultNav = [
   {
     _tag: "CSidebarNavDropdown",
     name: "Quản lý danh mục",
-    icon: "cil-star",
+    // icon: "cil-star",
+    icon:'cil-list',
     _children: [
       {
         _tag: "CSidebarNavItem",
@@ -70,7 +77,7 @@ let defaultNav = [
   {
     _tag: "CSidebarNavDropdown",
     name: "Quản lý đơn hàng",
-    icon: "cil-bell",
+    icon: 'cil-basket',
     _children: [
       {
         _tag: "CSidebarNavItem",
@@ -89,7 +96,7 @@ let defaultNav = [
 const adminAddOn = {
   _tag: "CSidebarNavDropdown",
   name: "Quản lý người dùng",
-  icon: "cil-puzzle",
+  icon: "cil-user",
   _children: [
     {
       _tag: "CSidebarNavItem",
@@ -100,11 +107,6 @@ const adminAddOn = {
       _tag: "CSidebarNavItem",
       name: "Xem danh sách",
       to: "/users"
-    },
-    {
-      _tag: "CSidebarNavItem",
-      name: "Thống kê lượt đăng nhập",
-      to: "/statistical/loginhistory"
     }
   ]
 };

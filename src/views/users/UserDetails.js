@@ -153,6 +153,7 @@ class UserDetails extends Component {
                       <CInput
                         type="date"
                         name="birthday"
+                        disabled
                         placeholder="Sinh nhật"
                         value={this.state.birthday}
                         onChange={this.changeHandler}
