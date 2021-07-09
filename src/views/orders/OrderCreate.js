@@ -32,7 +32,7 @@ class OrderCreate extends Component {
       phoneNumber: "",
       email: "email@example.com",
       totalMoney: 0,
-      note: "",
+      note: null,
       orderDetails: [],
       listOrderDetails: [],
       productNameItem: "",
@@ -48,8 +48,21 @@ class OrderCreate extends Component {
       this.setState({ productIdItem: Number(e.target.value) });
     } else if (e.target.name === "quantityItem") {
       this.setState({ quantityItem: Number(e.target.value) });
-    } else {
+    }
+    else if (e.target.name === "paid") {
+      if(e.target.value == "true")
+      {
+        this.setState({ paid: true });
+      }
+      else
+      {
+        this.setState({ paid: false });
+      }
+      console.log([e.target.name], e.target.value);
+    } 
+    else {
       this.setState({ [e.target.name]: e.target.value });
+      console.log([e.target.name], e.target.value);
     }
   };
   cancel() {
