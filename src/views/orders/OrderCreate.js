@@ -112,10 +112,13 @@ class OrderCreate extends Component {
       objIndex = newListOrderDetails.findIndex(
         obj => obj.productId == this.state.productIdItem
       );
-    newListOrderDetails[objIndex].productQuantity = this.state.quantityItem;
-    newListOrderDetails[objIndex].total =
-      this.state.productPriceItem * this.state.quantityItem;
-    this.setState({ listOrderDetails: newListOrderDetails });
+    console.log(objIndex);
+    if(objIndex != -1)
+      {
+        newListOrderDetails[objIndex].productQuantity = this.state.quantityItem;
+        newListOrderDetails[objIndex].total = this.state.productPriceItem * this.state.quantityItem;
+        this.setState({ listOrderDetails: newListOrderDetails });
+      }
   };
 
   delete() {
