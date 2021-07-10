@@ -18,7 +18,7 @@ import {
 import CIcon from "@coreui/icons-react";
 import productservice_json from "src/service/productservice_json";
 import orderdetailservice_json from "src/service/orderdetailservice_json";
-import moment from "moment"
+import moment from "moment";
 
 class OrderCreate extends Component {
   constructor(props) {
@@ -26,8 +26,7 @@ class OrderCreate extends Component {
 
     this.state = {
       receiver: "",
-      deliveryDate: moment().format("YYYY-MM-DD"),
-      paid: false,
+      deliveryDate: moment().format(),
       receiversAddress: "Số 1, Võ Văn Ngân, P.Linh Chiểu, Q.Thủ Đức, TP HCM",
       phoneNumber: "",
       email: "email@example.com",
@@ -48,19 +47,7 @@ class OrderCreate extends Component {
       this.setState({ productIdItem: Number(e.target.value) });
     } else if (e.target.name === "quantityItem") {
       this.setState({ quantityItem: Number(e.target.value) });
-    }
-    else if (e.target.name === "paid") {
-      if(e.target.value == "true")
-      {
-        this.setState({ paid: true });
-      }
-      else
-      {
-        this.setState({ paid: false });
-      }
-      console.log([e.target.name], e.target.value);
-    } 
-    else {
+    } else {
       this.setState({ [e.target.name]: e.target.value });
       console.log([e.target.name], e.target.value);
     }
@@ -76,27 +63,33 @@ class OrderCreate extends Component {
     return false;
   }
   submitHandlerProduct() {
-    if (!this.state.productIdItem) {
+    if (this.state.productIdItem <= 0) {
       alert("Mã sản phẩm không đúng định dạng");
-    } 
-    else if (!this.state.quantityItem) {
+    } else if (this.state.quantityItem <= 0) {
       alert("Số lượng sản phẩm không đúng định dạng");
-    } 
-    else
-    {
+    } else {
       productservice_json
         .getbyId(this.state.productIdItem)
         .then(res => {
           if (res.data.isSuccessed) {
             if (res.data.resultObj !== null) {
-              this.setState({
-                productNameItem: res.data.resultObj.name,
-                productPriceItem: res.data.resultObj.price
-              });
+              if (this.state.quantityItem > res.data.resultObj.inventory) {
+                alert(
+                  `Sản phẩm trong kho chỉ còn ${res.data.resultObj.inventory} sản phẩm`
+                );
+              } else {
+                this.setState({
+                  productNameItem: res.data.resultObj.name,
+                  productPriceItem: res.data.resultObj.price
+                });
+                console.log(
+                  "loadingProductById",
+                  this.state.loadingProductById
+                );
+                this.setListOrderDetail();
+                console.log(this.state.loadingProductById);
+              }
             }
-            console.log("loadingProductById", this.state.loadingProductById);
-            this.setListOrderDetail();
-            console.log("setListOrderDetail");
           } else {
             alert(res.data.message);
           }
@@ -109,15 +102,31 @@ class OrderCreate extends Component {
     const listObject = {
       productId: this.state.productIdItem,
       productName: this.state.productNameItem,
-      productQuantity: this.state.quantityItem,
-      productPrice: this.state.productPriceItem,
+      quantity: this.state.quantityItem,
+      price: this.state.productPriceItem,
       total: this.state.productPriceItem * this.state.quantityItem
     };
     console.log(listObject);
-    this.setState({
-      listOrderDetails: this.state.listOrderDetails.concat(listObject)
-    });
-    console.log(this.state.listOrderDetails);
+    if (listObject) {
+      let newListOrderDetails = this.state.listOrderDetails,
+        objIndex = newListOrderDetails.findIndex(
+          obj => obj.productId == this.state.productIdItem
+        );
+      console.log(objIndex);
+      if (objIndex != -1) {
+        newListOrderDetails[objIndex].quantity = this.state.quantityItem;
+        newListOrderDetails[objIndex].total =
+          this.state.productPriceItem * this.state.quantityItem;
+        this.setState({ listOrderDetails: newListOrderDetails });
+        this.setTotalMoney();
+      } else {
+        this.setState({
+          listOrderDetails: this.state.listOrderDetails.concat(listObject)
+        });
+        this.setTotalMoney();
+        console.log(this.state.listOrderDetails);
+      }
+    }
   }
 
   edit = () => {
@@ -126,30 +135,36 @@ class OrderCreate extends Component {
         obj => obj.productId == this.state.productIdItem
       );
     console.log(objIndex);
-    if(objIndex != -1)
-      {
-        newListOrderDetails[objIndex].productQuantity = this.state.quantityItem;
-        newListOrderDetails[objIndex].total = this.state.productPriceItem * this.state.quantityItem;
-        this.setState({ listOrderDetails: newListOrderDetails });
-      }
+    if (objIndex != -1) {
+      newListOrderDetails[objIndex].quantity = this.state.quantityItem;
+      newListOrderDetails[objIndex].total =
+        this.state.productPriceItem * this.state.quantityItem;
+      this.setState({ listOrderDetails: newListOrderDetails });
+      this.setTotalMoney();
+    } else {
+      alert("Không tìm thấy sản phẩm trong danh sách đã thêm");
+    }
   };
 
-  delete() {
+  async delete() {
     const listOrderDetails = this.state.listOrderDetails.filter(
       item => item.productId !== this.state.productIdItem
     );
-    this.setState({ listOrderDetails });
+    await this.setState({ listOrderDetails });
+    await this.setTotalMoney();
   }
-
-  submitHandler() {
+  setTotalMoney() {
     let totalPrice = this.state.listOrderDetails.reduce(function(
       accumulator,
       item
     ) {
-      return accumulator + item.productQuantity * item.productPrice;
+      return accumulator + item.quantity * item.price;
     },
     0);
+    this.setState({ totalMoney: totalPrice });
+  }
 
+  submitHandler() {
     if (!this.validateEmail(this.state.email)) {
       alert("Email không đúng định dạng");
     } else if (!this.state.phoneNumber) {
@@ -160,11 +175,10 @@ class OrderCreate extends Component {
       const data = {
         receiver: this.state.receiver,
         deliveryDate: this.state.deliveryDate,
-        paid: this.state.paid,
         phoneNumber: this.state.phoneNumber,
         receiversAddress: this.state.receiversAddress,
         email: this.state.email,
-        totalMoney: totalPrice,
+        totalMoney: this.state.totalMoney,
         note: this.state.note,
         orderDetails: this.state.listOrderDetails
       };
@@ -185,8 +199,8 @@ class OrderCreate extends Component {
     const fields = [
       { key: "productId", label: "Mã sản phẩm" },
       { key: "productName", label: "Tên sản phẩm" },
-      { key: "productQuantity", label: "Số lượng" },
-      { key: "productPrice", label: "Giá" },
+      { key: "quantity", label: "Số lượng" },
+      { key: "price", label: "Giá" },
       { key: "total", label: "Tổng cộng" }
     ];
     return (
@@ -260,39 +274,7 @@ class OrderCreate extends Component {
                       />
                     </CCol>
                   </CFormGroup>
-                  <CFormGroup row>
-                    <CCol md="3">
-                      <CLabel>Tình trang thanh toán*</CLabel>
-                    </CCol>
-                    <CCol md="9">
-                      <CFormGroup variant="custom-radio" inline>
-                        <CInputRadio
-                          custom
-                          id="true"
-                          name="paid"
-                          onChange={this.changeHandler}
-                          value={true}
-                          checked={this.state.paid === true}
-                        />
-                        <CLabel variant="custom-checkbox" htmlFor="true">
-                          Đã thanh toán
-                        </CLabel>
-                      </CFormGroup>
-                      <CFormGroup variant="custom-radio" inline>
-                        <CInputRadio
-                          custom
-                          id="false"
-                          name="paid"
-                          onChange={this.changeHandler}
-                          value={false}
-                          checked={this.state.paid === false}
-                        />
-                        <CLabel variant="custom-checkbox" htmlFor="false">
-                          Chưa thanh toán
-                        </CLabel>
-                      </CFormGroup>
-                    </CCol>
-                  </CFormGroup>
+
                   <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="textarea-input">Ghi chú</CLabel>
@@ -304,6 +286,21 @@ class OrderCreate extends Component {
                         placeholder="Ghi chú thông tin khác"
                         value={this.state.note}
                         onChange={this.changeHandler}
+                      />
+                    </CCol>
+                  </CFormGroup>
+
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="text-input">Tổng tiền</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        type="number"
+                        name="totalMoney"
+                        placeholder="0"
+                        disabled
+                        value={this.state.totalMoney}
                       />
                     </CCol>
                   </CFormGroup>
@@ -397,11 +394,11 @@ class OrderCreate extends Component {
                       productName: item => {
                         return <td>{item.productName}</td>;
                       },
-                      productQuantity: item => {
-                        return <td>{item.productQuantity}</td>;
+                      quantity: item => {
+                        return <td>{item.quantity}</td>;
                       },
-                      productPrice: item => {
-                        return <td>{item.productPrice}</td>;
+                      price: item => {
+                        return <td>{item.price}</td>;
                       },
                       total: item => {
                         return <td>{item.total}</td>;
