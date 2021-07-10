@@ -94,8 +94,8 @@ class ProductDetails extends Component {
   }
 
 
-  toggleDelete = id => {
-    this.setState({ toggleDelete: true, id: id });
+  toggleDelete = idPhoto => {
+    this.setState({ toggleDelete: true, idPhoto: idPhoto });
   };
 
   escFunction(event) {
@@ -490,13 +490,11 @@ class ProductDetails extends Component {
                                 <CButton
                                   size="sm"
                                   color="danger"
-                                  onClick={() => 
-                                    {this.toggleDelete(item.id),
-                                      this.setState({ idPhoto: item.id });
-                                    }}
+                                  onClick={() => this.toggleDelete(item.id)}
                                 >
                                   <CIcon name="cil-ban" /> Xoá
                                 </CButton>
+                                &nbsp;&nbsp;&nbsp;
                               </td>
                             );
                           }
