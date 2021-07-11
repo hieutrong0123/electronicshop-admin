@@ -54,7 +54,7 @@ const TheSidebar = () => {
         />
       </CSidebarBrand> */}
       <CSidebarBrand className="d-md-down-none" to="/">
-        <CImg src=".././logo/logo.png" width="190px" />
+        <CImg src="/logo/logo.png" width="190px" />
       </CSidebarBrand>
       <CSidebarNav>
         <CCreateElement
