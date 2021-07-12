@@ -33,8 +33,8 @@ class Count extends Component {
     listOrders: null,
     newOrder: null,
     loadingOrder: true,
-    thisMonth: Number(moment().format("MM")),
-    thisYear: Number(moment().format("YYYY")),
+    thisMonth: moment().format("MM"),
+    thisYear: moment().format("YYYY"),
   };
 
   async componentDidMount() {
@@ -66,12 +66,11 @@ class Count extends Component {
         .getAll()
         .then(res => {
           if (res.data.isSuccessed) {
-            var date = moment().format("YYYY-MM-DD");
             let arr = [];
             for (let i = 0; i < res.data.resultObj.length; i++) {
               if (res.data.resultObj[i].createdDate !== null) {
                 if (
-                  res.data.resultObj[i].createdDate.substring(0, 10) === date
+                  moment(res.data.resultObj[i].createdDate).format("MM") === this.state.thisMonth
                 ) {
                   arr.push(res.data.resultObj[i]);
                 }
@@ -93,11 +92,12 @@ class Count extends Component {
       .getAll()
       .then(res => {
         if (res.data.isSuccessed) {
-          var date = moment().format("YYYY-MM-DD");
           let arr = [];
           for (let i = 0; i < res.data.resultObj.length; i++) {
             if (res.data.resultObj[i].createdDate !== null) {
-              if (res.data.resultObj[i].createdDate.substring(0, 10) === date) {
+              if (
+                moment(res.data.resultObj[i].createdDate).format("MM") === this.state.thisMonth
+                ) {
                 arr.push(res.data.resultObj[i]);
               }
             }
@@ -117,11 +117,12 @@ class Count extends Component {
       .getAll()
       .then(res => {
         if (res.data.isSuccessed) {
-          var date = moment().format("YYYY-MM-DD");
           let arr = [];
           for (let i = 0; i < res.data.resultObj.length; i++) {
             if (res.data.resultObj[i].createdDate !== null) {
-              if (res.data.resultObj[i].createdDate.substring(0, 10) === date) {
+              if (
+                moment(res.data.resultObj[i].createdDate).format("MM") === this.state.thisMonth
+                ) {
                 arr.push(res.data.resultObj[i]);
               }
             }
@@ -141,11 +142,12 @@ class Count extends Component {
       .getAll()
       .then(res => {
         if (res.data.isSuccessed) {
-          var date = moment().format("YYYY-MM-DD");
           let arr = [];
           for (let i = 0; i < res.data.resultObj.length; i++) {
             if (res.data.resultObj[i].createdDate !== null) {
-              if (res.data.resultObj[i].createdDate.substring(0, 10) === date) {
+              if (
+                moment(res.data.resultObj[i].createdDate).format("MM") === this.state.thisMonth
+                ) {
                 arr.push(res.data.resultObj[i]);
               }
             }
