@@ -113,7 +113,7 @@ class OrderDetails extends Component {
           this.loadProduct();
           console.log("loadingOrderDetails", this.state.loadingOrderDetails);
         } else {
-          alert(res.dat.message);
+          alert(res.data.message);
         }
       })
       .catch(err => console.log(err));
@@ -132,7 +132,7 @@ class OrderDetails extends Component {
           }
           console.log("loadingProduct", this.state.loadingProduct);
         } else {
-          alert(res.dat.message);
+          alert(res.data.message);
         }
       })
       .catch(err => console.log(err));

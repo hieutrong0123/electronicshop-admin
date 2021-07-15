@@ -100,9 +100,9 @@ class ProductPhotoCreate extends Component {
 
   async submitHandler() {
     if (!this.state.productId) {
-      alert("Product Id error");
+      alert("Mã sản phẩm không đúng");
     } else if (!this.state.thumbnailImages) {
-      alert("ThumbnailImages error");
+      alert("Hình ảnh không đúng định dạng");
     } else {
       var FormData = require("form-data");
       var data = new FormData();
