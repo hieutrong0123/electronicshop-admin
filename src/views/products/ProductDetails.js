@@ -381,7 +381,7 @@ class ProductDetails extends Component {
                           checked={this.state.status === 2}
                         />
                         <CLabel variant="custom-checkbox" htmlFor="2">
-                          Hàng khuyến mãi
+                          Đã khóa
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-radio" inline>
