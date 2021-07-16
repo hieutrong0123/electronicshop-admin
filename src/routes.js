@@ -70,6 +70,9 @@ import OrderDetails from './views/orderdetails/OrderDetails';
 import SellingProducts from './views/statistical/SellingProducts';
 import LoginHistory from './views/statistical/LoginHistory';
 
+//Comment
+import Comments from './views/comment/Comments';
+
 
 const routes = [
   // { path: '/', exact: true, name: 'Home' },
@@ -115,21 +118,21 @@ const routes = [
   //Users
   { path: '/users', exact: true,  name: 'Danh sách người dùng', component: Users },
   { path: '/users/create', exact: true, name: 'Thêm người dùng', component: UserCreate },
-  { path: '/users/edit/:id', exact: true, name: 'Cập nhật', component: UserEdit },
-  { path: '/users/:id', exact: true, name: 'Chi tiết', component: UserDetails },
+  { path: '/users/edit/:id', exact: true, name: 'Cập nhật người dùng', component: UserEdit },
+  { path: '/users/:id', exact: true, name: 'Chi tiết người dùng', component: UserDetails },
   { path: '/statistical/loginhistory', exact: true,  name: 'Lịch sử đăng nhập', component: LoginHistory },
 
   //Product
   { path: '/products', exact: true,  name: 'Danh sách sản phẩm', component: Products },
   { path: '/products/create', exact: true, name: 'Thêm sản phẩm', component: ProductCreate },
-  { path: '/products/edit/:id', exact: true, name: 'Cập nhật', component: ProductEdit },
-  { path: '/products/:id', exact: true, name: 'Chi tiết', component: ProductDetails },
+  { path: '/products/edit/:id', exact: true, name: 'Cập nhật sản phẩm', component: ProductEdit },
+  { path: '/products/:id', exact: true, name: 'Chi tiết sản phẩm', component: ProductDetails },
 
   //Categories
   { path: '/categories', exact: true,  name: 'Danh sách danh mục', component: Categories },
   { path: '/categories/create', exact: true, name: 'Thêm danh mục', component: CategoryCreate },
-  { path: '/categories/:id', exact: true,  name: 'Chi tiết', component: CategoryDetails },
-  { path: '/categories/edit/:id', exact: true, name: 'Cập nhật', component: CategoryEdit },
+  { path: '/categories/:id', exact: true,  name: 'Chi tiết danh mục', component: CategoryDetails },
+  { path: '/categories/edit/:id', exact: true, name: 'Cập nhật danh mục', component: CategoryEdit },
   
   //Orders
   { path: '/orders', exact: true,  name: 'Danh sách đơn hàng', component: Orders },
@@ -144,6 +147,10 @@ const routes = [
 
   //Statistical
   { path: '/statistical/sellingProducts', exact: true,  name: 'Sản phẩm bán chạy', component: SellingProducts },
+
+  //Comment
+  { path: '/comments', exact: true,  name: 'Danh sách bình luận', component: Comments },
+  
 ];
 
 export default routes;
