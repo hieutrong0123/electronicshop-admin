@@ -24,6 +24,7 @@ class OrderById extends Component {
     createdDate: "",
     deliveryDate: "",
     paid: "",
+    paymentMethod: "",
     receiver: "",
     receiversAddress: "",
     phoneNumber: "",
@@ -39,7 +40,8 @@ class OrderById extends Component {
       "Đang vận chuyển",
       "Giao hàng thành công",
       "Đơn hàng bị huỷ"
-    ]
+    ],
+    loading: true
   };
 
   componentDidMount() {
@@ -67,13 +69,14 @@ class OrderById extends Component {
               createdDate: res.data.resultObj.createdDate.substring(0, 10),
               deliveryDate: res.data.resultObj.deliveryDate.substring(0, 10),
               paid: res.data.resultObj.paid,
+              paymentMethod: res.data.resultObj.paymentMethod,
               receiver: res.data.resultObj.receiver,
               receiversAddress: res.data.resultObj.receiversAddress,
               phoneNumber: res.data.resultObj.phoneNumber,
               totalMoney: res.data.resultObj.totalMoney,
               statusId: res.data.resultObj.statusId,
               userId: res.data.resultObj.userId,
-              loading1: false
+              loading: false
             });
           }
         } else {
@@ -84,7 +87,7 @@ class OrderById extends Component {
   }
 
   render() {
-    return this.state.loading2 === true ? (
+    return this.state.loading === true ? (
       <h1>Đang tải dữ liệu vui vòng chờ trong giây lát</h1>
     ) : (
       <>
@@ -191,6 +194,20 @@ class OrderById extends Component {
                           Chưa thanh toán
                         </CLabel>
                       </CFormGroup>
+                    </CCol>
+                  </CFormGroup>
+
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="text-input">Phương thức thanh toán</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        name="paymentMethod"
+                        placeholder="Tại cửa hàng"
+                        value={this.state.paymentMethod}
+                        onChange={this.changeHandler}
+                      />
                     </CCol>
                   </CFormGroup>
 
