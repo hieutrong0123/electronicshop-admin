@@ -1,5 +1,5 @@
-import React from "react";
-import CIcon from "@coreui/icons-react";
+// import React from "react";
+// import CIcon from "@coreui/icons-react";
 import jwt_decode from "jwt-decode";
 import Cookies from "js-cookie";
 
@@ -8,7 +8,6 @@ let defaultNav = [
     _tag: "CSidebarNavItem",
     name: "Trang chủ",
     to: "/",
-    // icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon" />
     icon:'cil-home'
   },
 
@@ -59,7 +58,6 @@ let defaultNav = [
   {
     _tag: "CSidebarNavDropdown",
     name: "Quản lý danh mục",
-    // icon: "cil-star",
     icon:'cil-list',
     _children: [
       {
@@ -90,6 +88,12 @@ let defaultNav = [
         to: "/orders"
       }
     ]
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Quản lý bình luận",
+    to: "/comments",
+    icon:'cil-comment-square'
   }
 ];
 
