@@ -76,7 +76,7 @@ class OrdersTabStatus extends Component {
       .canclebyId(this.state.id)
       .then(res => {
         if (res.data.isSuccessed) {
-          alert("Hủy đơn hàng thành công");
+          alert("Huỷ đơn hàng thành công");
           window.location.reload();
         } else {
           alert(res.data.message);

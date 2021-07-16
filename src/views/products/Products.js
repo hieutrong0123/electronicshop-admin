@@ -150,7 +150,7 @@ class Products extends Component {
               } else if (item.status === 1) {
                 return <td>Sản phẩm mới</td>;
               } else if (item.status === 2) {
-                return <td>Đã khóa</td>;
+                return <td>Đã khoá</td>;
               } else {
                 return <td></td>;
               }
@@ -189,7 +189,7 @@ class Products extends Component {
                       onClick={() => this.toggleDisable(item.id)}
                     >
                       <CIcon name="cil-x" />{" "}
-                      &nbsp;&nbsp;&nbsp;&nbsp;Khóa&nbsp;&nbsp;&nbsp;
+                      &nbsp;&nbsp;&nbsp;&nbsp;Khoá&nbsp;&nbsp;&nbsp;
                     </CButton>
                   )}
                   &nbsp;&nbsp;&nbsp;
@@ -226,7 +226,7 @@ class Products extends Component {
 
         <CModal show={this.state.toggleDisable}>
           <CModalHeader>Cảnh báo!</CModalHeader>
-          <CModalBody>Sản phẩm #{this.state.id} sẽ bị khóa</CModalBody>
+          <CModalBody>Sản phẩm #{this.state.id} sẽ bị khoá</CModalBody>
           <CModalFooter>
             <CButton color="primary" onClick={() => this.disable()}>
               OK
