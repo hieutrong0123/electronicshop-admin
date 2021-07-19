@@ -188,8 +188,8 @@ class Products extends Component {
                       color="warning"
                       onClick={() => this.toggleDisable(item.id)}
                     >
-                      <CIcon name="cil-x" />{" "}
-                      &nbsp;&nbsp;&nbsp;&nbsp;Khoá&nbsp;&nbsp;&nbsp;
+                      <CIcon name="cil-x" />
+                      &nbsp;&nbsp;&nbsp;Khoá&nbsp;&nbsp;&nbsp;&nbsp;
                     </CButton>
                   )}
                   &nbsp;&nbsp;&nbsp;
