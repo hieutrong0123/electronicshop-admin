@@ -24,15 +24,12 @@ class OrderById extends Component {
     createdDate: "",
     deliveryDate: "",
     paid: "",
+    paymentMethod: "",
     receiver: "",
     receiversAddress: "",
     phoneNumber: "",
     totalMoney: "",
     statusId: "",
-    userId: null,
-    customerName: "",
-    loading1: true,
-    loading2: true,
     OrderStatus: [
       "",
       "Đặt hàng thành công",
@@ -43,11 +40,12 @@ class OrderById extends Component {
       "Đang vận chuyển",
       "Giao hàng thành công",
       "Đơn hàng bị huỷ"
-    ]
+    ],
+    loading: true
   };
 
   componentDidMount() {
-    this.loadData1();
+    this.loadOrderById();
   }
 
   changeHandler = e => {
@@ -60,8 +58,7 @@ class OrderById extends Component {
   cancel() {
     this.props.history.push("/orders");
   }
-
-  loadData1() {
+  loadOrderById() {
     orderservice_json
       .getbyId(this.props.match.params.id)
       .then(res => {
@@ -72,16 +69,16 @@ class OrderById extends Component {
               createdDate: res.data.resultObj.createdDate.substring(0, 10),
               deliveryDate: res.data.resultObj.deliveryDate.substring(0, 10),
               paid: res.data.resultObj.paid,
+              paymentMethod: res.data.resultObj.paymentMethod,
               receiver: res.data.resultObj.receiver,
               receiversAddress: res.data.resultObj.receiversAddress,
               phoneNumber: res.data.resultObj.phoneNumber,
               totalMoney: res.data.resultObj.totalMoney,
               statusId: res.data.resultObj.statusId,
               userId: res.data.resultObj.userId,
-              loading1: false
+              loading: false
             });
           }
-          this.loadData2();
         } else {
           alert(res.data.message);
         }
@@ -89,26 +86,8 @@ class OrderById extends Component {
       .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
 
-  loadData2() {
-    userservice_json
-      .getbyId(this.state.userId)
-      .then(res => {
-        if (res.data.isSuccessed) {
-          if (res.data.resultObj !== null) {
-            this.setState({
-              customerName: `${res.data.resultObj.firstMiddleName} ${res.data.resultObj.lastName}`,
-              loading2: false
-            });
-          }
-        } else {
-          alert(res.dat.message);
-        }
-      })
-      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
-  }
-
   render() {
-    return this.state.loading2 === true ? (
+    return this.state.loading === true ? (
       <h1>Đang tải dữ liệu vui vòng chờ trong giây lát</h1>
     ) : (
       <>
@@ -138,19 +117,19 @@ class OrderById extends Component {
                     </CCol>
                   </CFormGroup>
 
-                  <CFormGroup row>
+                  {/* <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="text-input">Tên khách hàng</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         name="user"
-                        placeholder="Tổng số tiền"
-                        value={this.state.customerName}
+                        placeholder="Tên khách hàng"
+                        value={this.state.receiver}
                         onChange={this.changeHandler}
                       />
                     </CCol>
-                  </CFormGroup>
+                  </CFormGroup> */}
 
                   <CFormGroup row>
                     <CCol md="3">
@@ -166,6 +145,8 @@ class OrderById extends Component {
                       />
                     </CCol>
                   </CFormGroup>
+
+                  
 
                   <CFormGroup row>
                     <CCol md="3">
@@ -213,6 +194,20 @@ class OrderById extends Component {
                           Chưa thanh toán
                         </CLabel>
                       </CFormGroup>
+                    </CCol>
+                  </CFormGroup>
+
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="text-input">Phương thức thanh toán</CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CInput
+                        name="paymentMethod"
+                        placeholder="Tại cửa hàng"
+                        value={this.state.paymentMethod}
+                        onChange={this.changeHandler}
+                      />
                     </CCol>
                   </CFormGroup>
 

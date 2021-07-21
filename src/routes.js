@@ -38,13 +38,14 @@ import Dashboard from './views/dashboard/Dashboard';
 import Users from './views/users/Users';
 // import User from './views/users/User';
 import UserCreate from './views/users/UserCreate';
-import UserDetails from './views/users/UserDeatils';
+import UserDetails from './views/users/UserDetails';
 import UserEdit from './views/users/UserEdit';
+
 
 //Products
 import Products from './views/products/Products';
 import ProductCreate from './views/products/ProductCreate';
-import ProductDetails from "./views/products/ProductDeatils";
+import ProductDetails from "./views/products/ProductDetails";
 import ProductEdit from "./views/products/ProductEdit";
 
 //Categories
@@ -56,12 +57,22 @@ import CategoryEdit from './views/categories/CategoryEdit';
 //Orders
 import Orders from './views/orders/Orders';
 import OrderById from './views/orders/OrderById';
+import OrderCreate from './views/orders/OrderCreate';
 
 // ProductPhotos
 import ProductPhotoCreate from './views/productphotos/ProductPhotoCreate';
 
 //OrderDetails
 import OrderDetails from './views/orderdetails/OrderDetails';
+
+
+//Statistical
+import SellingProducts from './views/statistical/SellingProducts';
+import LoginHistory from './views/statistical/LoginHistory';
+
+//Comment
+import Comments from './views/comment/Comments';
+
 
 const routes = [
   // { path: '/', exact: true, name: 'Home' },
@@ -107,23 +118,25 @@ const routes = [
   //Users
   { path: '/users', exact: true,  name: 'Danh sách người dùng', component: Users },
   { path: '/users/create', exact: true, name: 'Thêm người dùng', component: UserCreate },
-  { path: '/users/edit/:id', exact: true, name: 'Cập nhật', component: UserEdit },
-  { path: '/users/:id', exact: true, name: 'Chi tiết', component: UserDetails },
+  { path: '/users/edit/:id', exact: true, name: 'Cập nhật người dùng', component: UserEdit },
+  { path: '/users/:id', exact: true, name: 'Chi tiết người dùng', component: UserDetails },
+  { path: '/statistical/loginhistory', exact: true,  name: 'Lịch sử đăng nhập', component: LoginHistory },
 
   //Product
   { path: '/products', exact: true,  name: 'Danh sách sản phẩm', component: Products },
   { path: '/products/create', exact: true, name: 'Thêm sản phẩm', component: ProductCreate },
-  { path: '/products/edit/:id', exact: true, name: 'Cập nhật', component: ProductEdit },
-  { path: '/products/:id', exact: true, name: 'Chi tiết', component: ProductDetails },
+  { path: '/products/edit/:id', exact: true, name: 'Cập nhật sản phẩm', component: ProductEdit },
+  { path: '/products/:id', exact: true, name: 'Chi tiết sản phẩm', component: ProductDetails },
 
   //Categories
   { path: '/categories', exact: true,  name: 'Danh sách danh mục', component: Categories },
   { path: '/categories/create', exact: true, name: 'Thêm danh mục', component: CategoryCreate },
-  { path: '/categories/:id', exact: true,  name: 'Chi tiết', component: CategoryDetails },
-  { path: '/categories/edit/:id', exact: true, name: 'Cập nhật', component: CategoryEdit },
+  { path: '/categories/:id', exact: true,  name: 'Chi tiết danh mục', component: CategoryDetails },
+  { path: '/categories/edit/:id', exact: true, name: 'Cập nhật danh mục', component: CategoryEdit },
   
   //Orders
   { path: '/orders', exact: true,  name: 'Danh sách đơn hàng', component: Orders },
+  {path: '/orders/create', exact: true, name: 'Thêm đơn hàng', component: OrderCreate},
   { path: '/orders/:id', exact: true,  name: 'Xem thêm đơn hàng', component: OrderById },
   
   //ProductPhoto
@@ -131,6 +144,13 @@ const routes = [
 
   //OrderDetails
   { path: '/orderdetails/:id', exact: true,  name: 'Chi tiết hoá đơn', component: OrderDetails },
+
+  //Statistical
+  { path: '/statistical/sellingProducts', exact: true,  name: 'Sản phẩm bán chạy', component: SellingProducts },
+
+  //Comment
+  { path: '/comments', exact: true,  name: 'Danh sách bình luận', component: Comments },
+  
 ];
 
 export default routes;

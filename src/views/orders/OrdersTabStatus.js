@@ -32,15 +32,15 @@ class OrdersTabStatus extends Component {
   };
 
   escFunction = this.escFunction.bind(this);
-  
+
   componentDidMount() {
     this.setState({ list: this.props.list });
     document.addEventListener("keydown", this.escFunction, false);
-  };
+  }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     document.removeEventListener("keydown", this.escFunction, false);
-  };
+  }
 
   trackOrder = id => {
     window.location.assign(`/orders/${id}`);
@@ -60,39 +60,36 @@ class OrdersTabStatus extends Component {
       .changeStatus(this.state.id)
       .then(res => {
         if (res.data.isSuccessed) {
-          alert(res.data.resultObj);
+          alert(res.data.message);
           window.location.reload();
         } else {
           alert(res.data.message);
         }
       })
-      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
-      // .catch(err => console.log(err));
-  };
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
+    // .catch(err => console.log(err));
+  }
 
   cancelOrder() {
     this.setState({ toggleCancelOrder: false });
     orderservice_json
       .canclebyId(this.state.id)
       .then(res => {
-        if (res.data.isSuccessed) {
-          alert(res.data.resultObj);
-          window.location.reload();
-        } else {
-          alert(res.data.message);
+          alert("Huỷ đơn hàng thành công");
+          window.location.reload();        
         }
-      })
-      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
-      // .catch(err => console.log(err));
-  };
+      )
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
+    // .catch(err => console.log(err));
+  }
 
-  escFunction(event){
-    if(event.keyCode === 27) {
+  escFunction(event) {
+    if (event.keyCode === 27) {
       this.setState({ toggleChangeStatus: false });
       this.setState({ toggleCancelOrder: false });
       console.log(this.state.toggleCancelOrder, this.state.toggleChangeStatus);
     }
-  };
+  }
 
   render() {
     const fields = [
@@ -100,12 +97,13 @@ class OrdersTabStatus extends Component {
       { key: "createdDate", label: "Ngày tạo" },
       { key: "deliveryDate", label: "Ngày giao hàng" },
       { key: "paid", label: "Đã thanh toán" },
+      { key: "paymentMethod", label: "Phương thức thanh toán" },
       { key: "receiver", label: "Người nhận hàng" },
       { key: "totalMoney", label: "Tổng số tiền" },
       { key: "statusId", label: "Trạng thái" },
-      { key: "link", label: "Tuỳ chọn", _style: { width: "40%" } }
+      { key: "link", label: "Tuỳ chọn", _style: { width: "35%" } }
     ];
-    
+
     return this.state.list === null ? null : (
       <CCard>
         <CDataTable
@@ -117,8 +115,23 @@ class OrdersTabStatus extends Component {
           itemsPerPageSelect
           itemsPerPage={5}
           hover
+          sorter
           pagination
           scopedSlots={{
+            paid: item => {
+              if (item.paid === false) {
+                return <td>Chưa thanh toán</td>;
+              } else {
+                return <td>Đã thánh toán</td>;
+              }
+            },
+            paymentMethod: item => {
+              if (item.paymentMethod == null) {
+                return <td></td>;
+              } else {
+                return <td>{item.paymentMethod}</td>;
+              }
+            },
             link: item => {
               return (
                 <td>
@@ -131,25 +144,28 @@ class OrdersTabStatus extends Component {
                     Xem thêm
                   </CButton>
                   &nbsp;&nbsp;&nbsp;
-                  {item.statusId  === 7 || item.statusId  === 8 ? (
+                  {item.statusId === 7 || item.statusId === 8 ? (
                     <CButton
                       size="sm"
                       color="warning"
-                      onClick={() => this.toggleChangeStatus(item.id, item.statusId)}
+                      onClick={() =>
+                        this.toggleChangeStatus(item.id, item.statusId)
+                      }
                       disabled
                     >
                       <CIcon name="cil-settings" />
-                      Thay đổi trạng thái
-                    </CButton>                  
-                  )
-                  :(
+                      Chuyển trạng thái
+                    </CButton>
+                  ) : (
                     <CButton
                       size="sm"
                       color="warning"
-                      onClick={() => this.toggleChangeStatus(item.id, item.statusId)}
+                      onClick={() =>
+                        this.toggleChangeStatus(item.id, item.statusId)
+                      }
                     >
                       <CIcon name="cil-settings" />
-                      Thay đổi trạng thái
+                      Chuyển trạng thái
                     </CButton>
                   )}
                   &nbsp;&nbsp;&nbsp;
@@ -161,7 +177,7 @@ class OrdersTabStatus extends Component {
                       disabled
                     >
                       <CIcon name="cil-ban" />
-                      Huỷ đơn hàng
+                      Huỷ
                     </CButton>
                   ) : (
                     <CButton
@@ -170,7 +186,7 @@ class OrdersTabStatus extends Component {
                       onClick={() => this.toggleCancelOrder(item.id)}
                     >
                       <CIcon name="cil-ban" />
-                      Huỷ đơn hàng
+                      Huỷ
                     </CButton>
                   )}
                 </td>
@@ -191,7 +207,8 @@ class OrdersTabStatus extends Component {
         <CModal show={this.state.toggleChangeStatus}>
           <CModalHeader>Cảnh báo!</CModalHeader>
           <CModalBody>
-            Đơn hàng #{this.state.id} sẽ thay đổi trạng thái {this.state.orderStatus[this.state.statusId + 1]}
+            Đơn hàng #{this.state.id} sẽ thay đổi trạng thái{" "}
+            {this.state.orderStatus[this.state.statusId + 1]}
           </CModalBody>
           <CModalFooter>
             <CButton color="primary" onClick={() => this.changeStatus()}>

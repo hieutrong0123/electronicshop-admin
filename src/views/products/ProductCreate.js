@@ -14,11 +14,16 @@ import {
   CInputRadio,
   CLabel,
   CSelect,
-  CRow
+  CRow,
+  CImg
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import productservice_formdata from "src/service/productservice_formdata";
 import categoryservice_json from "src/service/categoryservice_json";
+
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import "src/scss/ckeditor.scss";
 
 class ProductCreate extends Component {
   constructor(props) {
@@ -27,7 +32,7 @@ class ProductCreate extends Component {
     this.state = {
       name: "",
       price: "",
-      specifications: "",
+      specifications: "<p><strong>Tên:</strong> Thông số</p>",
       description: "",
       goodsReceipt: "",
       inventory: "",
@@ -35,7 +40,8 @@ class ProductCreate extends Component {
       categoryId: "",
       alias: "",
       thumbnailImages: [],
-      categoryList: null
+      categoryList: null,
+      listImage: []
     };
     this.submitHandler = this.submitHandler.bind(this);
     this.cancel = this.cancel.bind(this);
@@ -56,16 +62,26 @@ class ProductCreate extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
 
   changeHandler = e => {
     if (e.target.name === "thumbnailImages") {
-      let arr = e.target.files;
-      console.log(arr);
+      let arr = [];
+      
       this.setState({ thumbnailImages: e.target.files }, () =>
         console.log(this.state.thumbnailImages)
       );
+
+      for (let i = 0; i < e.target.files.length; i++) {
+        arr.push(URL.createObjectURL(e.target.files[i]));
+      }
+
+      this.setState({ listImage: arr }, () =>
+        console.log(this.state.listImage)
+      );
+
+      console.log(this.state.thumbnailImages);
     } else if (e.target.name === "status") {
       this.setState({ status: Number(e.target.value) });
       console.log(this.state.status);
@@ -74,6 +90,9 @@ class ProductCreate extends Component {
       this.setState({ name: e.target.value });
       this.setState({ alias: this.to_slug(e.target.value) });
       console.log(this.state.alias);
+    } else if (e.target.name === "goodsReceipt") {
+      this.setState({ goodsReceipt: e.target.value });
+      this.setState({ inventory: e.target.value });
     } else {
       this.setState({ [e.target.name]: e.target.value });
       console.log(e.target.value);
@@ -82,7 +101,7 @@ class ProductCreate extends Component {
   to_slug(str) {
     // Chuyển hết sang chữ thường
     str = str.toLowerCase();
-    // xóa dấu
+    // xoá dấu
     str = str.replace(/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/g, "a");
     str = str.replace(/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/g, "e");
     str = str.replace(/(ì|í|ị|ỉ|ĩ)/g, "i");
@@ -90,13 +109,13 @@ class ProductCreate extends Component {
     str = str.replace(/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/g, "u");
     str = str.replace(/(ỳ|ý|ỵ|ỷ|ỹ)/g, "y");
     str = str.replace(/(đ)/g, "d");
-    // Xóa ký tự đặc biệt
+    // Xoá ký tự đặc biệt
     str = str.replace(/([^0-9a-z-\s])/g, "");
-    // Xóa khoảng trắng thay bằng ký tự -
+    // Xoá khoảng trắng thay bằng ký tự -
     str = str.replace(/(\s+)/g, "-");
-    // xóa phần dự - ở đầu
+    // xoá phần dự - ở đầu
     str = str.replace(/^-+/g, "");
-    // xóa phần dư - ở cuối
+    // xoá phần dư - ở cuối
     str = str.replace(/-+$/g, "");
     // return
     return str;
@@ -108,23 +127,23 @@ class ProductCreate extends Component {
 
   async submitHandler() {
     if (!this.state.name) {
-      alert("Name error");
+      alert("Tên sản phẩm không đúng định dạng");
     } else if (this.state.price < 1) {
-      alert("Price error");
+      alert("Giá bán không đúng định dạng");
     } else if (!this.state.specifications) {
-      alert("Specifications error");
+      alert("Thông số kỹ thuật không đúng định dạng");
     } else if (!this.state.goodsReceipt) {
-      alert("GoodsReceipt error");
+      alert("Số lượng nhập không đúng định dạng");
     } else if (!this.state.inventory) {
-      alert("Inventory error");
+      alert("Số lượng tồn không đúng định dạng");
     } else if (!this.state.description) {
-      alert("Description error");
+      alert("Mô tả không đúng định dạng");
     } else if (!this.state.categoryId) {
-      alert("CategoryId error");
+      alert("Danh mục không đúng định dạng");
     } else if (!this.state.alias) {
-      alert("Alias error");
+      alert("Bí danh không đúng định dạng");
     } else if (!this.state.thumbnailImages) {
-      alert("ThumbnailImages error");
+      alert("Hình ảnh không đúng định dạng");
     } else {
       var FormData = require("form-data");
       var data = new FormData();
@@ -137,7 +156,7 @@ class ProductCreate extends Component {
       data.append("Status", this.state.status);
       data.append("CategoryId", this.state.categoryId);
       data.append("Alias", this.state.alias);
-      this.state.thumbnailImages.forEach(item =>{
+      this.state.thumbnailImages.forEach(item => {
         data.append("ThumbnailImages", item);
       });
       console.log(data);
@@ -151,7 +170,7 @@ class ProductCreate extends Component {
             alert(res.data.message);
           }
         })
-        .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
+        .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
     }
   }
   render() {
@@ -171,7 +190,7 @@ class ProductCreate extends Component {
                 >
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Tên sản phẩm</CLabel>
+                      <CLabel htmlFor="text-input">Tên sản phẩm *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -182,10 +201,9 @@ class ProductCreate extends Component {
                       />
                     </CCol>
                   </CFormGroup>
-
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Bí danh</CLabel>
+                      <CLabel htmlFor="text-input">Bí danh *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -196,10 +214,9 @@ class ProductCreate extends Component {
                       />
                     </CCol>
                   </CFormGroup>
-
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="select">Danh mục</CLabel>
+                      <CLabel htmlFor="select">Danh mục *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       {this.state.categoryList === null ? (
@@ -231,10 +248,9 @@ class ProductCreate extends Component {
                       )}
                     </CCol>
                   </CFormGroup>
-
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Giá bán</CLabel>
+                      <CLabel htmlFor="text-input">Giá bán *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
@@ -242,14 +258,13 @@ class ProductCreate extends Component {
                         min="1"
                         name="price"
                         placeholder="Giá bán"
-                        number
+                        // number
                         value={this.state.price}
                         onChange={this.changeHandler}
                       />
                     </CCol>
                   </CFormGroup>
-
-                  <CFormGroup row>
+                  {/* <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="textarea-input">
                         Thông số kỹ thuật
@@ -264,11 +279,35 @@ class ProductCreate extends Component {
                         onChange={this.changeHandler}
                       />
                     </CCol>
-                  </CFormGroup>
+                  </CFormGroup> */}
 
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="textarea-input">Mô tả</CLabel>
+                      <CLabel htmlFor="textarea-input">
+                        Thông số kỹ thuật *
+                      </CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CKEditor
+                        editor={ClassicEditor}
+                        data={this.state.specifications}
+                        onChange={(e, editor) => {
+                          this.setState({ specifications: editor.getData() });
+                        }}
+                      />
+                      {/* &nbsp;
+                      <CTextarea
+                        name="specifications"
+                        rows="3"
+                        placeholder="Thông số kỹ thuật"
+                        value={this.state.specifications}
+                        onChange={this.changeHandler}
+                      /> */}
+                    </CCol>
+                  </CFormGroup>
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="textarea-input">Mô tả *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CTextarea
@@ -280,14 +319,14 @@ class ProductCreate extends Component {
                       />
                     </CCol>
                   </CFormGroup>
-
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Số lượng nhập</CLabel>
+                      <CLabel htmlFor="text-input">Số lượng nhập *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
                         type="number"
+                        min="1"
                         name="goodsReceipt"
                         placeholder="Số lượng nhập"
                         value={this.state.goodsReceipt}
@@ -295,13 +334,13 @@ class ProductCreate extends Component {
                       />
                     </CCol>
                   </CFormGroup>
-
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel htmlFor="text-input">Số lượng tồn</CLabel>
+                      <CLabel htmlFor="text-input">Số lượng tồn *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInput
+                        disabled
                         type="number"
                         name="inventory"
                         placeholder="Số lượng tồn"
@@ -310,10 +349,9 @@ class ProductCreate extends Component {
                       />
                     </CCol>
                   </CFormGroup>
-
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel>Trạng thái</CLabel>
+                      <CLabel>Trạng thái *</CLabel>
                     </CCol>
                     <CCol md="9">
                       <CFormGroup variant="custom-radio" inline>
@@ -352,7 +390,7 @@ class ProductCreate extends Component {
                           checked={this.state.status === 2}
                         />
                         <CLabel variant="custom-checkbox" htmlFor="2">
-                          Hàng khuyến mãi
+                          Đã khoá
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-radio" inline>
@@ -370,10 +408,9 @@ class ProductCreate extends Component {
                       </CFormGroup>
                     </CCol>
                   </CFormGroup>
-
                   <CFormGroup row>
                     <CCol md="3">
-                      <CLabel>Hình ảnh</CLabel>
+                      <CLabel>Hình ảnh *</CLabel>
                     </CCol>
                     <CCol xs="12" md="9">
                       <CInputFile
@@ -386,10 +423,27 @@ class ProductCreate extends Component {
                         onChange={this.changeHandler}
                       />
                       <CLabel htmlFor="ThumbnailImages" variant="custom-file">
-                        Chọn một hoặc nhiều
+                        Chọn 4 hình ảnh
                       </CLabel>
                     </CCol>
                   </CFormGroup>
+
+                  {this.state.listImage !== null ? (
+                    <CFormGroup row>
+                      <CCol md="3">
+                        <CLabel>Danh sách hình ảnh đã chọn</CLabel>
+                      </CCol>
+                      <CCol xs="12" md="9">
+                        {this.state.listImage.map(item => {
+                          return (
+                            <>
+                              <CImg src={item} width="100px" key={item} />
+                            </>
+                          );
+                        })}
+                      </CCol>
+                    </CFormGroup>
+                  ) : null}
                 </CForm>
               </CCardBody>
               <CCardFooter>

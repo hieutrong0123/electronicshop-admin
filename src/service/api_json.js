@@ -6,9 +6,11 @@ const url = {
   authLink: "/Auth",
   userlink: "/Users",
   productlink: "/Products",
+  productphotolink: "/ProductPhotos",
   categorylink: "/Categories",
   orderlink: "/Orders",
-  orderdetaillink : "/OrderDetails"
+  orderdetaillink : "/OrderDetails",
+  commentlinks: "Comments"
 };
 
 const Token = Cookies.get("Token");

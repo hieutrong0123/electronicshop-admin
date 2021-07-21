@@ -84,7 +84,7 @@ class UserDetails extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err =>alert("Máy chủ đang bận , vui lòng thử lại sau"));
+      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
   };
 
   render() {
@@ -153,6 +153,7 @@ class UserDetails extends Component {
                       <CInput
                         type="date"
                         name="birthday"
+                        disabled
                         placeholder="Sinh nhật"
                         value={this.state.birthday}
                         onChange={this.changeHandler}

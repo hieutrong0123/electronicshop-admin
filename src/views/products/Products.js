@@ -14,7 +14,13 @@ import CIcon from "@coreui/icons-react";
 import productservice_json from "src/service/productservice_json";
 
 class Products extends Component {
-  state = { list: null, toggleDelete: false, id: null };
+  state = {
+    list: null,
+    toggleEnable: false,
+    toggleDisable: false,
+    toggleDelete: false,
+    id: null
+  };
 
   escFunction = this.escFunction.bind(this);
 
@@ -38,7 +44,7 @@ class Products extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
 
   details = id => {
@@ -48,6 +54,36 @@ class Products extends Component {
   edit = id => {
     this.props.history.push(`/products/edit/${id}`);
   };
+
+  enable() {
+    this.setState({ toggleEnable: false });
+    productservice_json
+      .enablebyId(this.state.id)
+      .then(res => {
+        if (res.data.isSuccessed) {
+          alert(res.data.resultObj);
+          window.location.reload();
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
+  }
+
+  disable() {
+    this.setState({ toggleDisable: false });
+    productservice_json
+      .disablebyId(this.state.id)
+      .then(res => {
+        if (res.data.isSuccessed) {
+          alert(res.data.resultObj);
+          window.location.reload();
+        } else {
+          alert(res.data.message);
+        }
+      })
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
+  }
 
   delete() {
     this.setState({ toggleDelete: false });
@@ -61,8 +97,16 @@ class Products extends Component {
           alert(res.data.message);
         }
       })
-      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
+
+  toggleEnable = id => {
+    this.setState({ toggleEnable: true, id: id });
+  };
+
+  toggleDisable = id => {
+    this.setState({ toggleDisable: true, id: id });
+  };
 
   toggleDelete = id => {
     this.setState({ toggleDelete: true, id: id });
@@ -70,19 +114,21 @@ class Products extends Component {
 
   escFunction(event) {
     if (event.keyCode === 27) {
+      this.setState({ toggleEnable: false });
+      this.setState({ toggleDisable: false });
       this.setState({ toggleDelete: false });
     }
   }
 
   render() {
     const fields = [
-      { key: "id", label: "Mã sản phẩm" },
-      { key: "name", label: "Tên sản phẩm" },
+      { key: "id", label: "Mã" },
+      { key: "name", label: "Tên sản phẩm", _style: { width: "25%" } },
       { key: "price", label: "Giá bán" },
-      { key: "goodsReceipt", label: "Số lượng nhập" },
-      { key: "inventory", label: "Số lượng tồn" },
-      { key: "alias", label: "Bí danh" },
-      { key: "link", label: "Tuỳ chọn" }
+      { key: "goodsReceipt", label: "Số lượng nhập", _style: { width: "5%" } },
+      { key: "inventory", label: "Số lượng tồn", _style: { width: "5%" } },
+      { key: "status", label: "Trạng thái" },
+      { key: "link", label: "Tuỳ chọn", _style: { width: "40%" } }
     ];
     return this.state.list === null ? null : (
       <CCard>
@@ -95,8 +141,20 @@ class Products extends Component {
           itemsPerPageSelect
           itemsPerPage={5}
           hover
+          sorter
           pagination
           scopedSlots={{
+            status: item => {
+              if (item.status === 0) {
+                return <td>Mặc định</td>;
+              } else if (item.status === 1) {
+                return <td>Sản phẩm mới</td>;
+              } else if (item.status === 2) {
+                return <td>Đã khoá</td>;
+              } else {
+                return <td></td>;
+              }
+            },
             link: item => {
               return (
                 <td>
@@ -109,11 +167,31 @@ class Products extends Component {
                   </CButton>
                   &nbsp;&nbsp;&nbsp;
                   <CButton
-                  size="sm" 
-                  color="success" 
-                  onClick={() => this.edit(item.id)}>
+                    size="sm"
+                    color="success"
+                    onClick={() => this.edit(item.id)}
+                  >
                     <CIcon name="cil-settings" /> Cập nhật
                   </CButton>
+                  &nbsp;&nbsp;&nbsp;
+                  {item.status === 2 ? (
+                    <CButton
+                      size="sm"
+                      color="info"
+                      onClick={() => this.toggleEnable(item.id)}
+                    >
+                      <CIcon name="cil-check" /> Kích hoạt
+                    </CButton>
+                  ) : (
+                    <CButton
+                      size="sm"
+                      color="warning"
+                      onClick={() => this.toggleDisable(item.id)}
+                    >
+                      <CIcon name="cil-x" />
+                      &nbsp;&nbsp;&nbsp;Khoá&nbsp;&nbsp;&nbsp;&nbsp;
+                    </CButton>
+                  )}
                   &nbsp;&nbsp;&nbsp;
                   <CButton
                     size="sm"
@@ -127,6 +205,42 @@ class Products extends Component {
             }
           }}
         />
+
+        <CModal show={this.state.toggleEnable}>
+          <CModalHeader>Cảnh báo!</CModalHeader>
+          <CModalBody>Sản phẩm #{this.state.id} sẽ được kích hoạt</CModalBody>
+          <CModalFooter>
+            <CButton color="primary" onClick={() => this.enable()}>
+              OK
+            </CButton>
+            <CButton
+              color="secondary"
+              onClick={() => {
+                this.setState({ toggleEnable: false });
+              }}
+            >
+              Cancel
+            </CButton>
+          </CModalFooter>
+        </CModal>
+
+        <CModal show={this.state.toggleDisable}>
+          <CModalHeader>Cảnh báo!</CModalHeader>
+          <CModalBody>Sản phẩm #{this.state.id} sẽ bị khoá</CModalBody>
+          <CModalFooter>
+            <CButton color="primary" onClick={() => this.disable()}>
+              OK
+            </CButton>
+            <CButton
+              color="secondary"
+              onClick={() => {
+                this.setState({ toggleDisable: false });
+              }}
+            >
+              Cancel
+            </CButton>
+          </CModalFooter>
+        </CModal>
 
         <CModal show={this.state.toggleDelete}>
           <CModalHeader>Dừng lại!</CModalHeader>

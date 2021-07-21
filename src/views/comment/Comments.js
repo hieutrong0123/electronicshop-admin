@@ -11,14 +11,15 @@ import {
 
 import CIcon from "@coreui/icons-react";
 
-import userservice_json from "src/service/userservice_json";
+import moment from "moment";
 
-class Users extends Component {
+import commentservice_json from "src/service/commentservice_json";
+
+class Comments extends Component {
   state = {
     list: null,
     toggleEnable: false,
     toggleDisable: false,
-    toggleDelete: false,
     id: null
   };
 
@@ -34,17 +35,20 @@ class Users extends Component {
   }
 
   loadData() {
-    userservice_json
+    commentservice_json
       .getAll()
       .then(res => {
         if (res.data.isSuccessed) {
           this.setState({ list: res.data.resultObj });
+          console.log(res);
+          console.log(this.state.list);
         } else {
           alert(res.data.message);
         }
       })
       .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
+
 
   toggleEnable = id => {
     this.setState({ toggleEnable: true, id: id });
@@ -54,21 +58,9 @@ class Users extends Component {
     this.setState({ toggleDisable: true, id: id });
   };
 
-  toggleDelete = id => {
-    this.setState({ toggleDelete: true, id: id });
-  };
-
-  details = id => {
-    this.props.history.push(`/users/${id}`);
-  };
-
-  edit = id => {
-    this.props.history.push(`/users/edit/${id}`);
-  };
-
   enable() {
     this.setState({ toggleEnable: false });
-    userservice_json
+    commentservice_json
       .enablebyId(this.state.id)
       .then(res => {
         if (res.data.isSuccessed) {
@@ -83,7 +75,7 @@ class Users extends Component {
 
   disable() {
     this.setState({ toggleDisable: false });
-    userservice_json
+    commentservice_json
       .disablebyId(this.state.id)
       .then(res => {
         if (res.data.isSuccessed) {
@@ -96,38 +88,24 @@ class Users extends Component {
       .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
 
-  delete() {
-    this.setState({ toggleDelete: false });
-    userservice_json
-      .deletebyId(this.state.id)
-      .then(res => {
-        if (res.data.isSuccessed) {
-          alert(res.data.resultObj);
-          window.location.reload();
-        } else {
-          alert(res.data.message);
-        }
-      })
-      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
-  }
+  
 
   escFunction(event) {
     if (event.keyCode === 27) {
       this.setState({ toggleEnable: false });
       this.setState({ toggleDisable: false });
-      this.setState({ toggleDelete: false });
     }
   }
 
   render() {
     const fields = [
-      { key: "id", label: "Mã" },
-      { key: "userName", label: "Tài khoản" },
-      { key: "firstMiddleName", label: "Họ và tên lót" },
-      { key: "lastName", label: "Tên" },
-      { key: "email", label: "Email" },
-      // { key: "phoneNumber", label: "Số điện thoại" },
-      { key: "link", label: "Tuỳ chọn", _style: { width: "35%" } }
+      { key: "id", label: "Mã bình luận" },
+      { key: "userId", label: "Mã tài khoản" },
+      { key: "productId", label: "Mã sản phẩm" },
+      { key: "text", label: "Nội dung" },
+      { key: "createdDate", label: "Ngày tạo" },
+      { key: "modifiedDate", label: "Ngày cập nhật" },
+      { key: "link", label: "Tuỳ chọn" }
     ];
     return this.state.list === null ? null : (
       <CCard>
@@ -146,26 +124,10 @@ class Users extends Component {
             link: item => {
               return (
                 <td>
-                  <CButton
-                    size="sm"
-                    color="primary"
-                    onClick={() => this.details(item.id)}
-                  >
-                    <CIcon name="cil-scrubber" /> Chi tiết
-                  </CButton>
-                  &nbsp;&nbsp;&nbsp;
-                  <CButton
-                    size="sm"
-                    color="success"
-                    onClick={() => this.edit(item.id)}
-                  >
-                    <CIcon name="cil-settings" /> Cập nhật
-                  </CButton>
-                  &nbsp;&nbsp;&nbsp;
-                  {item.status === 1 ? (
+                  {item.status === false ? (
                     <CButton
                       size="sm"
-                      color="info"
+                      color="success"
                       onClick={() => this.toggleEnable(item.id)}
                     >
                       <CIcon name="cil-check" /> Kích hoạt
@@ -173,30 +135,39 @@ class Users extends Component {
                   ) : (
                     <CButton
                       size="sm"
-                      color="warning"
+                      color="danger"
                       onClick={() => this.toggleDisable(item.id)}
                     >
-                      <CIcon name="cil-x" />
-                      &nbsp;&nbsp;&nbsp;Khoá&nbsp;&nbsp;&nbsp;&nbsp;
+                      <CIcon name="cil-x" /> &nbsp;&nbsp;Khoá&nbsp;&nbsp;&nbsp;&nbsp;
                     </CButton>
                   )}
                   &nbsp;&nbsp;&nbsp;
-                  <CButton
-                    size="sm"
-                    color="danger"
-                    onClick={() => this.toggleDelete(item.id)}
-                  >
-                    <CIcon name="cil-ban" /> Xoá
-                  </CButton>
                 </td>
               );
+            },
+            createdDate: item => {
+              return (
+                <td>
+                  {moment(item.createdDate).format("YYYY/MM/DD HH:mm:ss")}
+                </td>
+              );
+            },
+            modifiedDate: item => {
+              if (item.modifiedDate == undefined) {
+                return <td></td>;
+              } else {
+                return (
+                  <td>
+                    {moment(item.modifiedDate).format("YYYY/MM/DD HH:mm:ss")}
+                  </td>
+                );
+              }
             }
           }}
         />
-
         <CModal show={this.state.toggleEnable}>
-          <CModalHeader>Cảnh báo!</CModalHeader>
-          <CModalBody>Người dùng #{this.state.id} sẽ được kích hoạt</CModalBody>
+          <CModalHeader>Dừng lại!</CModalHeader>
+          <CModalBody>Bình luận #{this.state.id} sẽ được kích hoạt</CModalBody>
           <CModalFooter>
             <CButton color="primary" onClick={() => this.enable()}>
               OK
@@ -207,14 +178,14 @@ class Users extends Component {
                 this.setState({ toggleEnable: false });
               }}
             >
-              Cancel
+              Huỷ
             </CButton>
           </CModalFooter>
         </CModal>
 
         <CModal show={this.state.toggleDisable}>
           <CModalHeader>Cảnh báo!</CModalHeader>
-          <CModalBody>Người dùng #{this.state.id} sẽ bị khoá</CModalBody>
+          <CModalBody>Bình luận #{this.state.id} sẽ bị khoá</CModalBody>
           <CModalFooter>
             <CButton color="primary" onClick={() => this.disable()}>
               OK
@@ -228,28 +199,10 @@ class Users extends Component {
               Huỷ
             </CButton>
           </CModalFooter>
-        </CModal>
-
-        <CModal show={this.state.toggleDelete}>
-          <CModalHeader>Dừng lại!</CModalHeader>
-          <CModalBody>Người dùng #{this.state.id} sẽ bị xoá</CModalBody>
-          <CModalFooter>
-            <CButton color="primary" onClick={() => this.delete()}>
-              OK
-            </CButton>
-            <CButton
-              color="secondary"
-              onClick={() => {
-                this.setState({ toggleDelete: false });
-              }}
-            >
-              Huỷ
-            </CButton>
-          </CModalFooter>
-        </CModal>
+        </CModal>        
       </CCard>
     );
   }
 }
 
-export default Users;
+export default Comments;

@@ -9,7 +9,6 @@ import {
   CForm,
   CFormGroup,
   CInput,
-  CInputRadio,
   CLabel,
   CSelect,
   CRow

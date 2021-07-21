@@ -11,9 +11,11 @@ import {
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 import orderservice_json from "src/service/orderservice_json";
-import userservice_json from "src/service/userservice_json";
+// import userservice_json from "src/service/userservice_json";
 import orderdetailservice_json from "src/service/orderdetailservice_json";
 import productservice_json from "src/service/productservice_json";
+
+import moment from "moment";
 
 class OrderDetails extends Component {
   state = {
@@ -21,16 +23,13 @@ class OrderDetails extends Component {
     createdDate: "",
     deliveryDate: "",
     paid: "",
+    paymentMethod: "",
     receiver: "",
     receiversAddress: "",
-    phoneNumber: "",
+    receiversEmail: "",
+    receiversPhoneNumber: "",
     totalMoney: "",
     statusId: "",
-    userId: null,
-    customerName: "",
-    customerEmail: "",
-    customerAddress: "",
-    customerPhoneNumber: "",
     loadingOrderById: true,
     loadingUserById: true,
     loadingOrderDetails: true,
@@ -82,43 +81,20 @@ class OrderDetails extends Component {
               createdDate: res.data.resultObj.createdDate.substring(0, 10),
               deliveryDate: res.data.resultObj.deliveryDate.substring(0, 10),
               paid: res.data.resultObj.paid,
+              paymentMethod: res.data.resultObj.paymentMethod,
               receiver: res.data.resultObj.receiver,
               receiversAddress: res.data.resultObj.receiversAddress,
-              phoneNumber: res.data.resultObj.phoneNumber,
+              receiversEmail: res.data.resultObj.email,
+              receiversPhoneNumber: res.data.resultObj.phoneNumber,
               totalMoney: res.data.resultObj.totalMoney,
               statusId: res.data.resultObj.statusId,
-              userId: res.data.resultObj.userId,
               loadingOrderById: false
             });
           }
-          this.loadUserById();
+          this.loadOrderDetails();
           console.log("loadingOrderById", this.state.loadingOrderById);
         } else {
           alert(res.data.message);
-        }
-      })
-      .catch(err => console.log(err));
-  }
-
-  loadUserById() {
-    userservice_json
-      .getbyId(this.state.userId)
-      .then(res => {
-        if (res.data.isSuccessed) {
-          if (res.data.resultObj !== null) {
-            this.setState({
-              customerName: `${res.data.resultObj.firstMiddleName} ${res.data.resultObj.lastName}`,
-              customerAddress: res.data.resultObj.address,
-              customerEmail: res.data.resultObj.email,
-              customerPhoneNumber: res.data.resultObj.phoneNumber,
-              loadingUserById: false
-            });
-          }
-          this.loadOrderDetails();
-          console.log("loadingUserById", this.state.loadingUserById);
-          console.log(res.data.resultObj);
-        } else {
-          alert(res.dat.message);
         }
       })
       .catch(err => console.log(err));
@@ -134,11 +110,12 @@ class OrderDetails extends Component {
               listOrderDetails: res.data.resultObj,
               loadingOrderDetails: false
             });
+            console.log(res.data.resultObj);
           }
           this.loadProduct();
           console.log("loadingOrderDetails", this.state.loadingOrderDetails);
         } else {
-          alert(res.dat.message);
+          alert(res.data.message);
         }
       })
       .catch(err => console.log(err));
@@ -157,7 +134,7 @@ class OrderDetails extends Component {
           }
           console.log("loadingProduct", this.state.loadingProduct);
         } else {
-          alert(res.dat.message);
+          alert(res.data.message);
         }
       })
       .catch(err => console.log(err));
@@ -193,20 +170,16 @@ class OrderDetails extends Component {
                 <CRow>
                   <CCol xs="8" md="8">
                     <p>
-                      <span>Tên khách hàng: </span>
-                      {this.state.customerName}
-                    </p>
-                    <p>
-                      <span>Địa chỉ: </span>
-                      {this.state.customerAddress}
+                      <span>Người nhận hàng: </span>
+                      {this.state.receiver}
                     </p>
                     <p>
                       <span>Email: </span>
-                      {this.state.customerEmail}
+                      {this.state.receiversEmail}
                     </p>
                     <p>
                       <span>Số điện thoại: </span>
-                      {this.state.customerPhoneNumber}
+                      {this.state.receiversPhoneNumber}
                     </p>
                   </CCol>
                   <CCol xs="4" md="4">
@@ -215,38 +188,53 @@ class OrderDetails extends Component {
                     </p>
                     <p>
                       <span>Ngày tạo: </span>
-                      {this.state.createdDate}
+                      {moment(this.state.createdDate).format("DD-MM-YYYY")}
                     </p>
                     <p>
                       <span> Ngày giao hàng: </span>
-                      {this.state.deliveryDate}
+                      {moment(this.state.deliveryDate).format("DD-MM-YYYY")}
                     </p>
                   </CCol>
-                  </CRow>
-                  <CDataTable 
-                    items={this.state.listOrderDetails}
-                    fields={fields}
-                    hover
-                    scopedSlots={{
-                      nameproduct: item => {
-                        return <td>{item.product.name}</td>;
-                      },
-                      total: item => {
-                        return <td>{item.quantity * item.price}</td>;
-                      }
-                    }}
-                  />
+                </CRow>
+                <CDataTable
+                  items={this.state.listOrderDetails}
+                  fields={fields}
+                  hover
+                  scopedSlots={{
+                    nameproduct: item => {
+                      return <td>{item.product.name}</td>;
+                    },
+                    total: item => {
+                      return <td>{item.quantity * item.price}</td>;
+                    }
+                  }}
+                />
                 <hr />
                 <CRow>
                   <CCol xs="9" md="9"></CCol>
                   <CCol xs="3" md="3">
-                    <h5>
-                      Thành tiền: {this.state.totalMoney}
-                    </h5>
+                    <h5>Thành tiền: {this.state.totalMoney}</h5>
                   </CCol>
                 </CRow>
+                <hr />
+                {this.state.paid === false ? (
+                  <CRow>
+                    <CCol xs="1" md="1"></CCol>
+                    <h5>Thanh toán:&nbsp;</h5>
+                    <h5 style={{ color: "red" }}>Chưa thanh toán</h5>
+                  </CRow>
+                ) : (
+                  <CRow>
+                    <CCol xs="1" md="1"></CCol>
+                    <h5>Thanh toán:&nbsp;</h5>
+                    <h5 style={{ color: "red" }}>Đã thanh toán</h5>
+                    <CCol xs="2" md="2"></CCol>
+                    <h5>Phương thức thanh toán:&nbsp;</h5>
+                    <h5 style={{ color: "blue" }}>{this.state.paymentMethod}</h5>
+                  </CRow>
+                )}
                 <CCardFooter>
-                  <p>Cảm ơn quý khách đã mua hàng tại website của chúng tôi</p>
+                  <p>Cảm ơn quý khách đã mua hàng của chúng tôi</p>
                   <p>
                     Sản phẩm được đổi trả miễn phí trong vòng 7 ngày (nếu lỗi do
                     nhà sản xuất)

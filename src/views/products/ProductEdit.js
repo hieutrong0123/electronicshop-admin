@@ -19,6 +19,9 @@ import CIcon from "@coreui/icons-react";
 import productservice_json from "src/service/productservice_json";
 import categoryservice_json from "src/service/categoryservice_json";
 
+import { CKEditor} from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+
 class ProductEdit extends Component {
   //state = { list: null }
   state = {
@@ -69,7 +72,7 @@ class ProductEdit extends Component {
   to_slug(str) {
     // Chuyển hết sang chữ thường
     str = str.toLowerCase();
-    // xóa dấu
+    // xoá dấu
     str = str.replace(/(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)/g, "a");
     str = str.replace(/(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)/g, "e");
     str = str.replace(/(ì|í|ị|ỉ|ĩ)/g, "i");
@@ -77,13 +80,13 @@ class ProductEdit extends Component {
     str = str.replace(/(ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ)/g, "u");
     str = str.replace(/(ỳ|ý|ỵ|ỷ|ỹ)/g, "y");
     str = str.replace(/(đ)/g, "d");
-    // Xóa ký tự đặc biệt
+    // Xoá ký tự đặc biệt
     str = str.replace(/([^0-9a-z-\s])/g, "");
-    // Xóa khoảng trắng thay bằng ký tự -
+    // Xoá khoảng trắng thay bằng ký tự -
     str = str.replace(/(\s+)/g, "-");
-    // xóa phần dự - ở đầu
+    // xoá phần dự - ở đầu
     str = str.replace(/^-+/g, "");
-    // xóa phần dư - ở cuối
+    // xoá phần dư - ở cuối
     str = str.replace(/-+$/g, "");
     // return
     return str;
@@ -275,7 +278,7 @@ class ProductEdit extends Component {
                     </CCol>
                   </CFormGroup>
 
-                  <CFormGroup row>
+                  {/* <CFormGroup row>
                     <CCol md="3">
                       <CLabel htmlFor="textarea-input">
                         Thông số kỹ thuật
@@ -289,6 +292,31 @@ class ProductEdit extends Component {
                         value={this.state.specifications}
                         onChange={this.changeHandler}
                       />
+                    </CCol>
+                  </CFormGroup> */}
+                  
+                  <CFormGroup row>
+                    <CCol md="3">
+                      <CLabel htmlFor="textarea-input">
+                        Thông số kỹ thuật
+                      </CLabel>
+                    </CCol>
+                    <CCol xs="12" md="9">
+                      <CKEditor
+                      editor = {ClassicEditor}
+                      data = {this.state.specifications}
+                      onChange = {(e, editor) => {
+                        this.setState({specifications: editor.getData()})
+                      }}
+                      />
+                      {/* &nbsp;
+                      <CTextarea
+                        name="specifications"
+                        rows="3"
+                        placeholder="Thông số kỹ thuật"
+                        value={this.state.specifications}
+                        onChange={this.changeHandler}
+                      /> */}
                     </CCol>
                   </CFormGroup>
 
@@ -376,7 +404,7 @@ class ProductEdit extends Component {
                           checked={this.state.status === 2}
                         />
                         <CLabel variant="custom-checkbox" htmlFor="2">
-                          Hàng khuyến mãi
+                          Đã khoá
                         </CLabel>
                       </CFormGroup>
                       <CFormGroup variant="custom-radio" inline>

@@ -11,7 +11,8 @@ import {
   CInputFile,
   CLabel,
   CSelect,
-  CRow
+  CRow,
+  CImg
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
 
@@ -24,15 +25,22 @@ class ProductPhotoCreate extends Component {
     thumbnailImages: [],
     productList: null,
     categoryList: null,
-    categoryId: ""
+    categoryId: "",
+    listImage: []
   };
   submitHandler = this.submitHandler.bind(this);
   cancel = this.cancel.bind(this);
 
   componentDidMount() {
-    this.setState({ productId: this.props.location.productId});
+    // this.setState({ productId: this.props.location.productId});
+    // if(this.props.location.productId)
+    // {
+    // this.setState({ productId: this.props.location.productId }, () =>
+    //     console.log(this.state.productId)
+    //   );
+    // }
     this.loadData();
-  };
+  }
 
   loadData() {
     productservice_json
@@ -44,17 +52,42 @@ class ProductPhotoCreate extends Component {
         } else {
           alert(res.data.message);
         }
+        if (this.props.location.productId) {
+          this.setState({ productId: this.props.location.productId }, () =>
+            console.log(this.state.productId)
+          );
+        } else {
+          this.setState({ productId: this.state.productList[0].id }, () =>
+            console.log(this.state.productId)
+          );
+        }
       })
-      .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
+      .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
   }
 
   changeHandler = e => {
+    // if (e.target.name === "thumbnailImages") {
+    //   let arr = e.target.files;
+    //   console.log(arr);
+    //   this.setState({ thumbnailImages: e.target.files }, () =>
+    //     console.log(this.state.thumbnailImages)
+    //   );
     if (e.target.name === "thumbnailImages") {
-      let arr = e.target.files;
-      console.log(arr);
+      let arr = [];
+
       this.setState({ thumbnailImages: e.target.files }, () =>
         console.log(this.state.thumbnailImages)
       );
+
+      for (let i = 0; i < e.target.files.length; i++) {
+        arr.push(URL.createObjectURL(e.target.files[i]));
+      }
+
+      this.setState({ listImage: arr }, () =>
+        console.log(this.state.listImage)
+      );
+
+      console.log(this.state.thumbnailImages);
     } else {
       this.setState({ [e.target.name]: e.target.value });
       console.log(e.target.value);
@@ -62,19 +95,19 @@ class ProductPhotoCreate extends Component {
   };
 
   cancel() {
-    this.props.history.push(`/productphotos/productid/${this.state.productId}`);
+    this.props.history.push(`/products/${this.state.productId}`);
   }
 
   async submitHandler() {
     if (!this.state.productId) {
-      alert("Product Id error");
+      alert("Mã sản phẩm không đúng");
     } else if (!this.state.thumbnailImages) {
-      alert("ThumbnailImages error");
+      alert("Hình ảnh không đúng định dạng");
     } else {
       var FormData = require("form-data");
       var data = new FormData();
       data.append("ProductId", this.state.productId);
-      this.state.thumbnailImages.forEach(item =>{
+      this.state.thumbnailImages.forEach(item => {
         data.append("ThumbnailImages", item);
       });
       console.log(this.state.productId, this.state.thumbnailImages);
@@ -88,7 +121,7 @@ class ProductPhotoCreate extends Component {
             alert(res.data.message);
           }
         })
-        .catch(err =>alert("Máy chủ đang bận, vui lòng thử lại sau"));
+        .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
     }
   }
   render() {
@@ -153,10 +186,27 @@ class ProductPhotoCreate extends Component {
                         onChange={this.changeHandler}
                       />
                       <CLabel htmlFor="ThumbnailImages" variant="custom-file">
-                      Chọn một hoặc nhiều
+                        Chọn một hoặc nhiều
                       </CLabel>
                     </CCol>
                   </CFormGroup>
+
+                  {this.state.listImage !== null ? (
+                    <CFormGroup row>
+                      <CCol md="3">
+                        <CLabel>Danh sách hình ảnh đã chọn</CLabel>
+                      </CCol>
+                      <CCol xs="12" md="9">
+                        {this.state.listImage.map(item => {
+                          return (
+                            <>
+                              <CImg src={item} width="100px" key={item} />
+                            </>
+                          );
+                        })}
+                      </CCol>
+                    </CFormGroup>
+                  ) : null}
                 </CForm>
               </CCardBody>
               <CCardFooter>
@@ -168,13 +218,9 @@ class ProductPhotoCreate extends Component {
                   <CIcon name="cil-scrubber" /> Thêm hình ảnh
                 </CButton>
                 <CButton></CButton>
-                <CButton
-                  size="sm"
-                  color="dark"
-                  onClick={() => this.cancel()}
-                >
+                <CButton size="sm" color="dark" onClick={() => this.cancel()}>
                   <CIcon name="cil-home" />
-                  Huỷ bỏ và trở về danh sách
+                  Huỷ bỏ và trở về
                 </CButton>
               </CCardFooter>
             </CCard>
