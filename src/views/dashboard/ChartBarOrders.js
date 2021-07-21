@@ -13,7 +13,7 @@ class ChartBarOrders extends Component {
     arrTotalMoneyLastYear: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     arrTotalMoneyThisYear: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     arrTotalStatus: [0, 0, 0, 0, 0, 0, 0, 0],
-    thisYear : moment().format("YYYY")
+    thisYear: moment().format("YYYY")
   };
   componentDidMount() {
     this.loadData();
@@ -28,27 +28,37 @@ class ChartBarOrders extends Component {
           );
 
           for (let i = 0; i < res.data.resultObj.length; i++) {
-            if (res.data.resultObj[i].createdDate !== null) {              
-              if (res.data.resultObj[i].createdDate.substring(0, 4) == this.state.thisYear)
-              {
-                // console.log(res.data.resultObj[i].createdDate.substring(0,4));
-                // console.log(this.state.thisYear);
-                if(res.data.resultObj[i].statusId !== 0)
-                {
-                  // console.log(res.data.resultObj[i].statusId);
+            if (res.data.resultObj[i].statusId == 7) {
+              if (res.data.resultObj[i].createdDate !== null) {
+                if (
+                  res.data.resultObj[i].createdDate.substring(0, 4) ==
+                  this.state.thisYear
+                ) {
+                  // console.log(res.data.resultObj[i].createdDate.substring(0,4));
+                  // console.log(this.state.thisYear);
+                  if (res.data.resultObj[i].statusId !== 0) {
+                    // console.log(res.data.resultObj[i].statusId);
 
-                  let date = new Date(String((res.data.resultObj[i].createdDate)));
-                  this.state.arrTotalMoneyThisYear[date.getMonth()] += res.data.resultObj[i].totalMoney;
-                }
-              }
-              else if (res.data.resultObj[i].createdDate.substring(0, 4) == this.state.thisYear - 1) {
-                // console.log(res.data.resultObj[i].createdDate.substring(0,4));
-                if(res.data.resultObj[i].statusId !== 0)
-                {
-                // console.log(res.data.resultObj[i].statusId);
+                    let date = new Date(
+                      String(res.data.resultObj[i].createdDate)
+                    );
+                    this.state.arrTotalMoneyThisYear[date.getMonth()] +=
+                      res.data.resultObj[i].totalMoney;
+                  }
+                } else if (
+                  res.data.resultObj[i].createdDate.substring(0, 4) ==
+                  this.state.thisYear - 1
+                ) {
+                  // console.log(res.data.resultObj[i].createdDate.substring(0,4));
+                  if (res.data.resultObj[i].statusId !== 0) {
+                    // console.log(res.data.resultObj[i].statusId);
 
-                let date = new Date(String((res.data.resultObj[i].createdDate)));
-                this.state.arrTotalMoneyLastYear[date.getMonth()] += res.data.resultObj[i].totalMoney;
+                    let date = new Date(
+                      String(res.data.resultObj[i].createdDate)
+                    );
+                    this.state.arrTotalMoneyLastYear[date.getMonth()] +=
+                      res.data.resultObj[i].totalMoney;
+                  }
                 }
               }
             }
@@ -59,9 +69,9 @@ class ChartBarOrders extends Component {
           //   this.state.arrTotalMoney[date.getMonth()] += item.totalMoney;
           //   return null
           // });
-          res.data.resultObj.map(item => {            
-            this.state.arrTotalStatus[item.statusId-1] += 1;
-            return null
+          res.data.resultObj.map(item => {
+            this.state.arrTotalStatus[item.statusId - 1] += 1;
+            return null;
           });
         } else {
           alert(res.data.message);

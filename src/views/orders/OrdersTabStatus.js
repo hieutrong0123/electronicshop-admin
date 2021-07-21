@@ -75,13 +75,10 @@ class OrdersTabStatus extends Component {
     orderservice_json
       .canclebyId(this.state.id)
       .then(res => {
-        if (res.data.isSuccessed) {
           alert("Huỷ đơn hàng thành công");
-          window.location.reload();
-        } else {
-          alert(res.data.message);
+          window.location.reload();        
         }
-      })
+      )
       .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
     // .catch(err => console.log(err));
   }
