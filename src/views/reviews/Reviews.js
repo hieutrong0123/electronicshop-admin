@@ -1,15 +1,9 @@
 import React, { Component } from "react";
 import {
   CCard,
-  CDataTable,
-  CButton,
-  CModal,
-  CModalHeader,
-  CModalBody,
-  CModalFooter
+  CDataTable
 } from "@coreui/react";
 
-import CIcon from "@coreui/icons-react";
 
 import moment from "moment";
 
