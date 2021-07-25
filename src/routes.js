@@ -73,6 +73,9 @@ import LoginHistory from './views/statistical/LoginHistory';
 //Comment
 import Comments from './views/comment/Comments';
 
+//Review
+import Reviews from './views/reviews/Reviews';
+
 
 const routes = [
   // { path: '/', exact: true, name: 'Home' },
@@ -150,6 +153,9 @@ const routes = [
 
   //Comment
   { path: '/comments', exact: true,  name: 'Danh sách bình luận', component: Comments },
+
+  //Comment
+  { path: '/reviews', exact: true,  name: 'Danh sách đánh giá', component: Reviews },
   
 ];
 
