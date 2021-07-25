@@ -542,7 +542,7 @@ class ProductDetails extends Component {
           <CModalBody>Hình ảnh #{this.state.idPhoto} sẽ bị xoá</CModalBody>
           <CModalFooter>
             <CButton color="primary" onClick={() => this.deletePhoto()}>
-              OK
+              Đồng ý
             </CButton>
             <CButton
               color="secondary"
@@ -550,7 +550,7 @@ class ProductDetails extends Component {
                 this.setState({ toggleDelete: false });
               }}
             >
-              Cancel
+              Huỷ
             </CButton>
           </CModalFooter>
         </CModal>
