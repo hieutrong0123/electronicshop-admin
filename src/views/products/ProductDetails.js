@@ -528,6 +528,18 @@ class ProductDetails extends Component {
                   </CButton>
                 </Link>
                 &nbsp;&nbsp;&nbsp;
+                <Link
+                  to={{
+                    pathname: `/products/inventory`,
+                    productId: this.state.id
+                  }}
+                >
+                  <CButton color="info" size="sm">
+                    <CIcon name="cil-star" />
+                    Nhập sản phẩm
+                  </CButton>
+                </Link>
+                &nbsp;&nbsp;&nbsp;
                 <CButton color="dark" size="sm" onClick={() => this.cancel()}>
                   <CIcon name="cil-home" />
                   Trở về danh sách
