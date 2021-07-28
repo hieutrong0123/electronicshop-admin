@@ -135,14 +135,18 @@ class OrdersTabStatus extends Component {
             link: item => {
               return (
                 <td>
-                  <CButton
-                    size="sm"
-                    color="primary"
-                    // onClick={() => this.trackOrder(item.id)}
+                  <Link
+                  to={{
+                    pathname: `/orders/${item.id}`
+                  }}
+                >
+                  <CButton color="primary" size="sm"
+                  // onClick={() => this.trackOrder(item.id)}
                   >
                     <CIcon name="cil-scrubber" />
-                    <Link to={`/orders/${item.id}`} style={{ color: "white" }}>Xem thêm</Link>
+                    Xem thêm
                   </CButton>
+                </Link>
                   &nbsp;&nbsp;&nbsp;
                   {item.statusId === 7 || item.statusId === 8 ? (
                     <CButton
