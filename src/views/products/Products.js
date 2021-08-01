@@ -62,12 +62,20 @@ class Products extends Component {
       .then(res => {
         if (res.data.isSuccessed) {
           alert(res.data.resultObj);
-          window.location.reload();
+          // window.location.reload();
+          this.refresh();
         } else {
           alert(res.data.message);
         }
       })
       .catch(err => alert("Máy chủ đang bận, vui lòng thử lại sau"));
+  }
+
+  refresh()
+  {
+    var url = window.location.pathname;
+    this.props.history.push(`/`);
+    this.props.history.push(url);
   }
 
   disable() {
@@ -77,7 +85,8 @@ class Products extends Component {
       .then(res => {
         if (res.data.isSuccessed) {
           alert(res.data.resultObj);
-          window.location.reload();
+          // window.location.reload();
+          this.refresh();
         } else {
           alert(res.data.message);
         }
@@ -92,7 +101,8 @@ class Products extends Component {
       .then(res => {
         if (res.data.isSuccessed) {
           alert(res.data.resultObj);
-          window.location.reload();
+          // window.location.reload();
+          this.refresh();
         } else {
           alert(res.data.message);
         }
@@ -211,7 +221,7 @@ class Products extends Component {
           <CModalBody>Sản phẩm #{this.state.id} sẽ được kích hoạt</CModalBody>
           <CModalFooter>
             <CButton color="primary" onClick={() => this.enable()}>
-              OK
+              Đồng ý
             </CButton>
             <CButton
               color="secondary"
@@ -219,7 +229,7 @@ class Products extends Component {
                 this.setState({ toggleEnable: false });
               }}
             >
-              Cancel
+              Huỷ
             </CButton>
           </CModalFooter>
         </CModal>
@@ -229,7 +239,7 @@ class Products extends Component {
           <CModalBody>Sản phẩm #{this.state.id} sẽ bị khoá</CModalBody>
           <CModalFooter>
             <CButton color="primary" onClick={() => this.disable()}>
-              OK
+              Đồng ý
             </CButton>
             <CButton
               color="secondary"
@@ -237,7 +247,7 @@ class Products extends Component {
                 this.setState({ toggleDisable: false });
               }}
             >
-              Cancel
+              Huỷ
             </CButton>
           </CModalFooter>
         </CModal>
@@ -247,7 +257,7 @@ class Products extends Component {
           <CModalBody>Sản phẩm #{this.state.id} sẽ bị xoá</CModalBody>
           <CModalFooter>
             <CButton color="primary" onClick={() => this.delete()}>
-              OK
+              Đồng ý
             </CButton>
             <CButton
               color="secondary"
@@ -255,7 +265,7 @@ class Products extends Component {
                 this.setState({ toggleDelete: false });
               }}
             >
-              Cancel
+              Huỷ
             </CButton>
           </CModalFooter>
         </CModal>

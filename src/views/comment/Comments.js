@@ -58,6 +58,13 @@ class Comments extends Component {
     this.setState({ toggleDisable: true, id: id });
   };
 
+  refresh()
+  {
+    var url = window.location.pathname;
+    this.props.history.push(`/`);
+    this.props.history.push(url);
+  }
+
   enable() {
     this.setState({ toggleEnable: false });
     commentservice_json
@@ -65,7 +72,8 @@ class Comments extends Component {
       .then(res => {
         if (res.data.isSuccessed) {
           alert(res.data.resultObj);
-          window.location.reload();
+          // window.location.reload();
+          this.refresh()
         } else {
           alert(res.data.message);
         }
@@ -80,7 +88,8 @@ class Comments extends Component {
       .then(res => {
         if (res.data.isSuccessed) {
           alert(res.data.resultObj);
-          window.location.reload();
+          // window.location.reload();
+          this.refresh()
         } else {
           alert(res.data.message);
         }
@@ -170,7 +179,7 @@ class Comments extends Component {
           <CModalBody>Bình luận #{this.state.id} sẽ được kích hoạt</CModalBody>
           <CModalFooter>
             <CButton color="primary" onClick={() => this.enable()}>
-              OK
+              Đồng ý
             </CButton>
             <CButton
               color="secondary"
@@ -188,7 +197,7 @@ class Comments extends Component {
           <CModalBody>Bình luận #{this.state.id} sẽ bị khoá</CModalBody>
           <CModalFooter>
             <CButton color="primary" onClick={() => this.disable()}>
-              OK
+              Đồng ý
             </CButton>
             <CButton
               color="secondary"

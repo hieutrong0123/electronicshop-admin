@@ -66,6 +66,13 @@ class Users extends Component {
     this.props.history.push(`/users/edit/${id}`);
   };
 
+  refresh()
+  {
+    var url = window.location.pathname;
+    this.props.history.push(`/`);
+    this.props.history.push(url);
+  }
+
   enable() {
     this.setState({ toggleEnable: false });
     userservice_json
@@ -73,7 +80,8 @@ class Users extends Component {
       .then(res => {
         if (res.data.isSuccessed) {
           alert(res.data.resultObj);
-          window.location.reload();
+          // window.location.reload();
+          this.refresh()
         } else {
           alert(res.data.message);
         }
@@ -88,7 +96,8 @@ class Users extends Component {
       .then(res => {
         if (res.data.isSuccessed) {
           alert(res.data.resultObj);
-          window.location.reload();
+          // window.location.reload();
+          this.refresh();
         } else {
           alert(res.data.message);
         }
@@ -103,7 +112,8 @@ class Users extends Component {
       .then(res => {
         if (res.data.isSuccessed) {
           alert(res.data.resultObj);
-          window.location.reload();
+          // window.location.reload();
+          this.refresh();
         } else {
           alert(res.data.message);
         }
@@ -122,12 +132,12 @@ class Users extends Component {
   render() {
     const fields = [
       { key: "id", label: "Mã" },
-      { key: "userName", label: "Tài khoản" },
+      // { key: "userName", label: "Tài khoản" },
       { key: "firstMiddleName", label: "Họ và tên lót" },
       { key: "lastName", label: "Tên" },
       { key: "email", label: "Email" },
       // { key: "phoneNumber", label: "Số điện thoại" },
-      { key: "link", label: "Tuỳ chọn", _style: { width: "35%" } }
+      { key: "link", label: "Tuỳ chọn", _style: { width: "40%" } }
     ];
     return this.state.list === null ? null : (
       <CCard>
@@ -199,7 +209,7 @@ class Users extends Component {
           <CModalBody>Người dùng #{this.state.id} sẽ được kích hoạt</CModalBody>
           <CModalFooter>
             <CButton color="primary" onClick={() => this.enable()}>
-              OK
+              Đồng ý
             </CButton>
             <CButton
               color="secondary"
@@ -207,7 +217,7 @@ class Users extends Component {
                 this.setState({ toggleEnable: false });
               }}
             >
-              Cancel
+              Huỷ
             </CButton>
           </CModalFooter>
         </CModal>
@@ -217,7 +227,7 @@ class Users extends Component {
           <CModalBody>Người dùng #{this.state.id} sẽ bị khoá</CModalBody>
           <CModalFooter>
             <CButton color="primary" onClick={() => this.disable()}>
-              OK
+              Đồng ý
             </CButton>
             <CButton
               color="secondary"
@@ -235,7 +245,7 @@ class Users extends Component {
           <CModalBody>Người dùng #{this.state.id} sẽ bị xoá</CModalBody>
           <CModalFooter>
             <CButton color="primary" onClick={() => this.delete()}>
-              OK
+              Đồng ý
             </CButton>
             <CButton
               color="secondary"
